@@ -22,6 +22,7 @@ public class C {
 		}
 		
 		System.out.println(point[0]);
+		scanner.close();
 	}
 	
 	public static void getGCD(int[] a,int x,int y) {
