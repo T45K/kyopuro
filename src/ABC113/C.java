@@ -32,20 +32,7 @@ public class C {
 		}
 		
 		for(int i = 0;i<counter;i++) {
-			int a = aArray[i];
-			int b = bArray[i];
-			String aString = Integer.toString(a);
-			String c = Integer.toString(arrayLists[a].indexOf(b) + 1);
-			System.out.println(getZeros(aString.length()) + aString + getZeros(c.length()) + c);
+			System.out.println(String.format("%012d", aArray[i] * 1000000 + arrayLists[aArray[i]].indexOf(bArray[i] ) + 1));
 		}
-	}
-
-	public static String getZeros(int a) {
-		if(a ==1) return "00000";
-		if(a == 2) return "0000";
-		if(a == 3) return "000";
-		if( a == 4) return "00";
-		if(a == 5) return "0";
-		return "";
 	}
 }
