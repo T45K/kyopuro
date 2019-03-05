@@ -23,8 +23,26 @@ public class D {
 
 		Arrays.sort(shrines);
 		Arrays.sort(temples);
-		
-		
+
+		boolean shr = true;
+		long l = Long.MAX_VALUE, r = 0;
+		int sIndex = 0, tIndex = 0;
+		long result = Long.MAX_VALUE;
+		int rlIndex = Integer.MAX_VALUE, rrIndex = 0;
+
+		for (int count = 0; count < shrine + temple; count++) {
+			if (shrines[sIndex] < temples[tIndex]) {
+				if (shr) {
+					l = shrines[sIndex++];
+				} else {
+
+				}
+			} else {
+				l = temples[tIndex];
+				tIndex++;
+
+			}
+		}
 
 		scanner.close();
 	}
