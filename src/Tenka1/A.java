@@ -5,7 +5,6 @@ import java.util.Scanner;
 public class A {
 
 	public static void main(String[] args) {
-		// TODO 自動生成されたメソッド・スタブ
 		Scanner scanner = new Scanner(System.in);
 		String line = scanner.nextLine();
 		if(line.length() == 2) {
