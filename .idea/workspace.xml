@@ -1,0 +1,644 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="5bd6502d-e054-4ba2-bd1d-b00484f08592" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://D:/lab/CC-Rex-remake/src/main/java/jp/kusumotolab/ccrex/Main.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="234">
+              <caret line="18" selection-start-line="18" selection-end-line="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://D:/lab/CC-Rex-remake/src/test/java/jp/kusumotolab/ccrex/detection/Type1CloneDetectorTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="360">
+              <caret line="29" selection-start-line="29" selection-end-line="29" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://D:/lab/CC-Rex-remake/src/test/java/jp/kusumotolab/ccrex/aggregation/FormatVisitorTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="288">
+              <caret line="85" column="69" selection-start-line="85" selection-start-column="69" selection-end-line="85" selection-end-column="69" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://D:/lab/CC-Rex-remake/.circleci/config.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="468">
+              <caret line="41" column="24" selection-start-line="41" selection-start-column="24" selection-end-line="41" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://D:/lab/CC-Rex-remake/sample/sample/Sample1.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="234">
+              <caret line="13" selection-start-line="13" selection-end-line="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://D:/lab/CC-Rex-remake/sample/sample/Sample3.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="216">
+              <caret line="22" column="27" lean-forward="true" selection-start-line="22" selection-start-column="27" selection-end-line="22" selection-end-column="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://D:/lab/CC-Rex-remake/src/main/java/jp/kusumotolab/ccrex/AST/ASTConstructor.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="18">
+              <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="D:/lab/CC-Rex-remake" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="D:/lab/CC-Rex-remake/sample/sample/Sample2.java" />
+        <option value="D:/lab/CC-Rex-remake/.circleCI/config.yml" />
+        <option value="D:/lab/CC-Rex-remake/src/main/java/jp/kusumotolab/ccrex/aggregation/CloneAggregator.java" />
+        <option value="D:/lab/CC-Rex-remake/src/main/java/jp/kusumotolab/ccrex/aggregation/FormatVisitor.java" />
+        <option value="D:/lab/CC-Rex-remake/sample/sample/Sample3.java" />
+        <option value="D:/lab/CC-Rex-remake/src/test/java/jp/kusumotolab/ccrex/detection/Type1CloneDetectorTest.java" />
+        <option value="D:/lab/CC-Rex-remake/src/test/java/jp/kusumotolab/ccrex/aggregation/FormatVisitorTest.java" />
+        <option value="D:/lab/CC-Rex-remake/.circleci/config.yml" />
+        <option value="D:/lab/CC-Rex-remake/sample/sample/Sample1.java" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-10" />
+    <option name="y" value="-10" />
+    <option name="width" value="1750" />
+    <option name="height" value="980" />
+  </component>
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="kyopuro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CC-Rex-remake" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+            <path>
+              <item name="kyopuro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CC-Rex-remake" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name=".circleci" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="kyopuro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CC-Rex-remake" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="sample" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="kyopuro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CC-Rex-remake" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="sample" type="462c0819:PsiDirectoryNode" />
+              <item name="sample" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="kyopuro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CC-Rex-remake" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="kyopuro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CC-Rex-remake" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+            <path>
+              <item name="kyopuro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CC-Rex-remake" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="kyopuro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CC-Rex-remake" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="ccrex" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="kyopuro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CC-Rex-remake" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+            <path>
+              <item name="kyopuro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CC-Rex-remake" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="kyopuro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CC-Rex-remake" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="ccrex" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="kyopuro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CC-Rex-remake" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="ccrex" type="462c0819:PsiDirectoryNode" />
+              <item name="aggregation" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="kyopuro" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CC-Rex-remake" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="ccrex" type="462c0819:PsiDirectoryNode" />
+              <item name="detection" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553948765563" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="JUnit.FormatVisitorTest">
+    <configuration name="FormatVisitorTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CC-Rex.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="jp.kusumotolab.ccrex.aggregation.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="jp.kusumotolab.ccrex.aggregation" />
+      <option name="MAIN_CLASS_NAME" value="jp.kusumotolab.ccrex.aggregation.FormatVisitorTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FormatVisitorTest.testFormatVisitor3" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CC-Rex.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="jp.kusumotolab.ccrex.aggregation.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="jp.kusumotolab.ccrex.aggregation" />
+      <option name="MAIN_CLASS_NAME" value="jp.kusumotolab.ccrex.aggregation.FormatVisitorTest" />
+      <option name="METHOD_NAME" value="testFormatVisitor3" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FormatVisitorTest.testFormatVisitor5" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CC-Rex.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="jp.kusumotolab.ccrex.aggregation.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="jp.kusumotolab.ccrex.aggregation" />
+      <option name="MAIN_CLASS_NAME" value="jp.kusumotolab.ccrex.aggregation.FormatVisitorTest" />
+      <option name="METHOD_NAME" value="testFormatVisitor5" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Type1CloneDetectorTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CC-Rex.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="jp.kusumotolab.ccrex.detection.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="jp.kusumotolab.ccrex.detection" />
+      <option name="MAIN_CLASS_NAME" value="jp.kusumotolab.ccrex.detection.Type1CloneDetectorTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Type1CloneDetectorTest.testDetect" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CC-Rex.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="jp.kusumotolab.ccrex.detection.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="jp.kusumotolab.ccrex.detection" />
+      <option name="MAIN_CLASS_NAME" value="jp.kusumotolab.ccrex.detection.Type1CloneDetectorTest" />
+      <option name="METHOD_NAME" value="testDetect" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType" factoryName="Kotlin">
+      <module name="CC-Rex" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType" factoryName="Kotlin script">
+      <module name="CC-Rex" />
+      <option name="filePath" />
+      <option name="vmParameters" />
+      <option name="alternativeJrePath" />
+      <option name="programParameters" />
+      <option name="passParentEnvs" value="true" />
+      <option name="workingDirectory" />
+      <option name="isAlternativeJrePathEnabled" value="false" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="filePath" />
+      <option name="vmParameters" />
+      <option name="alternativeJrePath" />
+      <option name="programParameters" />
+      <option name="passParentEnvs" value="true" />
+      <option name="workingDirectory" />
+      <option name="isAlternativeJrePathEnabled" value="false" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.FormatVisitorTest" />
+        <item itemvalue="JUnit.FormatVisitorTest.testFormatVisitor5" />
+        <item itemvalue="JUnit.Type1CloneDetectorTest" />
+        <item itemvalue="JUnit.FormatVisitorTest.testFormatVisitor3" />
+        <item itemvalue="JUnit.Type1CloneDetectorTest.testDetect" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="abf7de77-b45d-453b-b9cd-e6135e16bf7f" name="Default Changelist" comment="" />
+      <created>1552834118756</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1552834118756</updated>
+      <workItem from="1552834121399" duration="819000" />
+      <workItem from="1553470826303" duration="739000" />
+      <workItem from="1553591815511" duration="24703000" />
+    </task>
+    <task id="LOCAL-00001" summary="tmp">
+      <created>1553713473267</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1553713473267</updated>
+    </task>
+    <task id="LOCAL-00002" summary="change test">
+      <created>1553713487580</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1553713487580</updated>
+    </task>
+    <task id="LOCAL-00003" summary="change test">
+      <created>1553713507092</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1553713507092</updated>
+    </task>
+    <task id="LOCAL-00004" summary="remove unused variable">
+      <created>1553829394255</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1553829394255</updated>
+    </task>
+    <task id="LOCAL-00005" summary="change test">
+      <created>1553830128990</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1553830128990</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
+    <servers />
+  </component>
+  <component name="TestHistory">
+    <history-entry file="FormatVisitorTest_testFormatVisitor3 - 2019.03.29 at 13h 27m 47s.xml">
+      <configuration name="FormatVisitorTest.testFormatVisitor3" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="FormatVisitorTest_testFormatVisitor5 - 2019.03.29 at 13h 27m 55s.xml">
+      <configuration name="FormatVisitorTest.testFormatVisitor5" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="FormatVisitorTest - 2019.03.29 at 13h 29m 08s.xml">
+      <configuration name="FormatVisitorTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="Type1CloneDetectorTest - 2019.03.29 at 13h 31m 17s.xml">
+      <configuration name="Type1CloneDetectorTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="FormatVisitorTest - 2019.03.29 at 13h 31m 22s.xml">
+      <configuration name="FormatVisitorTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="FormatVisitorTest_testFormatVisitor5 - 2019.03.29 at 13h 35m 59s.xml">
+      <configuration name="FormatVisitorTest.testFormatVisitor5" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="FormatVisitorTest_testFormatVisitor5 - 2019.03.29 at 13h 36m 12s.xml">
+      <configuration name="FormatVisitorTest.testFormatVisitor5" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="FormatVisitorTest_testFormatVisitor5 - 2019.03.29 at 13h 37m 47s.xml">
+      <configuration name="FormatVisitorTest.testFormatVisitor5" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="FormatVisitorTest - 2019.03.29 at 13h 38m 06s.xml">
+      <configuration name="FormatVisitorTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="FormatVisitorTest - 2019.03.29 at 13h 40m 24s.xml">
+      <configuration name="FormatVisitorTest" configurationId="JUnit" />
+    </history-entry>
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="11258000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16198125" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Image Layers" order="2" />
+      <window_info id="Designer" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Capture Tool" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info anchor="bottom" id="Messages" weight="0.32957748" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32957748" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32957748" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32816902" />
+      <window_info anchor="bottom" id="Database Changes" order="9" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.32957748" />
+      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
+      <window_info anchor="bottom" id="Build" order="12" weight="0.32957748" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Theme Preview" order="4" />
+      <window_info anchor="right" id="Maven" order="5" />
+      <window_info anchor="right" id="Capture Analysis" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="Database" order="8" />
+      <window_info anchor="right" id="Gradle" order="9" />
+    </layout>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="add sample" />
+    <MESSAGE value="change sample directory structure ant test" />
+    <MESSAGE value="add test" />
+    <MESSAGE value="fix" />
+    <MESSAGE value="tmp" />
+    <MESSAGE value="remove unused variable" />
+    <MESSAGE value="change test" />
+    <option name="LAST_COMMIT_MESSAGE" value="change test" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/ABC86/D.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="30" selection-start-line="16" selection-start-column="30" selection-end-line="16" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Tenka1/A.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="44" selection-start-line="6" selection-start-column="44" selection-end-line="6" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ABC119/C.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="13" selection-start-line="13" selection-end-line="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/util/ArrayList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="164" column="11" selection-start-line="164" selection-start-column="11" selection-end-line="164" selection-end-column="11" />
+          <folding>
+            <element signature="e#6283#6284#0" expanded="true" />
+            <element signature="e#6351#6352#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/lab/CC-Rex-remake/sample/Sample2.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://D:/lab/CC-Rex-remake/sample/Sample1.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://D:/lab/CC-Rex-remake/src/main/java/jp/kusumotolab/ccrex/AST/ASTConstructor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/lab/CC-Rex-remake/sample/Sample3.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="60" column="38" selection-start-line="60" selection-start-column="38" selection-end-line="60" selection-end-column="38" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.jdt/org.eclipse.jdt.core/3.14.0/e74355978b39c8ebebf604f82984f54c48e03139/org.eclipse.jdt.core-3.14.0-sources.jar!/org/eclipse/jdt/core/dom/AST.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="2307" column="25" selection-start-line="2307" selection-start-column="25" selection-end-line="2307" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/lab/CC-Rex-remake/src/test/java/jp/kusumotolab/ccrex/aggregation/VisitorForTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="21" column="29" selection-start-line="21" selection-start-column="29" selection-end-line="21" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/lab/CC-Rex-remake/sample/sample/Sample2.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/lab/CC-Rex-remake/src/main/java/jp/kusumotolab/ccrex/aggregation/CloneAggregateVisitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-252">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/lab/CC-Rex-remake/sample/sample/Sample2.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="2" column="26" selection-start-line="2" selection-start-column="26" selection-end-line="2" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/lab/CC-Rex-remake/src/main/java/jp/kusumotolab/ccrex/aggregation/FormatVisitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#570#600#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/lab/CC-Rex-remake/src/main/java/jp/kusumotolab/ccrex/aggregation/CloneAggregator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="69" column="24" selection-start-line="69" selection-start-column="24" selection-end-line="69" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/lab/CC-Rex-remake/src/main/java/jp/kusumotolab/ccrex/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/lab/CC-Rex-remake/src/test/java/jp/kusumotolab/ccrex/detection/Type1CloneDetectorTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="29" selection-start-line="29" selection-end-line="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/lab/CC-Rex-remake/build/reports/tests/test/index.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://D:/lab/CC-Rex-remake/sample/sample/Sample3.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="22" column="27" lean-forward="true" selection-start-line="22" selection-start-column="27" selection-end-line="22" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/lab/CC-Rex-remake/src/test/java/jp/kusumotolab/ccrex/aggregation/FormatVisitorTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="85" column="69" selection-start-line="85" selection-start-column="69" selection-end-line="85" selection-end-column="69" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/lab/CC-Rex-remake/.circleci/config.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="468">
+          <caret line="41" column="24" selection-start-line="41" selection-start-column="24" selection-end-line="41" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/lab/CC-Rex-remake/sample/sample/Sample1.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="13" selection-start-line="13" selection-end-line="13" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
