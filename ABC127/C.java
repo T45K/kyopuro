@@ -1,3 +1,5 @@
+package ABC127;
+
 import java.util.Scanner;
 
 public class C {
