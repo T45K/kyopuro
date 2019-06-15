@@ -10,10 +10,10 @@ public class B {
         new B().run();
     }
 
-    private void run(){
+    private void run() {
         final Scanner scanner = new Scanner(System.in);
         final int count = scanner.nextInt();
-        if(count == 1){
+        if (count == 1) {
             System.out.println(1);
             return;
         }
@@ -31,6 +31,12 @@ public class B {
             for (int j = i + 1; j < count; j++) {
                 if (table[i][0] > table[j][0]) {
                     extracted(table, lens, counts, j, i);
+                } else if (table[i][0] == table[j][0]) {
+                    if (table[i][1] > table[j][1]) {
+                        extracted(table, lens, counts, i, j);
+                    } else {
+                        extracted(table, lens, counts, j, i);
+                    }
                 } else {
                     extracted(table, lens, counts, i, j);
                 }
