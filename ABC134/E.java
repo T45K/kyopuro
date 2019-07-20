@@ -1,7 +1,6 @@
 package ABC134;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,18 +19,27 @@ public class E {
     }
 
     private static void insert(final List<Integer> list, final int value) {
-        int idx = Collections.binarySearch(list, value);
-
-        if (idx < 0) {
-            idx = -idx - 1;
-            if (idx == 0) {
-                list.add(0, value);
-            } else {
-                list.set(idx - 1, value);
-            }
+        if (list.isEmpty()) {
+            list.add(value);
             return;
         }
 
-        list.add(idx, value);
+        if (value <= list.get(0)) {
+            list.add(0, value);
+            return;
+        }
+
+        if (value > list.get(list.size() - 1)) {
+            list.set(list.size() - 1, value);
+            return;
+        }
+
+        int index;
+        for (index = 0; index < list.size(); index++) {
+            if (list.get(index) >= value) {
+                break;
+            }
+        }
+        list.set(index - 1, value);
     }
 }
