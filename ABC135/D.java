@@ -1,5 +1,7 @@
 package ABC135;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class D {
@@ -27,15 +29,14 @@ public class D {
 
         for (int i = 1; i < s.length(); i++) {
             final char c = getReverseIndex(s, i);
-            if (c >= '0' && c <= '9') {
+            if (isNum(c)) {
                 final int i1 = intPow(i) * getNum(c) % 13;
                 for (int j = 0; j < 13; j++) {
                     table[i][(j + i1) % 13] = (table[i][(j + i1) % 13] + table[i - 1][j]) % MOD;
-
                 }
             } else {
                 for (int k = 0; k < 10; k++) {
-                    final int i1 = intPow(i) * k % 31;
+                    final int i1 = intPow(i) * k % 13;
                     for (int j = 0; j < 13; j++) {
                         table[i][(j + i1) % 13] = (table[i][(j + i1) % 13] + table[i - 1][j]) % MOD;
                     }
@@ -47,7 +48,7 @@ public class D {
     }
 
     private static int intPow(final int b) {
-        int c = b % 5;
+        int c = b % 6;
         return (int) Math.pow(10, c);
     }
 
