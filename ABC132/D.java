@@ -5,6 +5,45 @@ import java.util.Scanner;
 public class D {
     private static final int MOD = 1000000007;
 
+    public static void main(final String[] args) {
+        final Scanner scanner = new Scanner(System.in);
+        final int n = scanner.nextInt();
+        final int k = scanner.nextInt();
+
+        final long[][] table = createPascalsTriangle(n);
+
+        for (int i = 1; i < k + 1; i++) {
+            if (i == 1) {
+                System.out.println(n - k + 1);
+                continue;
+            }
+
+            final long blueSplitCombination = table[k - 1][i - 1] % MOD;
+            final long redSplitCombination = table[n - k + 1][i] % MOD;
+
+            System.out.println((blueSplitCombination * redSplitCombination) % MOD);
+
+        }
+    }
+
+    private static long[][] createPascalsTriangle(final int scale) {
+        final long[][] table = new long[scale + 1][scale + 1];
+        table[0][0] = 1;
+        for (int i = 1; i <= scale; i++) {
+            for (int j = 0; j <= i; j++) {
+                if (j == 0 || j == i) {
+                    table[i][j] = 1;
+                    continue;
+                }
+
+                table[i][j] = (table[i - 1][j] + table[i - 1][j - 1]) % MOD;
+            }
+        }
+
+        return table;
+    }
+
+    /*
     public static void main(String[] args) {
         final Scanner scanner = new Scanner(System.in);
         final int n = scanner.nextInt();
@@ -62,4 +101,6 @@ public class D {
 
         return ue / sita;
     }
+
+     */
 }
