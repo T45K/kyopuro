@@ -46,4 +46,26 @@ public class Utility {
 
         return -(rawIndex + 1);
     }
+
+    /**
+     * 組み合わせの計算をDPを用いて高速化する
+     * @param size　二次元配列のサイズ
+     *            　配列の大きさから size C x はできないことに注意
+     * @return 二次元配列
+     */
+    private static long[][] createCombinationTable(final int size) {
+        final long[][] table = new long[size][size];
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j <= i; j++) {
+                if (j == 0) {
+                    table[i][j] = 1;
+                    continue;
+                }
+
+                table[i][j] = table[i - 1][j - 1] + table[i - 1][j];
+            }
+        }
+
+        return table;
+    }
 }
