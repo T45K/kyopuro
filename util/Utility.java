@@ -49,11 +49,13 @@ public class Utility {
 
     /**
      * 組み合わせの計算をDPを用いて高速化する
-     * @param size　二次元配列のサイズ
-     *            　配列の大きさから size C x はできないことに注意
+     *
+     * @param size 　二次元配列のサイズ
+     *             　配列の大きさから size C x はできないことに注意
      * @return 二次元配列
      */
     private static long[][] createCombinationTable(final int size) {
+        final int mod = 1000000007;
         final long[][] table = new long[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j <= i; j++) {
@@ -62,7 +64,7 @@ public class Utility {
                     continue;
                 }
 
-                table[i][j] = table[i - 1][j - 1] + table[i - 1][j];
+                table[i][j] = (table[i - 1][j - 1] + table[i - 1][j]) % mod;
             }
         }
 
