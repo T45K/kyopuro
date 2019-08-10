@@ -70,4 +70,16 @@ public class Utility {
 
         return table;
     }
+
+    private static int getGCD(final int a, final int b) {
+        if (b > a) {
+            return getGCD(b, a);
+        }
+
+        if (b == 0) {
+            return a;
+        }
+
+        return getGCD(b, a % b);
+    }
 }
