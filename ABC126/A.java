@@ -14,7 +14,7 @@ public class A {
             chars[i - 1] = 'a';
         } else if (chars[i - 1] == 'B') {
             chars[i - 1] = 'b';
-        }else{
+        } else {
             chars[i - 1] = 'c';
         }
 
