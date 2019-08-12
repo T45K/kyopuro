@@ -1,10 +1,57 @@
-package kyopuro.ABC125;
+package ABC125;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
 public class C {
+    public static void main(String[] args) {
+        final Scanner scanner = new Scanner(System.in);
+        final int number = scanner.nextInt();
+        final int[] ints = new int[number];
+
+        for (int i = 0; i < number; i++) {
+            ints[i] = scanner.nextInt();
+        }
+
+        final int[] leftGCD = new int[number];
+        leftGCD[0] = ints[0];
+        for (int i = 1; i < leftGCD.length; i++) {
+            leftGCD[i] = getGCD(leftGCD[i - 1], ints[i]);
+        }
+
+        final int[] rightGCD = new int[number];
+        rightGCD[number - 1] = ints[number - 1];
+        for (int i = rightGCD.length - 2; i >= 0; i--) {
+            rightGCD[i] = getGCD(rightGCD[i + 1], ints[i]);
+        }
+
+        final int[] maxGCDIfIndexDeleted = new int[number];
+        maxGCDIfIndexDeleted[0] = rightGCD[1];
+        maxGCDIfIndexDeleted[number - 1] = leftGCD[number - 2];
+        for (int i = 1; i < maxGCDIfIndexDeleted.length - 1; i++) {
+            maxGCDIfIndexDeleted[i] = getGCD(leftGCD[i - 1], rightGCD[i + 1]);
+        }
+
+        Arrays.sort(maxGCDIfIndexDeleted);
+        System.out.println(maxGCDIfIndexDeleted[number - 1]);
+    }
+
+    private static int getGCD(final int a, final int b) {
+        if (b > a) {
+            return getGCD(b, a);
+        }
+
+        if (b == 0) {
+            return a;
+        }
+
+        return getGCD(b, a % b);
+    }
+
+    /*
     public static void main(String[] args) {
         final Scanner scanner = new Scanner(System.in);
         final int counter = scanner.nextInt();
@@ -62,5 +109,5 @@ public class C {
         System.out.println(1);
     }
 
-
+     */
 }

@@ -1,4 +1,4 @@
-package kyopuro.ABC125;
+package ABC125;
 
 import java.util.Scanner;
 
