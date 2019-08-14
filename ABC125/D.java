@@ -1,6 +1,5 @@
 package ABC125;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class D {
