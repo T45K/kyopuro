@@ -1,27 +1,37 @@
 package ABC121;
 
-import java.nio.ByteBuffer;
 import java.util.Scanner;
 
 public class D {
 
-	public static void main(String[] args) {
-		final int capasity = 40;
-		final Scanner scanner = new Scanner(System.in);
-		long a = scanner.nextLong();
-		long b = scanner.nextLong();
-		byte[] aByte = ByteBuffer.allocate(capasity).putLong(a).array();
-		byte[] bByte = ByteBuffer.allocate(capasity).putLong(b).array();
-		byte[] rByte = new byte[capasity];
+    public static void main(final String[] args) {
+        final Scanner scanner = new Scanner(System.in);
+        final long a = scanner.nextLong();
+        final long b = scanner.nextLong();
 
-		long result = 0;
-		for (long i = a; i <= b; i++) {
-			result ^= i;
-		}
-		
-		System.out.println(result);
-		scanner.close();
+        if (a == 0) {
+            System.out.println(get(b));
+            return;
+        }
 
-	}
+        final long fa = get(a - 1);
+        final long fb = get(b);
+        System.out.println(fa ^ fb);
+    }
 
+    private static long get(final long a) {
+        final long mod = a % 4;
+        switch ((int) mod) {
+            case 0:
+                return a;
+            case 1:
+                return 1;
+            case 2:
+                return a ^ 1;
+            case 3:
+                return 0;
+        }
+
+        throw new RuntimeException();
+    }
 }
