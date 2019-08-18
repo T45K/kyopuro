@@ -17,6 +17,24 @@ public class Utility {
         }
     }
 
+    static class Tuple<F, L> {
+        private final F former;
+        private final L latter;
+
+        Tuple(final F former, final L latter) {
+            this.former = former;
+            this.latter = latter;
+        }
+
+        public F getFormer() {
+            return former;
+        }
+
+        public L getLatter() {
+            return latter;
+        }
+    }
+
     private static int intPow(final int a, final int b) {
         return (int) Math.pow(a, b);
     }
