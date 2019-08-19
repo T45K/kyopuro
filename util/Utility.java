@@ -35,6 +35,54 @@ public class Utility {
         }
     }
 
+    static class UnionFindTree {
+        private int[] nodes;
+
+        UnionFindTree(final int numOfNodes) {
+            this.nodes = init(numOfNodes);
+        }
+
+        public int[] getNodes() {
+            return nodes;
+        }
+
+        private int[] init(final int numOfNodes) {
+            final int[] array = new int[numOfNodes];
+            for (int i = 0; i < array.length; i++) {
+                array[i] = i;
+            }
+
+            return array;
+        }
+
+        int getRoot(final int nodeNumber) {
+            final int rootNode = nodes[nodeNumber];
+            if (rootNode == nodeNumber) {
+                return nodeNumber;
+            }
+
+            return getRoot(rootNode);
+        }
+
+        boolean isSame(final int nodeA, final int nodeB) {
+            final int rootA = getRoot(nodeA);
+            final int rootB = getRoot(nodeB);
+
+            return rootA == rootB;
+        }
+
+        void unit(final int nodeA, final int nodeB) {
+            final int rootA = getRoot(nodeA);
+            final int rootB = getRoot(nodeB);
+
+            if (rootA == rootB) {
+                return;
+            }
+
+            nodes[rootA] = rootB;
+        }
+    }
+
     private static int intPow(final int a, final int b) {
         return (int) Math.pow(a, b);
     }
