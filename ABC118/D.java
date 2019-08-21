@@ -1,8 +1,5 @@
 package ABC118;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
@@ -42,14 +39,14 @@ public class D {
                         }
                     }
 
+                    if (i != tuples.size() - 1) {
+                        dp[i + 1][j] = dp[i][j];
+                    }
+
                     if (i != tuples.size() - 1 && j < n - tuples.get(i + 1).getNumOfMatches() + 1) {
                         final String tmp = dp[i][j] + tuples.get(i + 1).getOriginalNumberString();
                         if (dp[i + 1][j + tuples.get(i + 1).getNumOfMatches()] == null || originalStringCompare(tmp, dp[i + 1][j + tuples.get(i + 1).getNumOfMatches()]))
                             dp[i + 1][j + tuples.get(i + 1).getNumOfMatches()] = tmp;
-                    }
-
-                    if (i != tuples.size() - 1) {
-                        dp[i + 1][j] = dp[i][j];
                     }
                 }
             }
