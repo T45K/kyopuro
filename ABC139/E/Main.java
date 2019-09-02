@@ -1,20 +1,29 @@
 package ABC139.E;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashSet;
-import java.util.Scanner;
+import java.util.List;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 public class Main {
     public static void main(final String[] args) {
-        final Scanner scanner = new Scanner(System.in);
+        final FastScanner scanner = new FastScanner(System.in);
         final int n = scanner.nextInt();
-        final List[] combination = new List[n];
+        final MyDeque[] combination = new MyDeque[n];
+        final List<Integer> indexList = new ArrayList<>();
 
         for (int i = 0; i < n; i++) {
-            combination[i] = new List();
+            indexList.add(i);
+            combination[i] = new MyDeque();
             for (int j = 0; j < n - 1; j++) {
-                combination[i].list.add(scanner.nextInt() - 1);
+                combination[i].queue.add(scanner.nextInt() - 1);
             }
         }
 
@@ -24,33 +33,34 @@ public class Main {
 
             final Set<Integer> skip = new HashSet<>();
             boolean doneOnceFlag = false;
-            boolean doneAllFlag = true;
-            for (int i = 0; i < n; i++) {
-                if (skip.contains(i) || combination[i].list.isEmpty()) {
+            for (int index = 0; index < indexList.size(); index++) {
+                final int i = indexList.get(index);
+                if (combination[i].queue.isEmpty()) {
+                    indexList.remove(index);
+                    index--;
+                    continue;
+                }
+                if (skip.contains(i)) {
                     continue;
                 }
 
-                final Integer opponent = combination[i].list.get(0);
+                final Integer opponent = combination[i].queue.getFirst();
 
                 if (skip.contains(opponent)) {
                     continue;
                 }
 
-                if (combination[opponent].list.get(0) == i) {
-                    combination[i].list.remove(0);
-                    combination[opponent].list.remove(0);
+                if (combination[opponent].queue.getFirst() == i) {
+                    combination[i].queue.removeFirst();
+                    combination[opponent].queue.removeFirst();
                     skip.add(i);
                     skip.add(opponent);
                     doneOnceFlag = true;
                 }
-
-                if (!(combination[i].list.isEmpty() && combination[opponent].list.isEmpty())) {
-                    doneAllFlag = false;
-                }
             }
 
-            if (doneAllFlag) {
-                System.out.println(counter);
+            if (indexList.isEmpty()) {
+                System.out.println(counter - 1);
                 return;
             }
 
@@ -61,7 +71,32 @@ public class Main {
         }
     }
 
-    static class List {
-        final java.util.List<Integer> list = new ArrayList<>();
+    static class MyDeque {
+        final Deque<Integer> queue = new ArrayDeque<>();
+    }
+
+    static class FastScanner {
+        private final BufferedReader reader;
+        private StringTokenizer tokenizer;
+
+        FastScanner(final InputStream in) {
+            reader = new BufferedReader(new InputStreamReader(in));
+            tokenizer = null;
+        }
+
+        String next() {
+            if (tokenizer == null || !tokenizer.hasMoreTokens()) {
+                try {
+                    tokenizer = new StringTokenizer(reader.readLine());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            return tokenizer.nextToken();
+        }
+
+        int nextInt() {
+            return Integer.parseInt(next());
+        }
     }
 }
