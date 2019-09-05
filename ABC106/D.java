@@ -1,4 +1,4 @@
-package ABC107;
+package ABC106;
 
 import java.io.BufferedReader;
 import java.io.IOException;
