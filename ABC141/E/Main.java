@@ -17,15 +17,17 @@ public class Main {
 
         for (int i = 0; i < n; i++) {
             for (int j = i + 1; j < n; j++) {
-                if (chars[i] == chars[j]) {
-                    if (i == 0) {
-                        table[i][j] = 1;
-                        continue;
-                    }
-
-                    final int length = table[i - 1][j - 1];
-                    table[i][j] = j - i == length ? length : length + 1;
+                if (chars[i] != chars[j]) {
+                    continue;
                 }
+
+                if (i == 0) {
+                    table[i][j] = 1;
+                    continue;
+                }
+
+                final int length = table[i - 1][j - 1];
+                table[i][j] = j - i == length ? length : length + 1;
             }
         }
 
