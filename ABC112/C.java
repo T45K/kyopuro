@@ -1,47 +1,98 @@
 package ABC112;
 
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 public class C {
-	
-	static int counter;
-	static int[] x,y;
-	static int[][] height;
-	static int resultX = 0,resultY = 0,resultH = 0;
+    public static void main(final String[] args) {
+        final FastScanner scanner = new FastScanner(System.in);
+        final int n = scanner.nextInt();
+        int min = Integer.MAX_VALUE;
 
-	public static void main(String[] args) {
-		// TODO 自動生成されたメソッド・スタブ
-		Scanner scanner = new Scanner(System.in);
-		counter = scanner.nextInt();
-		x = new int[counter];
-		y= new int[counter];
-		height = new int[101][101];
-		
-		for(int i = 0;i<counter;i++) {
-			height[x[i] = scanner.nextInt()][y[i]= scanner.nextInt()] = scanner.nextInt();
-		}
-		
-		check();
-		
-		System.out.println(resultX + " " + resultY + " " + resultH);
-		
-	}
-	
-	public static void check() {
-		for(resultX = 0;resultX<=100;resultX++) {
-			for(resultY = 0;resultY<=100;resultY++) {
-				resultH = height[x[0]][y[0]] + Math.abs(resultX-x[0]) + Math.abs(resultY - y[0]);
-				for(int k = 1;k<counter;k++) {
-					int tmp =  height[x[k]][y[k]] + Math.abs(resultX-x[k]) + Math.abs(resultY - y[k]);
-					
-					if(resultH == tmp) {
-						if(k == counter -1) {
-							return;
-						}
-					}
-					else break;
-				}
-			}
-		}
-	}
+        final List<Point> points = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            final int x = scanner.nextInt();
+            final int y = scanner.nextInt();
+            final int h = scanner.nextInt();
+
+            min = Math.min(h, min);
+            points.add(new Point(x, y, h));
+        }
+
+        for (int x = 0; x <= 100; x++) {
+            for (int y = 0; y <= 100; y++) {
+                int h;
+                for (h = min; h <= min + 200; h++) {
+                    boolean flag = true;
+                    for (final Point point : points) {
+                        if (point.getH() != Math.max(0, h - Math.abs(x - point.getX()) - Math.abs(y - point.getY()))) {
+                            flag = false;
+                            break;
+                        }
+                    }
+
+                    if (flag) {
+                        System.out.println(x + " " + y + " " + h);
+                        return;
+                    }
+                }
+            }
+        }
+
+    }
+
+    static class Point {
+        private final int x;
+        private final int y;
+        private final int h;
+
+        Point(final int x, final int y, final int h) {
+            this.x = x;
+            this.y = y;
+            this.h = h;
+        }
+
+        int getX() {
+            return x;
+        }
+
+        int getY() {
+            return y;
+        }
+
+        int getH() {
+            return h;
+        }
+    }
+
+    static class FastScanner {
+        private final BufferedReader reader;
+        private StringTokenizer tokenizer;
+
+        FastScanner(final InputStream in) {
+            reader = new BufferedReader(new InputStreamReader(in));
+            tokenizer = null;
+        }
+
+        String next() {
+            if (tokenizer == null || !tokenizer.hasMoreTokens()) {
+                try {
+                    tokenizer = new StringTokenizer(reader.readLine());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            return tokenizer.nextToken();
+        }
+
+        int nextInt() {
+            return Integer.parseInt(next());
+        }
+    }
 }
