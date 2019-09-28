@@ -6,8 +6,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Utility {
     static class Counter {
@@ -197,5 +200,23 @@ public class Utility {
         double nextDouble() {
             return Double.parseDouble(next());
         }
+    }
+
+    private static Map<Integer, AtomicInteger> primeFactorization(long n) {
+        final double sqrt = Math.sqrt(n);
+        final Map<Integer, AtomicInteger> countMap = new HashMap<>();
+        for (int i = 2; i <= sqrt; i++) {
+            if (n % i == 0) {
+                countMap.computeIfAbsent(i, v -> new AtomicInteger()).incrementAndGet();
+                n /= i;
+                i--;
+            }
+        }
+
+        if (n != 1) {
+            countMap.computeIfAbsent((int) n, v -> new AtomicInteger()).incrementAndGet();
+        }
+
+        return countMap;
     }
 }
