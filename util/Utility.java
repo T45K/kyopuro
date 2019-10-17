@@ -219,4 +219,13 @@ public class Utility {
 
         return countMap;
     }
+
+    private static int[] reverseIntArray(final int[] array) {
+        final int[] newArray = new int[array.length];
+        for (int i = array.length - 1; i >= 0; i--) {
+            newArray[i] = array[array.length - i - 1];
+        }
+
+        return newArray;
+    }
 }
