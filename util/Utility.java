@@ -145,16 +145,16 @@ public class Utility {
         return table;
     }
 
-    private static int getGCD(final int a, final int b) {
+    private static int computeGCD(final int a, final int b) {
         if (b > a) {
-            return getGCD(b, a);
+            return computeGCD(b, a);
         }
 
         if (b == 0) {
             return a;
         }
 
-        return getGCD(b, a % b);
+        return computeGCD(b, a % b);
     }
 
     static class FastScanner {
