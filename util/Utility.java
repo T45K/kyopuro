@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class Utility {
     static class Counter {
@@ -284,5 +285,35 @@ public class Utility {
 
             nodes[rootA] = rootB;
         }
+    }
+
+    /**
+     * エラトステネスの篩
+     * 与えられた整数以下の素数のリストを O(nloglogn) で返す
+     *
+     * @param number 上限
+     * @return 条件を満たす素数のリスト
+     */
+    private static List<Integer> sieveOfEratosthenes(final int number) {
+        List<Integer> list = new ArrayList<>();
+        for (int i = 2; i <= number; i++) {
+            list.add(i);
+        }
+
+        final int sqrt = (int) Math.sqrt(number);
+        final List<Integer> primeNumbers = new ArrayList<>();
+        int condition;
+
+        do {
+            final int prime = list.get(0);
+            primeNumbers.add(prime);
+            list = list.stream()
+                    .filter(i -> i % prime != 0)
+                    .collect(Collectors.toList());
+            condition = prime;
+        } while (condition < sqrt);
+
+        primeNumbers.addAll(list);
+        return primeNumbers;
     }
 }
