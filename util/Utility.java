@@ -145,16 +145,16 @@ public class Utility {
         return table;
     }
 
-    private static int getGCD(final int a, final int b) {
+    private static int computeGCD(final int a, final int b) {
         if (b > a) {
-            return getGCD(b, a);
+            return computeGCD(b, a);
         }
 
         if (b == 0) {
             return a;
         }
 
-        return getGCD(b, a % b);
+        return computeGCD(b, a % b);
     }
 
     static class FastScanner {
@@ -218,5 +218,14 @@ public class Utility {
         }
 
         return countMap;
+    }
+
+    private static int[] reverseIntArray(final int[] array) {
+        final int[] newArray = new int[array.length];
+        for (int i = array.length - 1; i >= 0; i--) {
+            newArray[i] = array[array.length - i - 1];
+        }
+
+        return newArray;
     }
 }
