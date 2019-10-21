@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -227,5 +228,61 @@ public class Utility {
         }
 
         return newArray;
+    }
+
+    /**
+     * 通常のUnionFindTreeの改造版
+     * getRoot()がボトルネックになる場面で役に立つ
+     * getRoot()が走るたびに該当のnodesを最新の値に保つ
+     */
+    static class FastUnionFindTree {
+        private int[] nodes;
+        private List<Integer> indices = new ArrayList<>();
+
+        FastUnionFindTree(final int numOfNodes) {
+            this.nodes = init(numOfNodes);
+        }
+
+        int[] getNodes() {
+            return nodes;
+        }
+
+        private int[] init(final int numOfNodes) {
+            final int[] array = new int[numOfNodes];
+            for (int i = 0; i < array.length; i++) {
+                array[i] = i;
+            }
+
+            return array;
+        }
+
+        int getRoot(final int nodeNumber) {
+            final int rootNode = nodes[nodeNumber];
+            if (rootNode == nodeNumber) {
+                for (final Integer index : indices) {
+                    nodes[index] = rootNode;
+                }
+                indices = new ArrayList<>();
+                return nodeNumber;
+            }
+
+            indices.add(nodeNumber);
+            return getRoot(rootNode);
+        }
+
+        boolean isSame(final int nodeA, final int nodeB) {
+            return nodes[nodeA] == nodes[nodeB];
+        }
+
+        void unit(final int nodeA, final int nodeB) {
+            final int rootA = getRoot(nodeA);
+            final int rootB = getRoot(nodeB);
+
+            if (rootA == rootB) {
+                return;
+            }
+
+            nodes[rootA] = rootB;
+        }
     }
 }
