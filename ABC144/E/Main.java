@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.StringTokenizer;
 
-// TODO
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
@@ -36,6 +35,30 @@ public class Main {
         Arrays.sort(eat);
         Arrays.sort(food, Comparator.reverseOrder());
 
+        final long max = (long) Math.pow(10, 12);
+        final long answer = specialBinarySearch(0, max, k, eat, food);
+        System.out.println(answer);
+    }
+
+    private static long specialBinarySearch(final long min, final long max, final long base, final Long[] eat, final Long[] food) {
+        if (max - min <= 1) {
+            return max;
+        }
+
+        final long middle = (min + max) / 2;
+        long counter = 0;
+        for (int i = 0; i < eat.length; i++) {
+            final long cost = eat[i] * food[i];
+            if (cost > middle) {
+                counter += (cost - middle + food[i] - 1) / food[i];
+            }
+        }
+
+        if (counter > base) {
+            return specialBinarySearch(middle, max, base, eat, food);
+        } else {
+            return specialBinarySearch(min, middle, base, eat, food);
+        }
     }
 
     static class FastScanner {
@@ -58,28 +81,12 @@ public class Main {
             return tokenizer.nextToken();
         }
 
-        String nextLine() {
-            if (tokenizer == null || !tokenizer.hasMoreTokens()) {
-                try {
-                    return reader.readLine();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            return tokenizer.nextToken("\n");
-        }
-
         long nextLong() {
             return Long.parseLong(next());
         }
 
         int nextInt() {
             return Integer.parseInt(next());
-        }
-
-        double nextDouble() {
-            return Double.parseDouble(next());
         }
     }
 }
