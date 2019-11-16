@@ -317,39 +317,42 @@ public class Utility {
         return primeNumbers;
     }
 
-    // 高速に組み合わせを計算できる
-    // new CombinationCalculator(size,mod).init().calc() で求めることができる
+    /**
+     * 高速にmod込みで組み合わせを計算できる
+     * 使い方: new CombinationCalculator(size,mod).init().calc()
+     * see http://drken1215.hatenablog.com/entry/2018/06/08/210000
+     */
     private static class CombinationCalculator {
         private final int size;
         private final int mod;
-        private final long[] fac;
-        private final long[] inv;
-        private final long[] finv;
+        private final long[] factorials;
+        private final long[] invertedElements;
+        private final long[] invertedFactorials;
 
         CombinationCalculator(final int size, final int mod) {
             this.size = size;
             this.mod = mod;
-            this.fac = new long[size];
-            this.inv = new long[size];
-            this.finv = new long[size];
+            this.factorials = new long[size];
+            this.invertedElements = new long[size];
+            this.invertedFactorials = new long[size];
         }
 
         CombinationCalculator init() {
-            fac[0] = 1;
-            fac[1] = 1;
-            finv[0] = 1;
-            finv[1] = 1;
-            inv[1] = 1;
+            factorials[0] = 1;
+            factorials[1] = 1;
+            invertedFactorials[0] = 1;
+            invertedFactorials[1] = 1;
+            invertedElements[1] = 1;
             for (int i = 2; i < size; i++) {
-                fac[i] = fac[i - 1] * i % mod;
-                inv[i] = mod - inv[mod % i] * (mod / i) % mod;
-                finv[i] = finv[i - 1] * inv[i] % mod;
+                factorials[i] = factorials[i - 1] * i % mod;
+                invertedElements[i] = mod - invertedElements[mod % i] * (mod / i) % mod;
+                invertedFactorials[i] = invertedFactorials[i - 1] * invertedElements[i] % mod;
             }
             return this;
         }
 
         long calc(final int n, final int k) {
-            return fac[n] * (finv[k] * finv[n - k] % mod) % mod;
+            return factorials[n] * (invertedFactorials[k] * invertedFactorials[n - k] % mod) % mod;
         }
     }
 }
