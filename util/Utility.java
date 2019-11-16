@@ -316,4 +316,40 @@ public class Utility {
         primeNumbers.addAll(list);
         return primeNumbers;
     }
+
+    // 高速に組み合わせを計算できる
+    // new CombinationCalculator(size,mod).init().calc() で求めることができる
+    private static class CombinationCalculator {
+        private final int size;
+        private final int mod;
+        private final long[] fac;
+        private final long[] inv;
+        private final long[] finv;
+
+        CombinationCalculator(final int size, final int mod) {
+            this.size = size;
+            this.mod = mod;
+            this.fac = new long[size];
+            this.inv = new long[size];
+            this.finv = new long[size];
+        }
+
+        CombinationCalculator init() {
+            fac[0] = 1;
+            fac[1] = 1;
+            finv[0] = 1;
+            finv[1] = 1;
+            inv[1] = 1;
+            for (int i = 2; i < size; i++) {
+                fac[i] = fac[i - 1] * i % mod;
+                inv[i] = mod - inv[mod % i] * (mod / i) % mod;
+                finv[i] = finv[i - 1] * inv[i] % mod;
+            }
+            return this;
+        }
+
+        long calc(final int n, final int k) {
+            return fac[n] * (finv[k] * finv[n - k] % mod) % mod;
+        }
+    }
 }
