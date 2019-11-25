@@ -13,7 +13,6 @@ import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-// TODO fix
 public class Main {
     private static final Map<Integer, Set<NodeIndex>> map = new HashMap<>();
 
@@ -43,32 +42,29 @@ public class Main {
             }
         }
 
-        final Set<Integer> set = IntStream.rangeClosed(1, maxValue)
+        final List<Integer> list = IntStream.rangeClosed(1, maxValue)
                 .boxed()
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
 
         final int[] answer = new int[n - 1];
-        recursive(set, index, -1, answer, -1);
+        recursive(list, index, -1, answer, -1);
         System.out.println(maxValue);
         for (final int i : answer) {
             System.out.println(i);
         }
     }
 
-    private static void recursive(final Set<Integer> set, final int now, final int parent, final int[] answer, final int hen) {
+    private static void recursive(final List<Integer> list, final int now, final int parent, final int[] answer, final int hen) {
         final Set<NodeIndex> nodeIndices = map.get(now);
-        final List<Integer> list = set.stream()
-                .filter(h -> h != hen)
-                .collect(Collectors.toList());
         int index = 0;
         for (final NodeIndex nodeIndex : nodeIndices) {
             if (nodeIndex.node == parent) {
                 continue;
             }
 
-            final Integer value = list.get(index);
+            final Integer value = list.get(index) == hen ? list.get(++index) : list.get(index);
             answer[nodeIndex.index] = value;
-            recursive(set, nodeIndex.node, now, answer, value);
+            recursive(list, nodeIndex.node, now, answer, value);
             index++;
         }
     }
