@@ -101,7 +101,7 @@ public class Utility {
     /**
      * 値が存在しない時も加味した二分探索
      * 存在する時はその位置
-     * 損しない時はそれが入るはずの位置を返す
+     * 存在しない時はそれが入るはずの位置を返す
      * 二分探索の性質上配列中に被りがあるとうまく働かない
      *
      * @param indexes int(Integer)の配列あるいはList
@@ -205,7 +205,7 @@ public class Utility {
         }
     }
 
-    private static Map<Integer, AtomicInteger> primeFactorization(long n) {
+    private static Map<Integer, Integer> primeFactorization(long n) {
         final double sqrt = Math.sqrt(n);
         final Map<Integer, AtomicInteger> countMap = new HashMap<>();
         for (int i = 2; i <= sqrt; i++) {
@@ -220,7 +220,8 @@ public class Utility {
             countMap.computeIfAbsent((int) n, v -> new AtomicInteger()).incrementAndGet();
         }
 
-        return countMap;
+        return countMap.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, entrySet -> entrySet.getValue().get()));
     }
 
     private static int[] reverseIntArray(final int[] array) {
