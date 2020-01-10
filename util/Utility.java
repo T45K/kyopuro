@@ -297,7 +297,7 @@ public class Utility {
      * @return 条件を満たす素数のリスト
      */
     private static List<Integer> sieveOfEratosthenes(final int number) {
-        final List<Integer> numbers = IntStream.rangeClosed(2, number)
+        List<Integer> numbers = IntStream.rangeClosed(2, number)
                 .boxed()
                 .collect(Collectors.toList());
 
