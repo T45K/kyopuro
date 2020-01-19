@@ -32,15 +32,44 @@ public class Main {
 
         long answer = 0;
         for (final long i : array) {
-            answer += lcm * invertWithMod(i, MOD);
+            answer += lcm * modInv(i, MOD);
             answer %= MOD;
         }
 
         System.out.println(answer);
     }
 
-    private static long invertWithMod(final long number, final long mod) {
-        return bigPow(number, number - 2, mod);
+    /**
+     * 素数modを法としてaの逆元を計算する
+     * modInvと一緒に使う
+     *
+     * @param a   逆元を計算したい値
+     * @param n   a - 2
+     * @param mod 法となる素数
+     * @return modを法としたaの逆元
+     */
+    private static long modPow(long a, long n, final long mod) {
+        long res = 1;
+        while (n > 0) {
+            if ((n & 1) != 0) {
+                res = res * a % mod;
+            }
+            a = a * a % mod;
+            n >>= 1;
+        }
+        return res;
+    }
+
+    /**
+     * 素数modを法としたaの逆元を計算する
+     * modPowと一緒に使う
+     *
+     * @param a   逆元を計算したい値
+     * @param mod 法となる素数
+     * @return modを法としたaの逆元
+     */
+    private static long modInv(final long a, final long mod) {
+        return modPow(a, mod - 2, mod);
     }
 
     private static long bigPow(final long number, final long count, final long mod) {
