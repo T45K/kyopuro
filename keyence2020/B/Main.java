@@ -6,40 +6,38 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    // TODO solve
     public static void main(final String[] args) {
         final Scanner scanner = new Scanner(System.in);
         final int n = scanner.nextInt();
 
         final List<Robot> robots = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            robots.add(new Robot(scanner.nextInt(), scanner.nextInt()));
+            final int point = scanner.nextInt();
+            final int length = scanner.nextInt();
+            robots.add(new Robot(point - length, point + length));
         }
 
-        robots.sort(Comparator.comparing(robot -> robot.length));
-        int count = 0;
-        for (int i = 0; i < robots.size() - 1; i++) {
-            final Robot currentRobot = robots.get(i);
-            final Robot nextRobot = robots.get(i + 1);
+        robots.sort(Comparator.comparing(robot -> robot.right));
 
-            if (currentRobot.point + currentRobot.length > nextRobot.point - nextRobot.length) {
+        int count = 0;
+        long rightest = -1000000000;
+        for (int i = 0; i < n; i++) {
+            if (rightest <= robots.get(i).left) {
                 count++;
-                if (currentRobot.point + currentRobot.length < nextRobot.point + nextRobot.length) {
-                    i++;
-                }
+                rightest = robots.get(i).right;
             }
         }
 
-        System.out.println(n - count);
+        System.out.println(count);
     }
 
     static class Robot {
-        long point;
-        long length;
+        long left;
+        long right;
 
-        Robot(final long point, final long length) {
-            this.point = point;
-            this.length = length;
+        Robot(final long left, final long right) {
+            this.left = left;
+            this.right = right;
         }
     }
 }
