@@ -33,15 +33,13 @@ public class Main {
                 final boolean[] isVisited = new boolean[n + 1];
                 dfs(graph, isVisited, key);
                 if (!isAllTrue(isVisited)) {
-                    System.out.println(key+" " + node);
-
                     counter++;
                 }
                 value.add(node);
             }
         }
 
-        System.out.println(counter);
+        System.out.println(counter / 2);
     }
 
     private static void dfs(final Map<Integer, List<Integer>> graph, final boolean[] isVisited, final int vertex) {
