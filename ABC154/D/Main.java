@@ -1,4 +1,4 @@
-package ABC154.E.D;
+package ABC154.D;
 
 import java.util.Scanner;
 

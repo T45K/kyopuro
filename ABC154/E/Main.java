@@ -3,48 +3,35 @@ package ABC154.E;
 import java.util.Scanner;
 
 public class Main {
-    // TODO solve
     public static void main(final String[] args) {
         final Scanner scanner = new Scanner(System.in);
         final String n = scanner.next();
         final int k = scanner.nextInt();
 
-        if (k > n.length()) {
-            System.out.println(0);
-            return;
-        }
-
-        long answer = 0;
-        if (k == 1) {
-            answer = 9 * (n.length() - 1);
-            answer += (n.charAt(0) - '0');
-        } else if (k == 2) {
-            answer = 81 * (n.length() - 1) * (n.length() - 2) / 2;
-            answer += getAnswer(n, 0);
-        } else if (k == 3) {
-        }
-
-        System.out.println(answer);
-    }
-
-    private static long getAnswer(final String n, final int begin) {
-        long answer = 0;
-        boolean existingZero = n.charAt(begin + 1) == '0';
-        final int base = n.charAt(begin) - '0';
-        for (int i = begin + 1; i < n.length(); i++) {
-            if (!existingZero) {
-                if (i == 1)
-                    answer += (base - 1) * 9 + n.charAt(i) - '0';
-                else
-                    answer += base * 9;
-                continue;
+        int justCount = 1;
+        final long[][] less = new long[n.length()][k + 1];
+        less[0][1] = n.charAt(0) - '1';
+        less[0][0] = 1;
+        for (int i = 1; i < n.length(); i++) {
+            final int digit = n.charAt(i) - '0';
+            if (digit != 0) {
+                if (justCount < k) {
+                    less[i][justCount + 1] += digit - 1;
+                    less[i][justCount]++;
+                } else if (justCount == k) {
+                    less[i][justCount]++;
+                }
+                justCount++;
             }
 
-            if (n.charAt(i) != '0') {
-                existingZero = false;
+            for (int j = 0; j <= k; j++) {
+                less[i][j] += less[i - 1][j];
+                if (j != 0) {
+                    less[i][j] += less[i - 1][j - 1] * 9;
+                }
             }
-            answer += (base - 1) * 9;
         }
-        return answer;
+
+        System.out.println(less[n.length() - 1][k]+(justCount==k?1:0));
     }
 }
