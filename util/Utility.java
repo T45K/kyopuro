@@ -46,52 +46,25 @@ public class Utility {
         }
     }
 
-    static class UnionFindTree {
-        private int[] nodes;
-
-        UnionFindTree(final int numOfNodes) {
-            this.nodes = init(numOfNodes);
-        }
-
-        public int[] getNodes() {
-            return nodes;
-        }
-
-        private int[] init(final int numOfNodes) {
-            final int[] array = new int[numOfNodes];
-            for (int i = 0; i < array.length; i++) {
-                array[i] = i;
+    /**
+     * 素数modを法としてaの逆元を計算する
+     * modInvと一緒に使う
+     *
+     * @param a   逆元を計算したい値
+     * @param n   a - 2
+     * @param mod 法となる素数
+     * @return modを法としたaの逆元
+     */
+    private static long modPow(long a, long n, final long mod) {
+        long res = 1;
+        while (n > 0) {
+            if ((n & 1) != 0) {
+                res = res * a % mod;
             }
-
-            return array;
+            a = a * a % mod;
+            n >>= 1;
         }
-
-        int getRoot(final int nodeNumber) {
-            final int rootNode = nodes[nodeNumber];
-            if (rootNode == nodeNumber) {
-                return nodeNumber;
-            }
-
-            return getRoot(rootNode);
-        }
-
-        boolean isSame(final int nodeA, final int nodeB) {
-            final int rootA = getRoot(nodeA);
-            final int rootB = getRoot(nodeB);
-
-            return rootA == rootB;
-        }
-
-        void unit(final int nodeA, final int nodeB) {
-            final int rootA = getRoot(nodeA);
-            final int rootB = getRoot(nodeB);
-
-            if (rootA == rootB) {
-                return;
-            }
-
-            nodes[rootA] = rootB;
-        }
+        return res;
     }
 
     private static int intPow(final int a, final int b) {
@@ -234,59 +207,15 @@ public class Utility {
     }
 
     /**
-     * 通常のUnionFindTreeの改造版
-     * getRoot()がボトルネックになる場面で役に立つ
-     * getRoot()が走るたびに該当のnodesを最新の値に保つ
+     * 素数modを法としたaの逆元を計算する
+     * modPowと一緒に使う
+     *
+     * @param a   逆元を計算したい値
+     * @param mod 法となる素数
+     * @return modを法としたaの逆元
      */
-    static class FastUnionFindTree {
-        private int[] nodes;
-        private List<Integer> indices = new ArrayList<>();
-
-        FastUnionFindTree(final int numOfNodes) {
-            this.nodes = init(numOfNodes);
-        }
-
-        int[] getNodes() {
-            return nodes;
-        }
-
-        private int[] init(final int numOfNodes) {
-            final int[] array = new int[numOfNodes];
-            for (int i = 0; i < array.length; i++) {
-                array[i] = i;
-            }
-
-            return array;
-        }
-
-        int getRoot(final int nodeNumber) {
-            final int rootNode = nodes[nodeNumber];
-            if (rootNode == nodeNumber) {
-                for (final Integer index : indices) {
-                    nodes[index] = rootNode;
-                }
-                indices = new ArrayList<>();
-                return nodeNumber;
-            }
-
-            indices.add(nodeNumber);
-            return getRoot(rootNode);
-        }
-
-        boolean isSame(final int nodeA, final int nodeB) {
-            return nodes[nodeA] == nodes[nodeB];
-        }
-
-        void unit(final int nodeA, final int nodeB) {
-            final int rootA = getRoot(nodeA);
-            final int rootB = getRoot(nodeB);
-
-            if (rootA == rootB) {
-                return;
-            }
-
-            nodes[rootA] = rootB;
-        }
+    private static long modInv(final long a, final long mod) {
+        return modPow(a, mod - 2, mod);
     }
 
     /**
@@ -357,34 +286,108 @@ public class Utility {
         }
     }
 
-    /**
-     * 素数modを法としてaの逆元を計算する
-     * modInvと一緒に使う
-     * @param a 逆元を計算したい値
-     * @param n a - 2
-     * @param mod 法となる素数
-     * @return modを法としたaの逆元
-     */
-    private static long modPow(long a, long n, final long mod) {
-        long res = 1;
-        while (n > 0) {
-            if ((n & 1) != 0) {
-                res = res * a % mod;
-            }
-            a = a * a % mod;
-            n >>= 1;
+    static class UnionFindTree {
+        private int[] nodes;
+
+        UnionFindTree(final int numOfNodes) {
+            this.nodes = init(numOfNodes);
         }
-        return res;
+
+        public int[] getNodes() {
+            return nodes;
+        }
+
+        private int[] init(final int numOfNodes) {
+            final int[] array = new int[numOfNodes];
+            for (int i = 0; i < array.length; i++) {
+                array[i] = i;
+            }
+
+            return array;
+        }
+
+        int getRoot(final int nodeNumber) {
+            final int rootNode = nodes[nodeNumber];
+            if (rootNode == nodeNumber) {
+                return nodeNumber;
+            }
+
+            return getRoot(rootNode);
+        }
+
+        boolean isSame(final int nodeA, final int nodeB) {
+            final int rootA = getRoot(nodeA);
+            final int rootB = getRoot(nodeB);
+
+            return rootA == rootB;
+        }
+
+        void unit(final int nodeA, final int nodeB) {
+            final int rootA = getRoot(nodeA);
+            final int rootB = getRoot(nodeB);
+
+            if (rootA == rootB) {
+                return;
+            }
+
+            nodes[rootB] = rootA;
+        }
     }
 
     /**
-     * 素数modを法としたaの逆元を計算する
-     * modPowと一緒に使う
-     * @param a 逆元を計算したい値
-     * @param mod 法となる素数
-     * @return modを法としたaの逆元
+     * 通常のUnionFindTreeの改造版
+     * getRoot()がボトルネックになる場面で役に立つ
+     * getRoot()が走るたびに該当のnodesを最新の値に保つ
+     * unit()を使う際には，nodeA < nodeBと与えるように注意する
      */
-    private static long modInv(final long a, final long mod) {
-        return modPow(a, mod - 2, mod);
+    static class FastUnionFindTree {
+        private int[] nodes;
+        private List<Integer> indices = new ArrayList<>();
+
+        FastUnionFindTree(final int numOfNodes) {
+            this.nodes = init(numOfNodes);
+        }
+
+        int[] getNodes() {
+            return nodes;
+        }
+
+        private int[] init(final int numOfNodes) {
+            final int[] array = new int[numOfNodes + 1];
+            for (int i = 1; i <= numOfNodes; i++) {
+                array[i] = i;
+            }
+
+            return array;
+        }
+
+        int getRoot(final int nodeNumber) {
+            final int rootNode = nodes[nodeNumber];
+            if (rootNode == nodeNumber) {
+                for (final Integer index : indices) {
+                    nodes[index] = rootNode;
+                }
+                indices = new ArrayList<>();
+                return nodeNumber;
+            }
+
+            indices.add(nodeNumber);
+            return getRoot(rootNode);
+        }
+
+        boolean isSame(final int nodeA, final int nodeB) {
+            return nodes[nodeA] == nodes[nodeB];
+        }
+
+        void unit(final int nodeA, final int nodeB) {
+            final int rootA = getRoot(nodeA);
+            final int rootB = getRoot(nodeB);
+
+            if (rootA == rootB) {
+                return;
+            }
+
+            nodes[rootB] = rootA;
+        }
     }
 }
