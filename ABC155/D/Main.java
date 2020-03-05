@@ -42,7 +42,7 @@ public class Main {
 
         final long answer;
         if (k <= minusPair) {
-            answer = binarySearchForMinus(minusList, plusList, minusList.get(0) * plusList.get(plusList.size() - 1), -1, k);
+            answer = binarySearchForMinus(minusList, plusList, (long) -1e18, -1, k);
         } else if (k <= minusPair + zeroPair) {
             answer = 0;
         } else {
@@ -82,6 +82,9 @@ public class Main {
         for (int i = 0; i < list.size(); i++) {
             final long div = mid / list.get(i);
             final int idx = duplicatedMaxBinarySearch(list, div, 0, list.size());
+            if (idx == -1) {
+                continue;
+            }
             sum += idx <= i ? idx + 1 : idx;
         }
         return sum / 2;
@@ -109,6 +112,10 @@ public class Main {
     private static int duplicatedMaxBinarySearch(final List<Long> list, final long value, final int min, final int max) {
         if (value < list.get(0)) {
             return -1;
+        }
+
+        if (value > list.get(list.size() - 1)) {
+            return list.size() - 1;
         }
 
         if (Math.abs(max - min) <= 1) {

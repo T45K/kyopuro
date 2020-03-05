@@ -6,7 +6,6 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-// TODO solve
 public class Main {
     public static void main(final String[] args) {
         final Scanner scanner = new Scanner(System.in);
@@ -14,39 +13,40 @@ public class Main {
         final int a = scanner.nextInt();
         final int b = scanner.nextInt();
 
-        final List<Integer> list = IntStream.range(0, n)
-                .mapToObj(i -> scanner.nextInt())
+        final List<Long> list = IntStream.range(0, n)
+                .mapToObj(i -> scanner.nextLong())
                 .sorted(Comparator.reverseOrder())
                 .collect(Collectors.toList());
 
-        long count = 0;
-        boolean isADamage = false;
-        for (final int value : list) {
-            final long hp;
-            if (isADamage) {
-                hp = value - (count - 1) * b - a;
-                isADamage = false;
-            } else {
-                hp = value - count * b;
-            }
+        final int answer = binarySearch(list, 0, 2_000_000_000, a, b);
+        System.out.println(answer);
+    }
 
-            if (hp <= 0) {
-                System.out.println(count);
-                return;
-            }
-
-            final long tmp = hp / a;
-            count += tmp;
-            if (hp - a * tmp == 0) {
-                continue;
-            } else if (hp - a * tmp <= b) {
-                count++;
-                isADamage = true;
-            } else {
-                count++;
-            }
+    private static int binarySearch(final List<Long> list, final int begin, final int end, final long a, final long b) {
+        if (end - begin <= 1) {
+            return end;
         }
 
-        System.out.println(count);
+        final int mid = (end + begin) / 2;
+        final List<Long> bAttackedList = list.stream()
+                .filter(i -> i > (mid * b))
+                .map(i -> i - mid * b)
+                .collect(Collectors.toList());
+
+        if (bAttackedList.isEmpty()) {
+            return binarySearch(list, begin, mid, a, b);
+        }
+
+        long count = mid;
+        final long attack = a - b;
+        for (final long remainedHP : bAttackedList) {
+            count -= (remainedHP + attack - 1) / attack;
+        }
+
+        if (count >= 0) {
+            return binarySearch(list, begin, mid, a, b);
+        } else {
+            return binarySearch(list, mid, end, a, b);
+        }
     }
 }
