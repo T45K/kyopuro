@@ -1,5 +1,6 @@
 package ABC155.D;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -10,7 +11,7 @@ public class Main {
     public static void main(final String[] args) {
         final Scanner scanner = new Scanner(System.in);
         final int n = scanner.nextInt();
-        final int k = scanner.nextInt();
+        final long k = scanner.nextLong();
 
         final List<Long> list = IntStream.range(0, n)
                 .mapToObj(i -> scanner.nextLong())
@@ -30,119 +31,88 @@ public class Main {
             }
         }
 
-        final List<Long> minusList = IntStream.range(0, (int) numOfMinus)
-                .mapToObj(list::get)
+        final List<Long> minusList = list.subList(0, (int) numOfMinus).stream()
+                .map(i -> -i)
                 .collect(Collectors.toList());
-        final List<Long> plusList = IntStream.range(list.size() - (int) numOfPlus, list.size())
-                .mapToObj(list::get)
-                .collect(Collectors.toList());
+        final List<Long> plusList = list.subList(list.size() - (int) numOfPlus, list.size());
 
         long minusPair = numOfMinus * numOfPlus;
         long zeroPair = numOfZero * (numOfMinus + numOfPlus) + numOfZero * (numOfZero - 1) / 2;
 
         final long answer;
         if (k <= minusPair) {
-            answer = binarySearchForMinus(minusList, plusList, (long) -1e18, -1, k);
+            answer = -binarySearchForMinus(minusList, plusList, 0, (long) 1e18, k - numOfMinus + 1);
         } else if (k <= minusPair + zeroPair) {
             answer = 0;
         } else {
-            final List<Long> minusPlusList = minusList.stream()
-                    .map(i -> -i)
-                    .sorted()
-                    .collect(Collectors.toList());
-
-            answer = binarySearchForPlus(minusPlusList, plusList, 1, (long) 1e18, k - (minusPair + zeroPair));
+            Collections.reverse(minusList);
+            final int max = list.size() * (list.size() - 1) / 2;
+            answer = binarySearchForPlus(minusList, plusList, 0, (long) 1e18, max - k + 1);
         }
 
         System.out.println(answer);
     }
 
-    private static long binarySearchForPlus(final List<Long> minusList, final List<Long> plusList, final long ng, final long ok, final long k) {
-        if (ok - ng <= 1) {
-            return ok;
+    private static long binarySearchForMinus(final List<Long> minusList, final List<Long> plusList, final long begin, final long end, final long k) {
+        if (end - begin <= 1) {
+            return end;
         }
 
-        long mid = (ok + ng) / 2;
-        final long sumOfMinusList = calcSum(minusList, mid);
-        final long sumOfPlusList = calcSum(plusList, mid);
-        final long sum = sumOfMinusList + sumOfPlusList;
-
-        if (sum < k) {
-            return binarySearchForPlus(minusList, plusList, mid, ok, k);
-        } else {
-            return binarySearchForPlus(minusList, plusList, ng, mid, k);
-        }
-    }
-
-    private static long calcSum(final List<Long> list, final long mid) {
-        if (list.size() <= 1) {
-            return 0;
-        }
-        long sum = 0;
-        for (int i = 0; i < list.size(); i++) {
-            final long div = mid / list.get(i);
-            final int idx = duplicatedMaxBinarySearch(list, div, 0, list.size());
-            if (idx == -1) {
+        final long mid = (end + begin) / 2;
+        int tmpPlusIndex = 0;
+        int count = 0;
+        for (final long value : minusList) {
+            if (tmpPlusIndex == plusList.size()) {
+                count += tmpPlusIndex;
                 continue;
             }
-            sum += idx <= i ? idx + 1 : idx;
-        }
-        return sum / 2;
-    }
 
-    private static long binarySearchForMinus(final List<Long> minusList, final List<Long> plusList, final long ng, final long ok, final long k) {
-        if (ok - ng <= 1) {
-            return ok;
+            while (tmpPlusIndex < plusList.size() && value * plusList.get(tmpPlusIndex) <= mid) {
+                tmpPlusIndex++;
+            }
+            count += tmpPlusIndex;
         }
 
-        long mid = (ok + ng) / 2;
-        long sum = 0;
-        for (final long minusValue : minusList) {
-            final long tmp = (mid + minusValue + 1) / minusValue;
-            sum += plusList.size() - duplicatedMinBinarySearch(plusList, tmp, 0, plusList.size());
-        }
-
-        if (sum <= k) {
-            return binarySearchForMinus(minusList, plusList, mid, ok, k);
+        if (count >= k) {
+            return binarySearchForMinus(minusList, plusList, begin, mid, k);
         } else {
-            return binarySearchForMinus(minusList, plusList, ng, mid, k);
+            return binarySearchForMinus(minusList, plusList, mid, end, k);
         }
     }
 
-    private static int duplicatedMaxBinarySearch(final List<Long> list, final long value, final int min, final int max) {
-        if (value < list.get(0)) {
-            return -1;
+    private static long binarySearchForPlus(final List<Long> minusList, final List<Long> plusList, final long begin, final long end, final long k) {
+        if (end - begin <= 1) {
+            return end;
         }
 
-        if (value > list.get(list.size() - 1)) {
-            return list.size() - 1;
-        }
+        final long mid = (end + begin) / 2;
+        int count = count(minusList, mid) + count(plusList, mid);
 
-        if (Math.abs(max - min) <= 1) {
-            return min;
-        }
-
-        final int mid = (min + max) / 2;
-        if (list.get(mid) <= value) {
-            return duplicatedMaxBinarySearch(list, value, mid, max);
+        if (count < k) {
+            return binarySearchForPlus(minusList, plusList, begin, mid, k);
         } else {
-            return duplicatedMaxBinarySearch(list, value, min, mid);
+            return binarySearchForPlus(minusList, plusList, mid, end, k);
         }
     }
 
-    private static int duplicatedMinBinarySearch(final List<Long> list, final long value, final int min, final int max) {
-        if (value > list.get(list.size() - 1)) {
-            return list.size();
-        }
-        if (Math.abs(max - min) <= 1) {
-            return min;
-        }
+    private static int count(final List<Long> list, final long mid) {
+        int count = 0;
+        int tmpIndex = 0;
+        for (int i = 0; i < list.size(); i++) {
+            final long value = list.get(i);
+            if (tmpIndex == list.size()) {
+                count += tmpIndex;
+                continue;
+            }
 
-        final int mid = (min + max) / 2;
-        if (list.get(mid) < value) {
-            return duplicatedMinBinarySearch(list, value, mid, max);
-        } else {
-            return duplicatedMinBinarySearch(list, value, min, mid);
+            while (tmpIndex < list.size() && value * list.get(list.size() - tmpIndex - 1) > mid) {
+                tmpIndex++;
+            }
+            count += tmpIndex;
+            if (i >= list.size() - tmpIndex) {
+                count--;
+            }
         }
+        return count / 2;
     }
 }
