@@ -1,13 +1,15 @@
 package ABC155.D;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Main {
-    // TODO solve
+    private static final Comparator<Long> upperBoundComparator = (x, y) -> x > y ? 1 : -1;
+
     public static void main(final String[] args) {
         final Scanner scanner = new Scanner(System.in);
         final int n = scanner.nextInt();
@@ -41,13 +43,12 @@ public class Main {
 
         final long answer;
         if (k <= minusPair) {
-            answer = -binarySearchForMinus(minusList, plusList, 0, (long) 1e18, k - numOfMinus + 1);
+            answer = -binarySearchForMinus(minusList, plusList, 0, (long) 1e18, k);
         } else if (k <= minusPair + zeroPair) {
             answer = 0;
         } else {
             Collections.reverse(minusList);
-            final int max = list.size() * (list.size() - 1) / 2;
-            answer = binarySearchForPlus(minusList, plusList, 0, (long) 1e18, max - k + 1);
+            answer = binarySearchForPlus(minusList, plusList, 0, (long) 1e18, k - (minusPair + zeroPair));
         }
 
         System.out.println(answer);
@@ -59,21 +60,14 @@ public class Main {
         }
 
         final long mid = (end + begin) / 2;
-        int tmpPlusIndex = 0;
-        int count = 0;
+        long count = 0;
         for (final long value : minusList) {
-            if (tmpPlusIndex == plusList.size()) {
-                count += tmpPlusIndex;
-                continue;
-            }
-
-            while (tmpPlusIndex < plusList.size() && value * plusList.get(tmpPlusIndex) <= mid) {
-                tmpPlusIndex++;
-            }
-            count += tmpPlusIndex;
+            final int result = Collections.binarySearch(plusList, mid / value, upperBoundComparator);
+            final int inverted = result >= 0 ? result : ~result;
+            count += plusList.size() - inverted;
         }
 
-        if (count >= k) {
+        if (count < k) {
             return binarySearchForMinus(minusList, plusList, begin, mid, k);
         } else {
             return binarySearchForMinus(minusList, plusList, mid, end, k);
@@ -86,33 +80,26 @@ public class Main {
         }
 
         final long mid = (end + begin) / 2;
-        int count = count(minusList, mid) + count(plusList, mid);
+        long count = (count(minusList, mid) + count(plusList, mid)) / 2;
 
-        if (count < k) {
+        if (count >= k) {
             return binarySearchForPlus(minusList, plusList, begin, mid, k);
         } else {
             return binarySearchForPlus(minusList, plusList, mid, end, k);
         }
     }
 
-    private static int count(final List<Long> list, final long mid) {
-        int count = 0;
-        int tmpIndex = 0;
+    private static long count(final List<Long> list, final long mid) {
+        long count = 0;
         for (int i = 0; i < list.size(); i++) {
             final long value = list.get(i);
-            if (tmpIndex == list.size()) {
-                count += tmpIndex;
-                continue;
-            }
-
-            while (tmpIndex < list.size() && value * list.get(list.size() - tmpIndex - 1) > mid) {
-                tmpIndex++;
-            }
-            count += tmpIndex;
-            if (i >= list.size() - tmpIndex) {
+            final int result = Collections.binarySearch(list, mid / value, upperBoundComparator);
+            final int invert = result >= 0 ? result : ~result;
+            count += invert;
+            if (invert > i) {
                 count--;
             }
         }
-        return count / 2;
+        return count;
     }
 }
