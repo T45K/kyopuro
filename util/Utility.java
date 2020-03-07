@@ -5,8 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,32 +47,6 @@ public class Utility {
 
     private static int intPow(final int a, final int b) {
         return (int) Math.pow(a, b);
-    }
-
-    /**
-     * 値が存在しない時も加味した二分探索
-     * 存在する時はその位置
-     * 存在しない時はそれが入るはずの位置を返す
-     * 二分探索の性質上配列中に被りがあるとうまく働かない
-     *
-     * @param indexes int(Integer)の配列あるいはList
-     * @param value   値
-     * @return インデックス
-     */
-    @SuppressWarnings("unchecked")
-    private static int extendedBinarySearch(final Object indexes, final int value) {
-        final int rawIndex;
-        if (indexes instanceof int[]) {
-            rawIndex = Arrays.binarySearch((int[]) indexes, value);
-        } else {
-            rawIndex = Collections.binarySearch((List<Integer>) indexes, value);
-        }
-
-        if (rawIndex >= 0) {
-            return rawIndex;
-        }
-
-        return -(rawIndex + 1);
     }
 
     /**
@@ -354,4 +327,11 @@ public class Utility {
 
         return tmp;
     }
+
+    /**
+     * lowerBoundComparator: 指定した値以上の要素が初めて出現する場所を取得
+     * upperBoundComparator: 指定した値より大きい要素が初めて出現する場所を取得
+     */
+    private static final Comparator<Long> lowerBoundComparator = (x, y) -> x >= y ? 1 : -1;
+    private static final Comparator<Long> upperBoundComparator = (x, y) -> x > y ? 1 : -1;
 }
