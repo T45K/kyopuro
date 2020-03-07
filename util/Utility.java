@@ -334,4 +334,24 @@ public class Utility {
             nodes[Math.max(rootA, rootB)] = Math.min(rootA, rootB);
         }
     }
+
+    /**
+     * 繰り返し二乗法
+     *
+     * @param a 基数
+     * @param b べき数
+     * @return 基数の冪乗
+     */
+    private static long iterativePow(long a, long b) {
+        long tmp = 1;
+        while (b > 0) {
+            if ((b & 1) == 1) {
+                tmp *= a;
+            }
+            a *= a;
+            b >>= 1;
+        }
+
+        return tmp;
+    }
 }
