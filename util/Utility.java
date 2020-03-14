@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -130,23 +129,22 @@ public class Utility {
         }
     }
 
-    private static Map<Integer, Integer> primeFactorization(long n) {
+    private static Map<Integer, Long> primeFactorization(int n) {
         final double sqrt = Math.sqrt(n);
-        final Map<Integer, AtomicInteger> countMap = new HashMap<>();
+        final Map<Integer, Long> countMap = new HashMap<>();
         for (int i = 2; i <= sqrt; i++) {
             if (n % i == 0) {
-                countMap.computeIfAbsent(i, v -> new AtomicInteger()).incrementAndGet();
+                countMap.compute(i, (k, v) -> v = v == null ? 1 : v + 1);
                 n /= i;
                 i--;
             }
         }
 
         if (n != 1) {
-            countMap.computeIfAbsent((int) n, v -> new AtomicInteger()).incrementAndGet();
+            countMap.compute(n, (k, v) -> v = v == null ? 1 : v + 1);
         }
 
-        return countMap.entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, entrySet -> entrySet.getValue().get()));
+        return countMap;
     }
 
     private static int[] reverseIntArray(final int[] array) {
