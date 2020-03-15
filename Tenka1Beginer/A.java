@@ -1,4 +1,4 @@
-package Tenka1;
+package Tenka1Beginer;
 
 import java.util.Scanner;
 

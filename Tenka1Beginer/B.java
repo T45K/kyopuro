@@ -1,12 +1,10 @@
-package Tenka1;
+package Tenka1Beginer;
 
 import java.util.Scanner;
 
 public class B {
 
 	public static void main(String[] args) {
-		// TODO 自動生成されたメソッド・スタブ
-
 		Scanner scanner = new Scanner(System.in);
 		long a = scanner.nextInt();
 		long b = scanner.nextInt();
