@@ -1,4 +1,4 @@
-package pana20.D;
+package pana2020.D;
 
 import java.util.LinkedList;
 import java.util.List;

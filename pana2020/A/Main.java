@@ -1,4 +1,4 @@
-package pana20.A;
+package pana2020.A;
 
 import java.util.Scanner;
 

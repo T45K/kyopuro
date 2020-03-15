@@ -1,4 +1,4 @@
-package pana20.E;
+package pana2020.E;
 
 import java.util.ArrayList;
 import java.util.Arrays;
