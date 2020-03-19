@@ -1,12 +1,11 @@
-package ABC131;
+package ABC131.D;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
-public class D {
+public class Main {
     public static void main(String[] args) {
         final Scanner scanner = new Scanner(System.in);
         final int count = scanner.nextInt();
@@ -19,12 +18,11 @@ public class D {
 
         works.sort(Comparator.comparing(Work::getDeadLine));
 
-        int ruisekiL = 0;
-        for (int i = 0; i < works.size(); i++) {
-            final Work work = works.get(i);
-            ruisekiL += work.getLength();
+        int accum = 0;
+        for (final Work work : works) {
+            accum += work.getLength();
 
-            if(ruisekiL > work.getDeadLine()){
+            if (accum > work.getDeadLine()) {
                 System.out.println("No");
                 return;
             }

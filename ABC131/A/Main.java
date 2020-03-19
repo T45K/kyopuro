@@ -1,8 +1,8 @@
-package ABC131;
+package ABC131.A;
 
 import java.util.Scanner;
 
-public class A {
+public class Main {
     public static void main(String[] args) {
         final Scanner scanner = new Scanner(System.in);
         final String s = scanner.nextLine();
