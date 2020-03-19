@@ -1,88 +1,65 @@
 package ABC142.E;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Scanner;
 
-// TODO fix
 public class Main {
-    private static int[] locks;
-
     public static void main(final String[] args) {
         final Scanner scanner = new Scanner(System.in);
         final int n = scanner.nextInt();
         final int m = scanner.nextInt();
 
-        final List<Key> keys = new ArrayList<>();
-        locks = new int[n + 1];
-        locks[0] = 1;
+        final int[] bitConverter = new int[n + 1];
+        int pow = 1;
+        for (int i = 1; i < n + 1; i++) {
+            bitConverter[i] = pow;
+            pow *= 2;
+        }
+
+        final Key[] keys = new Key[m];
         for (int i = 0; i < m; i++) {
             final int a = scanner.nextInt();
             final int b = scanner.nextInt();
+            int sum = 0;
 
-            final Key key = new Key();
-            key.price = a;
             for (int j = 0; j < b; j++) {
-                final int lock = scanner.nextInt();
-                key.locks.add(lock);
-                locks[lock]++;
+                final int c = scanner.nextInt();
+                sum += bitConverter[c];
             }
-            keys.add(key);
+            keys[i] = new Key(a, sum);
         }
 
-        for (final int lock : locks) {
-            if (lock == 0) {
-                System.out.println(-1);
-                return;
-            }
+        final int[][] dpTable = new int[m][pow];
+        for (final int[] array : dpTable) {
+            Arrays.fill(array, Integer.MAX_VALUE);
         }
 
-        keys.sort(Comparator.comparingInt(key -> key.price));
-
-        System.out.println(recursive(keys.size() - 1, keys));
-    }
-
-    private static int recursive(final int index, final List<Key> keys) {
-        if (index == -1) {
-            return getPrice(keys);
-        }
-
-        final int a = recursive(index - 1, keys);
-
-        final Key key = keys.get(index);
-        for (final int lock : key.locks) {
-            if (locks[lock] == 1) {
-                return a;
+        dpTable[0][keys[0].boxes] = keys[0].price;
+        dpTable[0][0] = 0;
+        for (int i = 1; i < m; i++) {
+            System.arraycopy(dpTable[i - 1], 0, dpTable[i], 0, dpTable[i].length);
+            for (int j = 0; j < dpTable[i].length; j++) {
+                if (dpTable[i - 1][j] != Integer.MAX_VALUE) {
+                    final int idx = j | keys[i].boxes;
+                    dpTable[i][idx] = Math.min(dpTable[i][idx], dpTable[i - 1][j] + keys[i].price);
+                }
             }
         }
 
-        for (final int lock : key.locks) {
-            locks[lock]--;
+        if (dpTable[m - 1][pow - 1] == Integer.MAX_VALUE) {
+            System.out.println(-1);
+        } else {
+            System.out.println(dpTable[m - 1][pow - 1]);
         }
-
-        keys.remove(key);
-
-        final int b = recursive(index - 1, keys);
-
-        for (final int lock : key.locks) {
-            locks[lock]++;
-        }
-
-        keys.add(index, key);
-
-        return Math.min(a, b);
-    }
-
-    private static int getPrice(final List<Key> keys) {
-        return keys.stream()
-                .map(key -> key.price)
-                .mapToInt(Integer::intValue)
-                .sum();
     }
 
     static class Key {
         int price;
-        List<Integer> locks = new ArrayList<>();
+        int boxes;
+
+        Key(final int price, final int boxes) {
+            this.price = price;
+            this.boxes = boxes;
+        }
     }
 }
