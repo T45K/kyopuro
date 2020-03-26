@@ -258,15 +258,13 @@ public class Utility {
     }
 
     /**
-     * 通常のUnionFindTreeの改造版
-     * getRoot()がボトルネックになる場面で役に立つ
-     * getRoot()が走るたびに該当のnodesを最新の値に保つ
+     * Union-Find Tree
      */
-    static class FastUnionFindTree {
+    private static class UnionFindTree {
         private Integer[] nodes;
         private final List<Integer> indices = new ArrayList<>();
 
-        FastUnionFindTree(final int numOfNodes) {
+        UnionFindTree(final int numOfNodes) {
             this.nodes = init(numOfNodes);
         }
 
