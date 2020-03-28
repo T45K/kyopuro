@@ -5,51 +5,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Utility {
-    static class Counter {
-        private int value;
-
-        public void increment() {
-            value++;
-        }
-
-        public int getValue() {
-            return value;
-        }
-    }
-
-    static class Tuple<F, L> {
-        private final F former;
-        private final L latter;
-
-        Tuple(final F former, final L latter) {
-            this.former = former;
-            this.latter = latter;
-        }
-
-        public F getFormer() {
-            return former;
-        }
-
-        public L getLatter() {
-            return latter;
-        }
-    }
-
-    private static int intPow(final int a, final int b) {
-        return (int) Math.pow(a, b);
-    }
-
     /**
      * 組み合わせの計算をDPを用いて高速化する
+     * CombinationCalculator の方が計算量，メモリ容量的に使いやすい
      *
      * @param size 　二次元配列のサイズ
      *             　配列の大きさから size C x はできないことに注意
@@ -72,63 +41,31 @@ public class Utility {
         return table;
     }
 
-    private static int computeGCD(final int a, final int b) {
+    /**
+     * ユークリッドの互除法
+     *
+     * @param a 63bitまでの非負整数
+     * @param b 63bitまでの非負整数
+     * @return 最大公約数
+     */
+    private static long euclideanAlgorithm(final long a, final long b) {
         if (b > a) {
-            return computeGCD(b, a);
+            return euclideanAlgorithm(b, a);
         }
 
         if (b == 0) {
             return a;
         }
 
-        return computeGCD(b, a % b);
+        return euclideanAlgorithm(b, a % b);
     }
 
-    static class FastScanner {
-        private final BufferedReader reader;
-        private StringTokenizer tokenizer;
-
-        FastScanner(final InputStream in) {
-            reader = new BufferedReader(new InputStreamReader(in));
-            tokenizer = null;
-        }
-
-        String next() {
-            if (tokenizer == null || !tokenizer.hasMoreTokens()) {
-                try {
-                    tokenizer = new StringTokenizer(reader.readLine());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            return tokenizer.nextToken();
-        }
-
-        String nextLine() {
-            if (tokenizer == null || !tokenizer.hasMoreTokens()) {
-                try {
-                    return reader.readLine();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            return tokenizer.nextToken("\n");
-        }
-
-        long nextLong() {
-            return Long.parseLong(next());
-        }
-
-        int nextInt() {
-            return Integer.parseInt(next());
-        }
-
-        double nextDouble() {
-            return Double.parseDouble(next());
-        }
-    }
-
+    /**
+     * 素因数分解
+     *
+     * @param n 素因数分解したい31bitまでの非負整数
+     * @return 引数を構成している素数をキー，掛けられる回数をバリューとしたマップ
+     */
     private static Map<Integer, Long> primeFactorization(int n) {
         final double sqrt = Math.sqrt(n);
         final Map<Integer, Long> countMap = new HashMap<>();
@@ -147,21 +84,13 @@ public class Utility {
         return countMap;
     }
 
-    private static int[] reverseIntArray(final int[] array) {
-        final int[] newArray = new int[array.length];
-        for (int i = array.length - 1; i >= 0; i--) {
-            newArray[i] = array[array.length - i - 1];
-        }
-
-        return newArray;
-    }
-
     /**
      * 素数modを法としたaの逆元を計算する
      * modPowと一緒に使う
      *
      * @param a   逆元を計算したい値
      * @param mod 法となる素数
+     *
      * @return modを法としたaの逆元
      */
     private static long modInv(final long a, final long mod) {
@@ -175,6 +104,7 @@ public class Utility {
      * @param a   逆元を計算したい値
      * @param n   a - 2
      * @param mod 法となる素数
+     *
      * @return modを法としたaの逆元
      */
     private static long modPow(long a, long n, final long mod) {
@@ -194,6 +124,7 @@ public class Utility {
      * 与えられた整数以下の素数のリストを O(nloglogn) で返す
      *
      * @param number 上限
+     *
      * @return 条件を満たす素数のリスト
      */
     private static List<Integer> sieveOfEratosthenes(final int number) {
@@ -216,6 +147,26 @@ public class Utility {
 
         primeNumbers.addAll(numbers);
         return primeNumbers;
+    }
+
+    /**
+     * 繰り返し二乗法
+     *
+     * @param a 基数
+     * @param b べき数
+     * @return 基数の冪乗
+     */
+    private static long iterativePow(long a, long b) {
+        long tmp = 1;
+        while (b > 0) {
+            if ((b & 1) == 1) {
+                tmp *= a;
+            }
+            a *= a;
+            b >>= 1;
+        }
+
+        return tmp;
     }
 
     /**
@@ -305,23 +256,52 @@ public class Utility {
     }
 
     /**
-     * 繰り返し二乗法
-     *
-     * @param a 基数
-     * @param b べき数
-     * @return 基数の冪乗
+     * java.util.Scanner の高速版
+     * インターフェースは Scanner と同じ
      */
-    private static long iterativePow(long a, long b) {
-        long tmp = 1;
-        while (b > 0) {
-            if ((b & 1) == 1) {
-                tmp *= a;
-            }
-            a *= a;
-            b >>= 1;
+    private static class FastScanner {
+        private final BufferedReader reader;
+        private StringTokenizer tokenizer;
+
+        FastScanner(final InputStream in) {
+            reader = new BufferedReader(new InputStreamReader(in));
+            tokenizer = null;
         }
 
-        return tmp;
+        String next() {
+            if (tokenizer == null || !tokenizer.hasMoreTokens()) {
+                try {
+                    tokenizer = new StringTokenizer(reader.readLine());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            return tokenizer.nextToken();
+        }
+
+        String nextLine() {
+            if (tokenizer == null || !tokenizer.hasMoreTokens()) {
+                try {
+                    return reader.readLine();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            return tokenizer.nextToken("\n");
+        }
+
+        long nextLong() {
+            return Long.parseLong(next());
+        }
+
+        int nextInt() {
+            return Integer.parseInt(next());
+        }
+
+        double nextDouble() {
+            return Double.parseDouble(next());
+        }
     }
 
     /**
@@ -330,4 +310,85 @@ public class Utility {
      */
     private static final Comparator<Long> lowerBoundComparator = (x, y) -> x >= y ? 1 : -1;
     private static final Comparator<Long> upperBoundComparator = (x, y) -> x > y ? 1 : -1;
+
+    /**
+     * Segment Tree
+     * 更新，クエリの引数は 0-indexed で渡すことに注意
+     */
+    private static class SegmentTree {
+        private final long[] internalTree;
+        private final int exponent;
+        private final long initialValue;
+        private BiFunction<Long, Long, Long> updater;
+
+        SegmentTree(final List<Long> list, final long initialValue, final BiFunction<Long, Long, Long> updater) {
+            this.exponent = calcExponent(list.size());
+            this.updater = updater;
+            this.initialValue = initialValue;
+            internalTree = initTree(list, initialValue);
+        }
+
+        /**
+         * 値の更新
+         *
+         * @param index "0-indexed"のインデックス
+         * @param value 更新後の値
+         */
+        void update(final int index, final long value) {
+            internalTree[index + exponent] = value;
+            int current = (index + exponent) / 2;
+            while (current > 0) {
+                internalTree[current] = updater.apply(internalTree[current * 2], internalTree[current * 2 + 1]);
+                current /= 2;
+            }
+        }
+
+        /**
+         * クエリ
+         * クエリの区間を [left, right) の半開区間で渡すことに注意
+         *
+         * @param left  "0-indexed"のクエリの左端
+         * @param right "0-indexed"のクエリの右端 + 1
+         *              つまり"1-indexed"のクエリの右端
+         * @return クエリ結果
+         */
+        long query(final int left, final int right) {
+            return query(left, right, 0, exponent, 1);
+        }
+
+        long query(final int left, final int right, final int begin, final int end, final int k) {
+            if (left >= end || right <= begin) {
+                return initialValue;
+            }
+
+            if (left <= begin && end <= right) {
+                return internalTree[k];
+            }
+
+            final int mid = (begin + end) / 2;
+            return updater.apply(query(left, right, begin, mid, k * 2), query(left, right, mid, end, k * 2 + 1));
+        }
+
+        private long[] initTree(final List<Long> list, final long initialValue) {
+            final long[] array = new long[exponent * 2];
+            Arrays.fill(array, initialValue);
+            for (int i = 0; i < list.size(); i++) {
+                array[i + exponent] = list.get(i);
+            }
+
+            for (int i = exponent - 1; i > 0; i--) {
+                array[i] = updater.apply(array[i * 2], array[i * 2 + 1]);
+            }
+
+            return array;
+        }
+
+        private int calcExponent(final int n) {
+            int exp = 1;
+            while (exp < n) {
+                exp <<= 1;
+            }
+            return exp;
+        }
+    }
 }
