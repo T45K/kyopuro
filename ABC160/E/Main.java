@@ -85,6 +85,5 @@ public class Main {
         int nextInt() {
             return Integer.parseInt(next());
         }
-
     }
 }
