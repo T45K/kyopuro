@@ -3,7 +3,6 @@ package MITSUI2019.F;
 import java.util.Scanner;
 
 public class Main {
-    // TODO solve
     public static void main(final String[] args) {
         final Scanner scanner = new Scanner(System.in);
         final long t1 = scanner.nextInt();
@@ -30,7 +29,7 @@ public class Main {
         }
 
         final long distanceInT1 = (a1 - b1) * t1;
-        final long distanceInT2 = b2 * t2 + b1 * t1 - (a2 * t2 - b1 * t1);
+        final long distanceInT2 = b2 * t2 + b1 * t1 - (a2 * t2 + a1 * t1);
         if (distanceInT2 == 0) {
             System.out.println("infinity");
             return;
@@ -43,7 +42,10 @@ public class Main {
             System.out.println(1);
             return;
         }
-        final long diff = distanceInT1 - distanceInT2;
-        System.out.println(distanceInT1 / distanceInT2);
+        if (distanceInT1 % distanceInT2 == 0) {
+            System.out.println(2 * (distanceInT1 / distanceInT2));
+            return;
+        }
+        System.out.println(1 + 2 * (distanceInT1 / distanceInT2));
     }
 }
