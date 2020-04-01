@@ -319,11 +319,11 @@ public class Utility {
         private final long[] internalTree;
         private final int exponent;
         private final long initialValue;
-        private BiFunction<Long, Long, Long> updater;
+        private BiFunction<Long, Long, Long> comparator;
 
-        SegmentTree(final List<Long> list, final long initialValue, final BiFunction<Long, Long, Long> updater) {
+        SegmentTree(final List<Long> list, final long initialValue, final BiFunction<Long, Long, Long> comparator) {
             this.exponent = calcExponent(list.size());
-            this.updater = updater;
+            this.comparator = comparator;
             this.initialValue = initialValue;
             internalTree = initTree(list, initialValue);
         }
@@ -338,7 +338,7 @@ public class Utility {
             internalTree[index + exponent] = value;
             int current = (index + exponent) / 2;
             while (current > 0) {
-                internalTree[current] = updater.apply(internalTree[current * 2], internalTree[current * 2 + 1]);
+                internalTree[current] = comparator.apply(internalTree[current * 2], internalTree[current * 2 + 1]);
                 current /= 2;
             }
         }
@@ -366,7 +366,7 @@ public class Utility {
             }
 
             final int mid = (begin + end) / 2;
-            return updater.apply(query(left, right, begin, mid, k * 2), query(left, right, mid, end, k * 2 + 1));
+            return comparator.apply(query(left, right, begin, mid, k * 2), query(left, right, mid, end, k * 2 + 1));
         }
 
         private long[] initTree(final List<Long> list, final long initialValue) {
@@ -377,7 +377,7 @@ public class Utility {
             }
 
             for (int i = exponent - 1; i > 0; i--) {
-                array[i] = updater.apply(array[i * 2], array[i * 2 + 1]);
+                array[i] = comparator.apply(array[i * 2], array[i * 2 + 1]);
             }
 
             return array;
