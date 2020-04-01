@@ -4,89 +4,63 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-// TODO fix
+/*
+頭ひねる系 知識不要 直線座標 初めにガバ計算量解を思いついて計算量を下げていく系
+ */
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
         final int n = scanner.nextInt();
         final long c = scanner.nextLong();
 
-        int centerIndex = 0;
-        final Pair[] pairs = new Pair[n];
-        for (int i = 0; i < n; i++) {
-            final long length = scanner.nextLong();
-            final long value = scanner.nextLong();
+        final List<Sushi> naturalList = IntStream.range(0, n)
+                .mapToObj(i -> new Sushi(scanner.nextLong(), scanner.nextInt()))
+                .collect(Collectors.toList());
 
-            if (centerIndex == 0 && length * 2 > c) {
-                centerIndex = i;
-            }
+        final List<Sushi> reverseList = naturalList.stream()
+                .map(sushi -> new Sushi(c - sushi.distance, sushi.value))
+                .collect(Collectors.toList());
 
-            pairs[i] = new Pair(length, value);
-        }
+        long max = Math.max(calc(naturalList, reverseList, n), 0);
 
-        long result = 0;
-        {
-            long temp = 0;
-            for (final Pair pair : pairs) {
-                temp += pair.value;
-                result = Math.max(result, temp - pair.length);
-            }
-        }
-        {
-            long temp = 0;
-            for (int i = pairs.length - 1; i >= 0; i--) {
-                temp += pairs[i].value;
-                result = Math.max(result, temp - (c - pairs[i].length));
-            }
-        }
+        Collections.reverse(naturalList);
+        Collections.reverse(reverseList);
 
-        final List<Long> halfAccumulation = new ArrayList<>();
-        halfAccumulation.add(0L);
-        final List<Long> halfAccumulationWithReturn = new ArrayList<>();
-        halfAccumulationWithReturn.add(0L);
-        if (centerIndex != 0) {
-            halfAccumulation.add(pairs[0].value - pairs[0].length);
-            halfAccumulationWithReturn.add(pairs[0].value - 2 * pairs[0].length);
-            for (int i = 1; i < centerIndex; i++) {
-                halfAccumulation.add(halfAccumulation.get(i) + pairs[i].value + pairs[i - 1].length - pairs[i].length);
-                halfAccumulationWithReturn.add(halfAccumulationWithReturn.get(i) + pairs[i].value + 2 * pairs[i - 1].length - 2 * pairs[i].length);
-            }
-        }
-
-        final List<Long> otherAccumulation = new ArrayList<>();
-        otherAccumulation.add(0L);
-        final List<Long> otherAccumulationWithReturn = new ArrayList<>();
-        otherAccumulationWithReturn.add(0L);
-        if (n - centerIndex != 0) {
-            otherAccumulation.add(pairs[n - 1].value - (c - pairs[n - 1].length));
-            otherAccumulationWithReturn.add(pairs[n - 1].value - 2 * (c - pairs[n - 1].length));
-            for (int i = 1; i < n - centerIndex - 1; i++) {
-                otherAccumulation.add(otherAccumulation.get(i) + pairs[n - i - 1].value + (c - pairs[n - i].length) - (c - pairs[n - i - 1].length));
-                otherAccumulationWithReturn.add(otherAccumulationWithReturn.get(i) + pairs[n - i - 1].value + 2 * (c - pairs[n - i].length) - 2 * (c - pairs[n - i - 1].length));
-            }
-        }
-
-        halfAccumulation.sort(Comparator.reverseOrder());
-        halfAccumulationWithReturn.sort(Comparator.reverseOrder());
-        otherAccumulation.sort(Comparator.reverseOrder());
-        otherAccumulationWithReturn.sort(Comparator.reverseOrder());
-
-        final long temp = Math.max(halfAccumulation.get(0) + otherAccumulationWithReturn.get(0), halfAccumulationWithReturn.get(0) + otherAccumulation.get(0));
-
-        System.out.println(Math.max(Math.max(temp, result), 0));
+        max = Math.max(max, calc(reverseList, naturalList, n));
+        System.out.println(max);
     }
 
-    static class Pair {
-        long length;
-        long value;
+    private static long calc(final List<Sushi> naturalList, final List<Sushi> reverseList, final int n) {
+        final long[] array = new long[n];
+        long sumValue = naturalList.get(0).value;
+        array[0] = sumValue - naturalList.get(0).distance;
+        for (int i = 1; i < n; i++) {
+            sumValue += naturalList.get(i).value;
+            final long distance = naturalList.get(i).distance;
+            array[i] = Math.max(sumValue - distance, array[i - 1]);
+        }
 
-        Pair(final long length, final long value) {
-            this.length = length;
+        long max = array[n - 1];
+        sumValue = 0;
+        for (int i = n - 1; i > 0; i--) {
+            sumValue += reverseList.get(i).value;
+            max = Math.max(max, array[i - 1] + sumValue - 2 * reverseList.get(i).distance);
+        }
+        return Math.max(max, sumValue + reverseList.get(0).value - reverseList.get(0).distance);
+    }
+
+    private static class Sushi {
+        final long distance;
+        final long value;
+
+        Sushi(final long distance, final long value) {
+            this.distance = distance;
             this.value = value;
         }
     }
