@@ -1,8 +1,9 @@
-package ABC127;
+package ABC127.E;
 
 import java.util.Scanner;
 
-public class E {
+// TODO solve
+public class Main {
 
     public static void main(String[] args) {
         final Scanner scanner = new Scanner(System.in);
