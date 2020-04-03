@@ -1,8 +1,8 @@
-package ABC132;
+package ABC132.A;
 
 import java.util.Scanner;
 
-public class A {
+public class Main {
     public static void main(String[] args) {
         final Scanner scanner = new Scanner(System.in);
         final String s = scanner.nextLine();
@@ -12,8 +12,8 @@ public class A {
             counter[s.charAt(i) - 'A']++;
         }
 
-        for(int i = 0;i<counter.length;i++){
-            if(counter[i] != 0 && counter[i] != 2){
+        for (final int value : counter) {
+            if (value != 0 && value != 2) {
                 System.out.println("No");
                 return;
             }
