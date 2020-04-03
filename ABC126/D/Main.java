@@ -1,4 +1,4 @@
-package ABC126;
+package ABC126.D;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-public class D {
+public class Main {
     public static void main(final String[] args) {
         final Scanner scanner = new Scanner(System.in);
         final int n = scanner.nextInt();

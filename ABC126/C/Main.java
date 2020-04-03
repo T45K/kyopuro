@@ -1,8 +1,8 @@
-package ABC126;
+package ABC126.C;
 
 import java.util.Scanner;
 
-public class C {
+public class Main {
     public static void main(final String[] args) {
         final Scanner scanner = new Scanner(System.in);
         final int n = scanner.nextInt();
