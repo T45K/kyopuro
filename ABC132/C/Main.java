@@ -1,9 +1,9 @@
-package ABC132;
+package ABC132.C;
 
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class C {
+public class Main {
     public static void main(String[] args) {
         final Scanner scanner = new Scanner(System.in);
         final int length = scanner.nextInt();

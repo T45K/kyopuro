@@ -1,8 +1,8 @@
-package ABC132;
+package ABC132.D;
 
 import java.util.Scanner;
 
-public class D {
+public class Main {
     private static final int MOD = 1000000007;
 
     public static void main(final String[] args) {
