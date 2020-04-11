@@ -212,7 +212,7 @@ public class Utility {
      * Union-Find Tree
      */
     private static class UnionFindTree {
-        private Integer[] nodes;
+        private final Integer[] nodes;
         private final List<Integer> indices = new ArrayList<>();
 
         UnionFindTree(final int numOfNodes) {
@@ -319,7 +319,7 @@ public class Utility {
         private final long[] internalTree;
         private final int exponent;
         private final long initialValue;
-        private BiFunction<Long, Long, Long> comparator;
+        private final BiFunction<Long, Long, Long> comparator;
 
         SegmentTree(final List<Long> list, final long initialValue, final BiFunction<Long, Long, Long> comparator) {
             this.exponent = calcExponent(list.size());
