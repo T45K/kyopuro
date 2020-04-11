@@ -18,7 +18,7 @@ public class Main {
 
         final SegmentTree tree = new SegmentTree(list, 0, (a, b) -> a | b);
         final int q = scanner.nextInt();
-        for (int _ = 0; _ < q; _++) {
+        for (int index = 0; index < q; index++) {
             if (scanner.nextInt() == 1) {
                 final int i = scanner.nextInt();
                 final int c = scanner.next().toCharArray()[0] - 'a';
@@ -42,7 +42,7 @@ public class Main {
         private final long[] internalTree;
         private final int exponent;
         private final long initialValue;
-        private BiFunction<Long, Long, Long> updater;
+        private final BiFunction<Long, Long, Long> updater;
 
         SegmentTree(final List<Long> list, final long initialValue, final BiFunction<Long, Long, Long> updater) {
             this.exponent = calcExponent(list.size());

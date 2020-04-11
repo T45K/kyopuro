@@ -16,7 +16,7 @@ public class Main {
         for (int i = 1; i <= n; i++) {
             tree[i] = new ArrayList<>();
         }
-        for (int _ = 0; _ < n - 1; _++) {
+        for (int i = 0; i < n - 1; i++) {
             final int a = scanner.nextInt();
             final int b = scanner.nextInt();
 
