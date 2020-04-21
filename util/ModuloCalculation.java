@@ -29,7 +29,6 @@ class ModuloCalculation {
         return table;
     }
 
-
     /**
      * 素数modを法としたaの逆元を計算する．<br>
      * {@link #modPow(long, long, long)}と一緒に使う．
