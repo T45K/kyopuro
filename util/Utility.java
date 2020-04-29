@@ -119,14 +119,13 @@ public class Utility {
 
         FastScanner(final InputStream in) {
             reader = new BufferedReader(new InputStreamReader(in));
-            tokenizer = null;
         }
 
         String next() {
             if (tokenizer == null || !tokenizer.hasMoreTokens()) {
                 try {
                     tokenizer = new StringTokenizer(reader.readLine());
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -137,7 +136,7 @@ public class Utility {
             if (tokenizer == null || !tokenizer.hasMoreTokens()) {
                 try {
                     return reader.readLine();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     throw new RuntimeException(e);
                 }
             }
