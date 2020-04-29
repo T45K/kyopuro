@@ -19,7 +19,9 @@ import java.util.stream.IntStream;
 2. 結果を良い感じに組み合わせる(今回はソートして二分探索)
  */
 public class Main {
+    @SuppressWarnings("ComparatorMethodParameterNotUsed")
     private static final Comparator<Integer> lowerBoundComparator = (x, y) -> x >= y ? 1 : -1;
+    @SuppressWarnings("ComparatorMethodParameterNotUsed")
     private static final Comparator<Integer> upperBoundComparator = (x, y) -> x > y ? 1 : -1;
 
     public static void main(final String[] args) {

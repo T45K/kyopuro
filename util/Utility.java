@@ -161,6 +161,8 @@ public class Utility {
      * lowerBoundComparator: 指定した値以上の要素が初めて出現する場所を取得
      * upperBoundComparator: 指定した値より大きい要素が初めて出現する場所を取得
      */
+    @SuppressWarnings("ComparatorMethodParameterNotUsed")
     private static final Comparator<Long> lowerBoundComparator = (x, y) -> x >= y ? 1 : -1;
+    @SuppressWarnings("ComparatorMethodParameterNotUsed")
     private static final Comparator<Long> upperBoundComparator = (x, y) -> x > y ? 1 : -1;
 }
