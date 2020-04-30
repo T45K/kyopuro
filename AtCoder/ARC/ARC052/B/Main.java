@@ -10,6 +10,9 @@ import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/*
+数学 昔の問題にありがちな面倒臭いことをやるだけ問題
+ */
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
@@ -17,7 +20,7 @@ public class Main {
         final int q = scanner.nextInt();
 
         final List<Corn> list = IntStream.range(0, n)
-                .mapToObj(i -> new Corn(scanner.nextDouble(), scanner.nextDouble(), scanner.nextDouble()))
+                .mapToObj(i -> new Corn(scanner))
                 .collect(Collectors.toList());
 
         final double[] answers = new double[q];
@@ -64,10 +67,10 @@ public class Main {
         final double r;
         final double h;
 
-        Corn(final double x, final double r, final double h) {
-            this.x = x;
-            this.r = r;
-            this.h = h;
+        Corn(final FastScanner scanner) {
+            this.x = scanner.nextDouble();
+            this.r = scanner.nextDouble();
+            this.h = scanner.nextDouble();
         }
     }
 
