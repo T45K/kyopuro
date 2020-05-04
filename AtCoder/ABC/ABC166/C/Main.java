@@ -25,12 +25,9 @@ public class Main {
             final int a = scanner.nextInt();
             final int b = scanner.nextInt();
 
-            if (heights[a] == heights[b]) {
-                isHighest[a] = false;
+            if (heights[a] >= heights[b]) {
                 isHighest[b] = false;
-            } else if (heights[a] > heights[b]) {
-                isHighest[b] = false;
-            } else {
+            } else if (heights[a] <= heights[b]) {
                 isHighest[a] = false;
             }
         }

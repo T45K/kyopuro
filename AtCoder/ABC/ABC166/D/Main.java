@@ -11,6 +11,7 @@ import java.util.StringTokenizer;
 
 /*
 数学 全探索するだけ 問題文をよく読もう
+全探索は200くらいまでで良いらしい
  */
 public class Main {
     public static void main(final String[] args) {
