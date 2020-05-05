@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
-import java.util.stream.Collectors;
+import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
 
 public class Main {
@@ -28,7 +28,7 @@ public class Main {
                     final int a = scanner.nextInt();
                     IntStream.rangeClosed(1, n)
                             .filter(j -> relations[j][a])
-                            .forEach(j -> relations[a][j] = true);
+                            .forEach(follow(relations, a));
                     break;
                 }
                 case 3: {
@@ -38,9 +38,13 @@ public class Main {
                             .flatMap(j -> IntStream.rangeClosed(1, n)
                                     .filter(k -> relations[j][k]))
                             .distinct()
-                            .boxed()
-                            .collect(Collectors.toList())
-                            .forEach(k -> relations[a][k] = true);
+                            .collect(
+                                    IntStream::builder,
+                                    IntStream.Builder::accept,
+                                    (builder, builder2) -> builder2.build().forEach(builder)
+                            )
+                            .build()
+                            .forEach(follow(relations, a));
                 }
             }
         }
@@ -55,6 +59,10 @@ public class Main {
             }
             System.out.println();
         }
+    }
+
+    private static IntConsumer follow(final boolean[][] relations, final int me) {
+        return target -> relations[me][target] = true;
     }
 
     private static class FastScanner {
