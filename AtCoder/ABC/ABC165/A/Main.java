@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
+import java.util.stream.IntStream;
 
 public class Main {
     public static void main(final String[] args) {
@@ -13,13 +14,9 @@ public class Main {
         final int a = scanner.nextInt();
         final int b = scanner.nextInt();
 
-        for (int i = a; i <= b; i++) {
-            if (i % k == 0) {
-                System.out.println("OK");
-                return;
-            }
-        }
-        System.out.println("NG");
+        final boolean answer = IntStream.rangeClosed(a, b)
+                .anyMatch(i -> i % k == 0);
+        System.out.println(answer ? "OK" : "NG");
     }
 
     private static class FastScanner {
