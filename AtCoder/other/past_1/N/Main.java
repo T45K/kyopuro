@@ -10,7 +10,10 @@ import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-// TODO solve
+/*
+数列 全ての岩の開始位置と終了位置を配列に持つとTLEになるので工夫する
+解説AC
+ */
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
@@ -18,26 +21,6 @@ public class Main {
         final int w = scanner.nextInt();
         final int c = scanner.nextInt();
 
-        /*final Map<Integer, Long> plusMap = new HashMap<>();
-        final Map<Integer, Long> minusMap = new HashMap<>();
-        for (int i = 0; i < n; i++) {
-            final int l = scanner.nextInt();
-            final int r = scanner.nextInt();
-            final long p = scanner.nextInt();
-            plusMap.compute(l, (k, v) -> v == null ? p : v + p);
-            minusMap.compute(r + c, (k, v) -> v == null ? p : v + p);
-        }
-
-        long plusSum = 0;
-        long minusSum = 0;
-        long min = Long.MAX_VALUE;
-        for (int i = 1; i <= w; i++) {
-            plusSum += Optional.ofNullable(plusMap.get(i - 1)).orElse(0L);
-            minusSum += Optional.ofNullable(minusMap.get(i)).orElse(0L);
-            if (i >= c) {
-                min = Math.min(min, plusSum - minusSum);
-            }
-        }*/
         final List<Rock> list = IntStream.range(0, n)
                 .mapToObj(i -> new Rock(scanner.nextInt(), scanner.nextInt() + c, scanner.nextInt()))
                 .collect(Collectors.toList());
@@ -52,15 +35,17 @@ public class Main {
         long plusSum = 0;
         long minusSum = 0;
         int index = 0;
-        long min = Long.MAX_VALUE;
+        long min = lSortedList.stream()
+                .takeWhile(rock -> rock.l < c)
+                .mapToLong(rock -> rock.p)
+                .sum();
         for (final Rock rock : rSortedList) {
             if (rock.r > w) {
                 break;
             }
             minusSum += rock.p;
-            while (index < lSortedList.size() && lSortedList.get(index).l <= rock.r - 1) {
-                plusSum += lSortedList.get(index).p;
-                index++;
+            while (index < lSortedList.size() && lSortedList.get(index).l < rock.r) {
+                plusSum += lSortedList.get(index++).p;
             }
             min = Math.min(min, plusSum - minusSum);
         }
