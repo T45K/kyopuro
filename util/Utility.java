@@ -61,7 +61,8 @@ public class Utility {
     }
 
     /**
-     * エラトステネスの篩<br>
+     * エラトステネスの篩
+     * <p>
      * 与えられた整数以下の素数のリストを O(nloglogn) で返す．
      *
      * @param number 上限
