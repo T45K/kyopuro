@@ -51,7 +51,7 @@ class ModuloCalculation {
     }
 
     /**
-     * 高速にmod込みで組み合わせを計算できる．<br>
+     * 高速にmod込みで組み合わせを計算できる．
      *
      * @see <a href="http://drken1215.hatenablog.com/entry/2018/06/08/210000">けんちょんの競プロ精進記録</a>
      */
