@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BinaryOperator;
+import java.util.function.UnaryOperator;
 import java.util.stream.IntStream;
 
 /**
@@ -110,6 +111,21 @@ public class Tree {
          */
         void update(final int index, final T value) {
             internalTree[index + exponent] = value;
+            int current = (index + exponent) / 2;
+            while (current > 0) {
+                internalTree[current] = comparator.apply(internalTree[current * 2], internalTree[current * 2 + 1]);
+                current /= 2;
+            }
+        }
+
+        /**
+         * 値の更新
+         *
+         * @param index    "0-indexed"のインデックス
+         * @param operator 更新式
+         */
+        void update(final int index, final UnaryOperator<T> operator) {
+            internalTree[index + exponent] = operator.apply(internalTree[index + exponent]);
             int current = (index + exponent) / 2;
             while (current > 0) {
                 internalTree[current] = comparator.apply(internalTree[current * 2], internalTree[current * 2 + 1]);
