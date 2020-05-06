@@ -196,19 +196,31 @@ public class Tree {
         private final SegmentTree<Node> segmentTree;
         private final int[] id;
 
+        /**
+         * @param tree       木．各頂点が子の頂点を持つ隣接リスト．
+         * @param root       根の番号
+         * @param numOfNodes 木に含まれる頂点の個数
+         */
         LowestCommonAncestor(final Map<Integer, List<Integer>> tree, final int root, final int numOfNodes) {
             final List<Node> list = new ArrayList<>(numOfNodes * 2 - 1);
             this.id = new int[numOfNodes + 1];
             dfs(root, tree, list, id, 0);
 
-            this.segmentTree = new SegmentTree<>(list, new Node(-1, Integer.MAX_VALUE), (a, b) -> a.depth < b.depth ? a : b);
+            this.segmentTree = new SegmentTree<>(list, new Node(-1, Integer.MAX_VALUE), (a, b) -> a.getDepth() < b.getDepth() ? a : b);
         }
 
+        /**
+         * 二つの頂点の最小共通祖先の頂点番号を返す．
+         *
+         * @param nodeA 頂点A
+         * @param nodeB 頂点B
+         * @return 最小共通祖先の頂点番号
+         */
         int getLCA(final int nodeA, final int nodeB) {
             final int idA = id[nodeA];
             final int idB = id[nodeB];
 
-            return segmentTree.query(Math.min(idA, idB), Math.max(idA, idB) + 1).number;
+            return segmentTree.query(Math.min(idA, idB), Math.max(idA, idB) + 1).getNumber();
         }
 
         private void dfs(final int current, final Map<Integer, List<Integer>> tree, final List<Node> list, final int[] id, final int depth) {

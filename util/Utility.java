@@ -61,7 +61,8 @@ public class Utility {
     }
 
     /**
-     * エラトステネスの篩<br>
+     * エラトステネスの篩
+     * <p>
      * 与えられた整数以下の素数のリストを O(nloglogn) で返す．
      *
      * @param number 上限
@@ -110,7 +111,19 @@ public class Utility {
     }
 
     /**
+     * 指定した値以上の要素が初めて出現する場所を取得するComparator
+     */
+    @SuppressWarnings("ComparatorMethodParameterNotUsed")
+    private static final Comparator<Long> lowerBoundComparator = (x, y) -> x >= y ? 1 : -1;
+    /**
+     * 指定した値より大きい要素が初めて出現する場所を取得するComparator
+     */
+    @SuppressWarnings("ComparatorMethodParameterNotUsed")
+    private static final Comparator<Long> upperBoundComparator = (x, y) -> x > y ? 1 : -1;
+
+    /**
      * java.util.Scanner の高速版
+     * <p>
      * インターフェースは Scanner と同じ
      */
     private static class FastScanner {
@@ -156,13 +169,4 @@ public class Utility {
             return Double.parseDouble(next());
         }
     }
-
-    /**
-     * lowerBoundComparator: 指定した値以上の要素が初めて出現する場所を取得
-     * upperBoundComparator: 指定した値より大きい要素が初めて出現する場所を取得
-     */
-    @SuppressWarnings("ComparatorMethodParameterNotUsed")
-    private static final Comparator<Long> lowerBoundComparator = (x, y) -> x >= y ? 1 : -1;
-    @SuppressWarnings("ComparatorMethodParameterNotUsed")
-    private static final Comparator<Long> upperBoundComparator = (x, y) -> x > y ? 1 : -1;
 }
