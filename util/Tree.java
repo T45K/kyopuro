@@ -2,7 +2,10 @@ package util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.BinaryOperator;
 import java.util.stream.IntStream;
 
@@ -12,7 +15,8 @@ import java.util.stream.IntStream;
 public class Tree {
 
     /**
-     * Union-Find Tree<br>
+     * Union-Find Tree
+     * <p>
      * それなりに高速に集合の合体，同じ集合に属しているかの判定ができる．<br>
      * 辺の縮約を実装している．
      */
@@ -80,7 +84,8 @@ public class Tree {
     }
 
     /**
-     * Segment Tree<br>
+     * Segment Tree
+     * <p>
      * モノイドに対する値の更新，区間に対するクエリをそれぞれO(log n)で行える．<br>
      * 更新，クエリの引数は 0-indexed で渡すことに注意
      */
@@ -159,6 +164,128 @@ public class Tree {
                 exp <<= 1;
             }
             return exp;
+        }
+    }
+
+    /**
+     * 最小共通祖先
+     * <p>
+     * 根付き木の二つの頂点の内，どちらの祖先でもありなおかつ最も近い（最も根から遠い）頂点を返す．
+     * 内部でセグ木を使う．
+     * 構築がO(n log n)，クエリがO(log n)
+     * <p>
+     * 木は辞書を用いた隣接リストで渡す．
+     */
+    private static class LowestCommonAncestor {
+        private final SegmentTree<Node> segmentTree;
+        private final int[] id;
+
+        LowestCommonAncestor(final Map<Integer, List<Integer>> tree, final int root, final int numOfNodes) {
+            final List<Node> list = new ArrayList<>(numOfNodes * 2 - 1);
+            this.id = new int[numOfNodes + 1];
+            dfs(root, tree, list, id, 0);
+
+            this.segmentTree = new SegmentTree<>(list, new Node(-1, Integer.MAX_VALUE), (a, b) -> a.depth < b.depth ? a : b);
+        }
+
+        int getLCA(final int nodeA, final int nodeB) {
+            final int idA = id[nodeA];
+            final int idB = id[nodeB];
+
+            return segmentTree.query(Math.min(idA, idB), Math.max(idA, idB) + 1).number;
+        }
+
+        private void dfs(final int current, final Map<Integer, List<Integer>> tree, final List<Node> list, final int[] id, final int depth) {
+            if (id[current] == 0) {
+                id[current] = list.size();
+            }
+            list.add(new Node(current, depth));
+
+            for (final int next : Optional.ofNullable(tree.get(current)).orElse(Collections.emptyList())) {
+                dfs(next, tree, list, id, depth + 1);
+                list.add(new Node(current, depth));
+            }
+        }
+
+        private static class Node {
+            private final int number;
+            private final int depth;
+
+            Node(final int number, final int depth) {
+                this.number = number;
+                this.depth = depth;
+            }
+
+            int getNumber() {
+                return number;
+            }
+
+            int getDepth() {
+                return depth;
+            }
+        }
+
+        private static class SegmentTree<T> {
+            private final T[] internalTree;
+            private final int exponent;
+            private final T initialValue;
+            private final BinaryOperator<T> comparator;
+
+            SegmentTree(final List<T> list, final T initialValue, final BinaryOperator<T> comparator) {
+                this.exponent = calcExponent(list.size());
+                this.comparator = comparator;
+                this.initialValue = initialValue;
+                internalTree = initTree(list, initialValue);
+            }
+
+            void update(final int index, final T value) {
+                internalTree[index + exponent] = value;
+                int current = (index + exponent) / 2;
+                while (current > 0) {
+                    internalTree[current] = comparator.apply(internalTree[current * 2], internalTree[current * 2 + 1]);
+                    current /= 2;
+                }
+            }
+
+            T query(final int left, final int right) {
+                return query(left, right, 0, exponent, 1);
+            }
+
+            T query(final int left, final int right, final int begin, final int end, final int k) {
+                if (left >= end || right <= begin) {
+                    return initialValue;
+                }
+
+                if (left <= begin && end <= right) {
+                    return internalTree[k];
+                }
+
+                final int mid = (begin + end) / 2;
+                return comparator.apply(query(left, right, begin, mid, k * 2), query(left, right, mid, end, k * 2 + 1));
+            }
+
+            @SuppressWarnings("unchecked")
+            private T[] initTree(final List<T> list, final T initialValue) {
+                final Object[] array = new Object[exponent * 2];
+                Arrays.fill(array, initialValue);
+                for (int i = 0; i < list.size(); i++) {
+                    array[i + exponent] = list.get(i);
+                }
+
+                for (int i = exponent - 1; i > 0; i--) {
+                    array[i] = comparator.apply((T) array[i * 2], (T) array[i * 2 + 1]);
+                }
+
+                return (T[]) array;
+            }
+
+            private int calcExponent(final int n) {
+                int exp = 1;
+                while (exp < n) {
+                    exp <<= 1;
+                }
+                return exp;
+            }
         }
     }
 }

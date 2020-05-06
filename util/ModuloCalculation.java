@@ -5,7 +5,8 @@ package util;
  */
 class ModuloCalculation {
     /**
-     * 組み合わせの計算をDPを用いて高速化する．<br>
+     * 組み合わせの計算をDPを用いて高速化する．
+     * <p>
      * {@link CombinationCalculator} の方が計算量，メモリ容量的に使いやすい．
      *
      * @param size 　二次元配列のサイズ
@@ -30,28 +31,15 @@ class ModuloCalculation {
     }
 
     /**
-     * 素数modを法としたaの逆元を計算する．<br>
-     * {@link #modPow(long, long, long)}と一緒に使う．
+     * 素数modを法としたaの逆元を計算する．
      *
      * @param a   逆元を計算したい値
      * @param mod 法となる素数
      * @return modを法としたaの逆元
      */
-    private static long modInv(final long a, final long mod) {
-        return modPow(a, mod - 2, mod);
-    }
-
-    /**
-     * 素数modを法としてaの逆元を計算する<br>
-     * {@link #modInv(long, long)}と一緒に使う
-     *
-     * @param a   逆元を計算したい値
-     * @param n   a - 2
-     * @param mod 法となる素数
-     * @return modを法としたaの逆元
-     */
-    private static long modPow(long a, long n, final long mod) {
+    private static long modInv(long a, final long mod) {
         long res = 1;
+        long n = mod - 2;
         while (n > 0) {
             if ((n & 1) != 0) {
                 res = res * a % mod;
