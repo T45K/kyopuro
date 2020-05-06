@@ -3,7 +3,7 @@ package util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.BiFunction;
+import java.util.function.BinaryOperator;
 import java.util.stream.IntStream;
 
 /**
@@ -84,13 +84,13 @@ public class Tree {
      * モノイドに対する値の更新，区間に対するクエリをそれぞれO(log n)で行える．<br>
      * 更新，クエリの引数は 0-indexed で渡すことに注意
      */
-    private static class SegmentTree {
-        private final long[] internalTree;
+    private static class SegmentTree<T> {
+        private final T[] internalTree;
         private final int exponent;
-        private final long initialValue;
-        private final BiFunction<Long, Long, Long> comparator;
+        private final T initialValue;
+        private final BinaryOperator<T> comparator;
 
-        SegmentTree(final List<Long> list, final long initialValue, final BiFunction<Long, Long, Long> comparator) {
+        SegmentTree(final List<T> list, final T initialValue, final BinaryOperator<T> comparator) {
             this.exponent = calcExponent(list.size());
             this.comparator = comparator;
             this.initialValue = initialValue;
@@ -103,7 +103,7 @@ public class Tree {
          * @param index "0-indexed"のインデックス
          * @param value 更新後の値
          */
-        void update(final int index, final long value) {
+        void update(final int index, final T value) {
             internalTree[index + exponent] = value;
             int current = (index + exponent) / 2;
             while (current > 0) {
@@ -121,11 +121,11 @@ public class Tree {
          *              つまり"1-indexed"のクエリの右端
          * @return クエリ結果
          */
-        long query(final int left, final int right) {
+        T query(final int left, final int right) {
             return query(left, right, 0, exponent, 1);
         }
 
-        long query(final int left, final int right, final int begin, final int end, final int k) {
+        T query(final int left, final int right, final int begin, final int end, final int k) {
             if (left >= end || right <= begin) {
                 return initialValue;
             }
@@ -138,18 +138,19 @@ public class Tree {
             return comparator.apply(query(left, right, begin, mid, k * 2), query(left, right, mid, end, k * 2 + 1));
         }
 
-        private long[] initTree(final List<Long> list, final long initialValue) {
-            final long[] array = new long[exponent * 2];
+        @SuppressWarnings("unchecked")
+        private T[] initTree(final List<T> list, final T initialValue) {
+            final Object[] array = new Object[exponent * 2];
             Arrays.fill(array, initialValue);
             for (int i = 0; i < list.size(); i++) {
                 array[i + exponent] = list.get(i);
             }
 
             for (int i = exponent - 1; i > 0; i--) {
-                array[i] = comparator.apply(array[i * 2], array[i * 2 + 1]);
+                array[i] = comparator.apply((T) array[i * 2], (T) array[i * 2 + 1]);
             }
 
-            return array;
+            return (T[]) array;
         }
 
         private int calcExponent(final int n) {
