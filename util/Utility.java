@@ -145,6 +145,18 @@ public class Utility {
             return tokenizer.nextToken();
         }
 
+        int nextInt() {
+            return Integer.parseInt(next());
+        }
+
+        long nextLong() {
+            return Long.parseLong(next());
+        }
+
+        double nextDouble() {
+            return Double.parseDouble(next());
+        }
+
         String nextLine() {
             if (tokenizer == null || !tokenizer.hasMoreTokens()) {
                 try {
@@ -155,18 +167,6 @@ public class Utility {
             }
 
             return tokenizer.nextToken("\n");
-        }
-
-        long nextLong() {
-            return Long.parseLong(next());
-        }
-
-        int nextInt() {
-            return Integer.parseInt(next());
-        }
-
-        double nextDouble() {
-            return Double.parseDouble(next());
         }
     }
 }
