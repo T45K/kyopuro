@@ -6,7 +6,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-// TODO solve
+/*
+組み合わせ 問題文勘違い
+全て隣り合わない組み合わせは m*(m-1)^(n-1)
+1組隣り合う場合，隣り同士は同じ色なので ↑/(m-1)
+↑に組み合わせをかける．一つ右とペアになると考えれば n-1C1 通り
+2組以降も同じように考える
+ */
 public class Main {
     private static final int MOD = 998244353;
 
@@ -15,6 +21,15 @@ public class Main {
         final int n = scanner.nextInt();
         final long m = scanner.nextInt();
         final long k = scanner.nextInt();
+
+        if (m == 1) {
+            if (k == n - 1) {
+                System.out.println(1);
+            } else {
+                System.out.println(0);
+            }
+            return;
+        }
 
         final CombinationCalculator calculator = new CombinationCalculator(n + 1, MOD);
 
@@ -27,12 +42,7 @@ public class Main {
 
         final long inv = modInv(m - 1);
         for (int i = 0; i <= k; i++) {
-            if (n - i < i) {
-                break;
-            }
-            long multi = base * calculator.calc(n - i, i);
-            multi %= MOD;
-            answer += multi;
+            answer += base * calculator.calc(n - 1, i);
             answer %= MOD;
 
             base *= inv;
@@ -42,12 +52,9 @@ public class Main {
         System.out.println(answer);
     }
 
-    private static long modInv(final long a) {
-        return modPow(a, MOD - 2);
-    }
-
-    private static long modPow(long a, long n) {
+    private static long modInv(long a) {
         long res = 1;
+        long n = MOD - 2;
         while (n > 0) {
             if ((n & 1) != 0) {
                 res = res * a % MOD;
