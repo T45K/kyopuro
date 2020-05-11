@@ -1,4 +1,4 @@
-package ABC86.C;
+package AtCoder.ABC.ABC086.C;
 
 import java.util.Scanner;
 

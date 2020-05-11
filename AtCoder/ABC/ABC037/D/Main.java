@@ -1,4 +1,4 @@
-package ABC37.D;
+package AtCoder.ABC.ABC037.D;
 
 import java.io.BufferedReader;
 import java.io.IOException;
