@@ -115,6 +115,7 @@ public class Utility {
      */
     @SuppressWarnings("ComparatorMethodParameterNotUsed")
     private static final Comparator<Long> lowerBoundComparator = (x, y) -> x >= y ? 1 : -1;
+
     /**
      * 指定した値より大きい要素が初めて出現する場所を取得するComparator
      */
