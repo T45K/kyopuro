@@ -106,7 +106,6 @@ public class Main {
         }
     }
 
-
     private static class FastScanner {
         private final BufferedReader reader;
         private StringTokenizer tokenizer;
