@@ -7,53 +7,82 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.function.BiFunction;
 
 import static java.lang.Math.abs;
 
-// TODO solve
+/*
+数え上げ
+仲の悪いイワシの選び方よりも，その数え方の方が難しい
+ */
 public class Main {
     private static final long MOD = 1_000_000_007;
 
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
         final int n = scanner.nextInt();
-        final Map<Sardine, Long> plusSardines = new HashMap<>();
-        final Map<Sardine, Long> minusSardines = new HashMap<>();
+        final Map<Sardine, Integer> plusSardines = new HashMap<>();
+        final Map<Sardine, Integer> minusSardines = new HashMap<>();
+        final BiFunction<Sardine, Integer, Integer> counter = (k, v) -> v == null ? 1 : v + 1;
+        long zeroCount = 0;
 
         for (int i = 0; i < n; i++) {
             final long a = scanner.nextLong();
             final long b = scanner.nextLong();
 
+            if (a == 0 && b == 0) {
+                zeroCount++;
+                continue;
+            }
+
+            if (a == 0) {
+                plusSardines.compute(new Sardine(0, 1), counter);
+                continue;
+            }
+
+            if (b == 0) {
+                minusSardines.compute(new Sardine(0, 1), counter);
+                continue;
+            }
+
             final long gcd = euclideanAlgorithm(abs(a), abs(b));
             if (a / abs(a) == b / abs(b)) {
-                plusSardines.compute(new Sardine(abs(a) / gcd, abs(b) / gcd), (k, v) -> v == null ? 1 : v + 1);
+                plusSardines.compute(new Sardine(abs(a) / gcd, abs(b) / gcd), counter);
             } else {
-                minusSardines.compute(new Sardine(abs(b) / gcd, abs(a) / gcd), (k, v) -> v == null ? 1 : v + 1);
+                minusSardines.compute(new Sardine(abs(b) / gcd, abs(a) / gcd), counter);
             }
         }
 
-        final long plusSize = plusSardines.size();
-        final long minusSize = minusSardines.size();
-        long notSelected = 0;
-
-        long all = 1;
-        long sub = 0;
-        for (int i = 1; i <= n; i++) {
-            all *= 2;
-            all %= MOD;
-            if (i == n - 2) {
-                sub = all;
-            }
+        final long[] exp = new long[200_001];
+        long base = 1;
+        for (int i = 0; i <= 200_000; i++) {
+            exp[i] = base;
+            base *= 2;
+            base %= MOD;
         }
-        all--;
 
-        for (final Map.Entry<Sardine, Long> entry : plusSardines.entrySet()) {
+        long answer = 1;
+
+        for (final Map.Entry<Sardine, Integer> entry : plusSardines.entrySet()) {
             if (minusSardines.containsKey(entry.getKey())) {
-                notSelected += entry.getValue() * minusSardines.get(entry.getKey());
-                notSelected %= MOD;
+                answer *= exp[entry.getValue()] + exp[minusSardines.get(entry.getKey())] - 1;
+            } else {
+                answer *= exp[entry.getValue()];
             }
+            answer %= MOD;
         }
-        System.out.println((all - notSelected * sub + MOD) % MOD);
+
+        for (final Map.Entry<Sardine, Integer> entry : minusSardines.entrySet()) {
+            if (plusSardines.containsKey(entry.getKey())) {
+                continue;
+            }
+
+            answer *= exp[entry.getValue()];
+            answer %= MOD;
+        }
+
+        answer = (answer - 1 + zeroCount + MOD) % MOD;
+        System.out.println(answer);
     }
 
     private static long euclideanAlgorithm(final long a, final long b) {
@@ -66,47 +95,6 @@ public class Main {
         }
 
         return euclideanAlgorithm(b, a % b);
-    }
-
-    private static class CombinationCalculator {
-        private final int size;
-        private final int mod;
-        private final long[] factorials;
-        private final long[] invertedElements;
-        private final long[] invertedFactorials;
-
-        CombinationCalculator(final int size, final int mod) {
-            this.size = size;
-            this.mod = mod;
-            this.factorials = new long[size];
-            this.invertedElements = new long[size];
-            this.invertedFactorials = new long[size];
-            init();
-        }
-
-        private void init() {
-            factorials[0] = 1;
-            factorials[1] = 1;
-            invertedFactorials[0] = 1;
-            invertedFactorials[1] = 1;
-            invertedElements[1] = 1;
-            for (int i = 2; i < size; i++) {
-                factorials[i] = factorials[i - 1] * i % mod;
-                invertedElements[i] = mod - invertedElements[mod % i] * (mod / i) % mod;
-                invertedFactorials[i] = invertedFactorials[i - 1] * invertedElements[i] % mod;
-            }
-        }
-
-        /**
-         * mod 込みで nCk を計算した結果を返す．
-         *
-         * @param n 組み合わせの対象となる数
-         * @param k 組み合わせる個数
-         * @return 組み合わせの結果
-         */
-        long calc(final int n, final int k) {
-            return factorials[n] * (invertedFactorials[k] * invertedFactorials[n - k] % mod) % mod;
-        }
     }
 
     private static class Sardine {
@@ -158,22 +146,6 @@ public class Main {
 
         long nextLong() {
             return Long.parseLong(next());
-        }
-
-        double nextDouble() {
-            return Double.parseDouble(next());
-        }
-
-        String nextLine() {
-            if (tokenizer == null || !tokenizer.hasMoreTokens()) {
-                try {
-                    return reader.readLine();
-                } catch (final IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            return tokenizer.nextToken("\n");
         }
     }
 }
