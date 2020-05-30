@@ -32,6 +32,8 @@ class ModuloCalculation {
 
     /**
      * 素数modを法としたaの逆元を計算する．
+     * <p>
+     * BigInteger.valueOf(a).modInverse(mod).longValue() でも同じことができそう
      *
      * @param a   逆元を計算したい値
      * @param mod 法となる素数
