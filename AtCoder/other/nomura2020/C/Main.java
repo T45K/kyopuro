@@ -9,6 +9,11 @@ import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/*
+木
+とりあえず根から下の方向を見ていく．全ての節が2つの子を産むようにして，節の数を記録していく．
+その後下から根へ見ていく．下から見ていき，その深さの(葉の数) + ((1つ下の節と葉の合計)と(節の数))を足し合わせる
+ */
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
@@ -16,6 +21,15 @@ public class Main {
         final List<Integer> list = IntStream.rangeClosed(0, n)
             .mapToObj(i -> scanner.nextInt())
             .collect(Collectors.toList());
+
+        if (n == 0) {
+            if (list.get(0) == 1) {
+                System.out.println(1);
+            } else {
+                System.out.println(-1);
+            }
+            return;
+        }
 
         if (list.get(0) != 0) {
             System.out.println(-1);
@@ -67,26 +81,6 @@ public class Main {
 
         int nextInt() {
             return Integer.parseInt(next());
-        }
-
-        long nextLong() {
-            return Long.parseLong(next());
-        }
-
-        double nextDouble() {
-            return Double.parseDouble(next());
-        }
-
-        String nextLine() {
-            if (tokenizer == null || !tokenizer.hasMoreTokens()) {
-                try {
-                    return reader.readLine();
-                } catch (final IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            return tokenizer.nextToken("\n");
         }
     }
 }
