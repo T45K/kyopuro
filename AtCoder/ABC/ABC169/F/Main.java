@@ -6,6 +6,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
+/*
+DP DPの値で組み合わせの数
+各iに対して，iを加えるか加えないかの2通りがあるので，iの遷移の度に，dp[i][j]はi-1の各jの値*2となる
+そしてAiを加えるかの判定をする．ここは普通のDP
+ */
 public class Main {
     private static final long MOD = 998_244_353;
 
