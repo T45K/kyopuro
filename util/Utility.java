@@ -70,8 +70,8 @@ public class Utility {
      */
     private static List<Integer> sieveOfEratosthenes(final int number) {
         List<Integer> numbers = IntStream.rangeClosed(2, number)
-                .boxed()
-                .collect(Collectors.toList());
+            .boxed()
+            .collect(Collectors.toList());
 
         final int sqrt = (int) Math.sqrt(number);
         final List<Integer> primeNumbers = new ArrayList<>();
@@ -81,8 +81,8 @@ public class Utility {
             final int prime = numbers.get(0);
             primeNumbers.add(prime);
             numbers = numbers.stream()
-                    .filter(i -> i % prime != 0)
-                    .collect(Collectors.toList());
+                .filter(i -> i % prime != 0)
+                .collect(Collectors.toList());
             condition = prime;
         } while (condition < sqrt);
 

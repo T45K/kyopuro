@@ -31,8 +31,8 @@ public class Tree {
 
         private Integer[] init(final int numOfNodes) {
             return IntStream.rangeClosed(0, numOfNodes)
-                    .boxed()
-                    .toArray(Integer[]::new);
+                .boxed()
+                .toArray(Integer[]::new);
         }
 
         /**
