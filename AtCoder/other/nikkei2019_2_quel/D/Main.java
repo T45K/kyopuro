@@ -20,6 +20,17 @@ import java.util.stream.IntStream;
 操作を範囲の左側の降順でソートして左側から右側いっぱいまで移動した時の距離を考える
 今いる左側の位置の1からの最短距離は，今の位置より右側のノードの最短距離に等しいので，
 その値に今見ている操作の距離で移動する
+
+解説
+頂点Lから頂点Rの間の全ての頂点の組(s,t)が長さCで繋がっている時，
+L -> R(cost C)
+s -> L(cost 0)
+R -> t(cost 0)
+と考えられる
+なので，全てのiと頂点Vに対して
+Li -> Ri(cost Ci)
+Vi -> Vi-1(cost 0)
+を辺としてダイクストラを考えるだけ
  */
 public class Main {
     public static void main(final String[] args) {
