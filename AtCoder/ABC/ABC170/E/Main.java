@@ -16,6 +16,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/*
+データ構造で殴る
+ */
 public class Main {
     private static final int CONST = 200_000;
 
