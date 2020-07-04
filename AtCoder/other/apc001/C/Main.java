@@ -6,6 +6,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
+/*
+rightを変える時も基準の性別を変えてたせいで爆死
+ */
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
@@ -47,9 +50,10 @@ public class Main {
     }
 
     private static class Seat {
-        private static final FastScanner scanner = new FastScanner(System.in);
         private final int number;
         private final Status status;
+
+        private static final FastScanner scanner = new FastScanner(System.in);
 
         Seat(final int number) {
             this.number = number;
