@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 import static java.lang.Math.abs;
-import static java.lang.Math.min;
 
 public class Main {
     public static void main(final String[] args) {
@@ -23,9 +22,9 @@ public class Main {
 
         final long k1 = x / d;
         if (k1 % 2 == k % 2) {
-            System.out.println(abs(x - d * k1));
+            System.out.println(x - d * k1);
         } else {
-            System.out.println(min(abs(x - d * (k1 + 1)), abs(x - d * (k1 - 1))));
+            System.out.println(-(x - d * (k1 + 1)));
         }
     }
 
@@ -48,28 +47,8 @@ public class Main {
             return tokenizer.nextToken();
         }
 
-        int nextInt() {
-            return Integer.parseInt(next());
-        }
-
         long nextLong() {
             return Long.parseLong(next());
-        }
-
-        String nextLine() {
-            if (tokenizer == null || !tokenizer.hasMoreTokens()) {
-                try {
-                    return reader.readLine();
-                } catch (final IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            return tokenizer.nextToken("\n");
-        }
-
-        double nextDouble() {
-            return Double.parseDouble(next());
         }
     }
 }
