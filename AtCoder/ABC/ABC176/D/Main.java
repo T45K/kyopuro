@@ -33,7 +33,7 @@ public class Main {
 
         final int[][] table = new int[h][w];
         for (final int[] array : table) {
-            Arrays.fill(array, -1);
+            Arrays.fill(array, Integer.MAX_VALUE);
         }
         table[sx][sy] = 0;
         final boolean[][] field = new boolean[h][w];
@@ -48,44 +48,42 @@ public class Main {
         queue.add(new Point(sx, sy));
         while (!queue.isEmpty()) {
             final Point poll = Optional.ofNullable(queue.poll()).orElseThrow();
-            for (int i = 0; i < 4; i++) {
-                final int nextX = poll.x + walkX[i];
-                final int nextY = poll.y + walkY[i];
+            final TriConsumer<Integer, Integer, Integer> move = (nextX, nextY, addition) -> {
                 if (!isInside.apply(nextX, nextY)) {
-                    continue;
+                    return;
                 }
 
                 if (!field[nextX][nextY]) {
-                    continue;
+                    return;
                 }
 
-                if (table[nextX][nextY] == -1 || table[nextX][nextY] > table[poll.x][poll.y]) {
-                    table[nextX][nextY] = table[poll.x][poll.y];
+                if (table[nextX][nextY] > table[poll.x][poll.y] + addition) {
+                    table[nextX][nextY] = table[poll.x][poll.y] + addition;
                     queue.add(new Point(nextX, nextY));
                 }
+            };
+
+            for (int i = 0; i < 4; i++) {
+                final int nextX = poll.x + walkX[i];
+                final int nextY = poll.y + walkY[i];
+                move.accept(nextX, nextY, 0);
             }
 
             for (final int warpX : warp) {
                 final int nextX = poll.x + warpX;
                 for (final int warpY : warp) {
                     final int nextY = poll.y + warpY;
-                    if (!isInside.apply(nextX, nextY)) {
-                        continue;
-                    }
-
-                    if (!field[nextX][nextY]) {
-                        continue;
-                    }
-
-                    if (table[nextX][nextY] == -1 || table[nextX][nextY] > table[poll.x][poll.y] + 1) {
-                        table[nextX][nextY] = table[poll.x][poll.y] + 1;
-                        queue.add(new Point(nextX, nextY));
-                    }
+                    move.accept(nextX, nextY, 1);
                 }
             }
         }
 
-        System.out.println(table[dx][dy]);
+        System.out.println(table[dx][dy] < Integer.MAX_VALUE ? table[dx][dy] : -1);
+    }
+
+    @FunctionalInterface
+    interface TriConsumer<T1, T2, T3> {
+        void accept(final T1 t1, final T2 t2, final T3 t3);
     }
 
     private static class Point {

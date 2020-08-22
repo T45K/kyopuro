@@ -56,19 +56,14 @@ public class Main {
             return;
         }
 
-
-        for (final Map.Entry<Integer, Integer> entryH : filteredH.entrySet()) {
-            for (final Map.Entry<Integer, Integer> entryW : filteredW.entrySet()) {
-                if (points.containsKey(entryH.getKey()) && points.get(entryH.getKey()).contains(entryW.getKey())) {
-                    continue;
-                }
-
-                System.out.println(base);
-                return;
-            }
-        }
-
-        System.out.println(base - 1);
+        filteredH.entrySet().stream()
+            .flatMap(h -> filteredW.entrySet().stream()
+                .filter(w -> !points.containsKey(h.getKey()) || !points.get(h.getKey()).contains(w.getKey()))
+            ).findAny()
+            .ifPresentOrElse(
+                e -> System.out.println(base),
+                () -> System.out.println(base - 1)
+            );
     }
 
     private static class FastScanner {
