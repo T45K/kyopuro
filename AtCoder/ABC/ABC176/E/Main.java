@@ -40,7 +40,7 @@ public class Main {
         }
 
         final int maxH = hCounts.values().stream().max(Integer::compare).orElseThrow();
-        final int maxW = wCounts.values().stream().max(Integer::compareTo).orElseThrow();
+        final int maxW = wCounts.values().stream().max(Integer::compare).orElseThrow();
 
         final Map<Integer, Integer> filteredH = hCounts.entrySet().stream()
             .filter(e -> e.getValue() == maxH)
