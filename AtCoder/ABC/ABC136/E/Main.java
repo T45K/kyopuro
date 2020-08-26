@@ -28,40 +28,46 @@ public class Main {
             .mapToInt(Integer::intValue)
             .sum();
 
-        IntStream.range(0, sum)
+        final List<Integer> dividable = IntStream.range(0, sum)
             .map(i -> sum - i)
             .filter(i -> sum % i == 0)
-            .filter(dividable -> {
-                final List<Integer> mods = list.stream()
-                    .filter(i -> i % dividable != 0)
-                    .map(i -> i % dividable)
-                    .sorted()
-                    .collect(Collectors.toList());
-                if (mods.size() == 0) {
-                    return true;
-                }
+            .boxed().collect(Collectors.toList());
 
-                final int[] fromLeft = new int[mods.size()];
-                fromLeft[0] = mods.get(0);
-                for (int i = 1; i < mods.size(); i++) {
-                    fromLeft[i] = fromLeft[i - 1] + mods.get(i);
-                }
+        // stream 使うとTLEになった...
+        for (final int value : dividable) {
+            final List<Integer> mods = list.stream()
+                .filter(i -> i % value != 0)
+                .map(i -> i % value)
+                .sorted()
+                .collect(Collectors.toList());
+            if (mods.size() == 0) {
+                System.out.println(value);
+                return;
+            }
 
-                final int[] fromRight = new int[mods.size()];
-                fromRight[mods.size() - 1] = dividable - mods.get(mods.size() - 1);
-                for (int i = mods.size() - 1; i > 0; i--) {
-                    fromRight[i - 1] = fromRight[i] + dividable - mods.get(i - 1);
-                }
+            final int[] fromLeft = new int[mods.size()];
+            fromLeft[0] = mods.get(0);
+            for (int i = 1; i < mods.size(); i++) {
+                fromLeft[i] = fromLeft[i - 1] + mods.get(i);
+            }
 
-                for (int i = 0; i < mods.size() - 1; i++) {
-                    if (fromLeft[i] == fromRight[i + 1]) {
-                        return fromLeft[i] <= k;
+            final int[] fromRight = new int[mods.size()];
+            fromRight[mods.size() - 1] = value - mods.get(mods.size() - 1);
+            for (int i = mods.size() - 1; i > 0; i--) {
+                fromRight[i - 1] = fromRight[i] + value - mods.get(i - 1);
+            }
+
+            for (int i = 0; i < mods.size() - 1; i++) {
+                if (fromLeft[i] == fromRight[i + 1]) {
+                    if (fromLeft[i] <= k) {
+                        System.out.println(value);
+                        return;
+                    } else {
+                        break;
                     }
                 }
-                return false;
-            })
-            .findFirst()
-            .ifPresent(System.out::println);
+            }
+        }
     }
 
     private static class FastScanner {
