@@ -1,12 +1,15 @@
 package util;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BinaryOperator;
+import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 import java.util.stream.IntStream;
 
@@ -22,17 +25,11 @@ public class Tree {
      * 辺の縮約を実装している．
      */
     private static class UnionFindTree {
-        private final Integer[] nodes;
-        private final List<Integer> indices = new ArrayList<>();
+        private final int[] nodes;
+        private final Deque<Integer> indices = new ArrayDeque<>();
 
         UnionFindTree(final int numOfNodes) {
-            this.nodes = init(numOfNodes);
-        }
-
-        private Integer[] init(final int numOfNodes) {
-            return IntStream.rangeClosed(0, numOfNodes)
-                .boxed()
-                .toArray(Integer[]::new);
+            this.nodes = IntStream.rangeClosed(0, numOfNodes).toArray();
         }
 
         /**
@@ -43,16 +40,15 @@ public class Tree {
          */
         int getRoot(final int nodeNumber) {
             final int rootNode = nodes[nodeNumber];
-            if (rootNode == nodeNumber) {
-                for (final Integer index : indices) {
-                    nodes[index] = rootNode;
-                }
-                indices.clear();
-                return nodeNumber;
+            if (rootNode != nodeNumber) {
+                indices.add(nodeNumber);
+                return getRoot(rootNode);
             }
 
-            indices.add(nodeNumber);
-            return getRoot(rootNode);
+            final Consumer<Integer> updateRoot = index -> nodes[index] = rootNode;
+            indices.forEach(updateRoot);
+            indices.clear();
+            return nodeNumber;
         }
 
         /**
@@ -75,11 +71,6 @@ public class Tree {
         void unit(final int nodeA, final int nodeB) {
             final int rootA = getRoot(nodeA);
             final int rootB = getRoot(nodeB);
-
-            if (rootA == rootB) {
-                return;
-            }
-
             nodes[Math.max(rootA, rootB)] = Math.min(rootA, rootB);
         }
     }
