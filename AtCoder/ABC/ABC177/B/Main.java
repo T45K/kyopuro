@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
+import java.util.stream.IntStream;
 
 public class Main {
     public static void main(final String[] args) {
@@ -12,18 +13,12 @@ public class Main {
         final String s = scanner.next();
         final String t = scanner.next();
 
-        int min = Integer.MAX_VALUE;
-        for (int i = 0; i <= s.length() - t.length(); i++) {
-            int tmp = 0;
-            for (int j = 0; j < t.length(); j++) {
-                if (t.charAt(j) != s.charAt(i + j)) {
-                    tmp++;
-                }
-            }
-            min = Math.min(min, tmp);
-        }
-
-        System.out.println(min);
+        IntStream.rangeClosed(0, s.length() - t.length())
+            .mapToLong(i -> IntStream.range(0, t.length())
+                .filter(j -> t.charAt(j) != s.charAt(i + j))
+                .count())
+            .min()
+            .ifPresent(System.out::println);
     }
 
     private static class FastScanner {
@@ -43,30 +38,6 @@ public class Main {
                 }
             }
             return tokenizer.nextToken();
-        }
-
-        int nextInt() {
-            return Integer.parseInt(next());
-        }
-
-        long nextLong() {
-            return Long.parseLong(next());
-        }
-
-        double nextDouble() {
-            return Double.parseDouble(next());
-        }
-
-        String nextLine() {
-            if (tokenizer == null || !tokenizer.hasMoreTokens()) {
-                try {
-                    return reader.readLine();
-                } catch (final IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            return tokenizer.nextToken("\n");
         }
     }
 }

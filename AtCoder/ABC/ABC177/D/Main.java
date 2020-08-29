@@ -10,6 +10,9 @@ import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/*
+UnionFindで殴る
+ */
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
@@ -66,17 +69,6 @@ public class Main {
         }
 
         /**
-         * 二つのノードが同じ集合に属しているかを判定する．
-         *
-         * @param nodeA ノード
-         * @param nodeB ノード
-         * @return 二つのノードが同じ集合に属しているかの判定結果
-         */
-        boolean isSame(final int nodeA, final int nodeB) {
-            return getRoot(nodeA) == getRoot(nodeB);
-        }
-
-        /**
          * 引数のノードが属する集合を合体させる．
          *
          * @param nodeA ノード
@@ -115,26 +107,6 @@ public class Main {
 
         int nextInt() {
             return Integer.parseInt(next());
-        }
-
-        long nextLong() {
-            return Long.parseLong(next());
-        }
-
-        double nextDouble() {
-            return Double.parseDouble(next());
-        }
-
-        String nextLine() {
-            if (tokenizer == null || !tokenizer.hasMoreTokens()) {
-                try {
-                    return reader.readLine();
-                } catch (final IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            return tokenizer.nextToken("\n");
         }
     }
 }

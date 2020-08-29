@@ -18,9 +18,8 @@ public class Main {
         final List<Long> list = IntStream.range(0, n)
             .mapToObj(i -> scanner.nextLong())
             .collect(Collectors.toList());
-        final long[] sums = new long[n];
-        sums[n - 1] = list.get(n - 1);
-        for (int i = n - 1; i > 0; i--) {
+        final long[] sums = new long[n + 1];
+        for (int i = n; i > 0; i--) {
             sums[i - 1] = (list.get(i - 1) + sums[i]) % MOD;
         }
 
@@ -55,22 +54,6 @@ public class Main {
 
         long nextLong() {
             return Long.parseLong(next());
-        }
-
-        double nextDouble() {
-            return Double.parseDouble(next());
-        }
-
-        String nextLine() {
-            if (tokenizer == null || !tokenizer.hasMoreTokens()) {
-                try {
-                    return reader.readLine();
-                } catch (final IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            return tokenizer.nextToken("\n");
         }
     }
 }

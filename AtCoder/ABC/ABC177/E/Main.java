@@ -9,9 +9,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/*
+not coprimeかどうかの判定は簡単
+Aの最大値が10^6なので，10^3までの素数を用意しておく(200個弱)
+各Aを各素数で割っていき，割れた素数を記録しておく
+割れた素数が被ったら互いに素でない組が存在する
+ */
 public class Main {
     private static final String PAIRWISE_COPRIME = "pairwise coprime";
     private static final String SETWISE_COPRIME = "setwise coprime";
@@ -36,6 +43,14 @@ public class Main {
 
         final List<Integer> primes = sieveOfEratosthenes();
         final Set<Integer> alreadyUsed = new HashSet<>();
+        final Function<Integer, Boolean> isAddable = value -> {
+            if (alreadyUsed.contains(value)) {
+                System.out.println(SETWISE_COPRIME);
+                return false;
+            }
+            alreadyUsed.add(value);
+            return true;
+        };
         for (int value : list) {
             for (final int prime : primes) {
                 if (value % prime != 0) {
@@ -45,18 +60,14 @@ public class Main {
                 while (value % prime == 0) {
                     value /= prime;
                 }
-                if (alreadyUsed.contains(prime)) {
-                    System.out.println(SETWISE_COPRIME);
+                if (!isAddable.apply(prime)) {
                     return;
                 }
-                alreadyUsed.add(prime);
             }
             if (value != 1) {
-                if (alreadyUsed.contains(value)) {
-                    System.out.println(SETWISE_COPRIME);
+                if (!isAddable.apply(value)) {
                     return;
                 }
-                alreadyUsed.add(value);
             }
         }
         System.out.println(PAIRWISE_COPRIME);
