@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.StringTokenizer;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /*
@@ -35,41 +36,34 @@ public class Main {
         int begin = 1;
         int end = graph.get(1).get(0);
         final boolean[] isIncluded = new boolean[n + 1];
-        isIncluded[begin] = true;
-        isIncluded[end] = true;
         final Deque<Integer> path = new ArrayDeque<>();
-        path.add(begin);
-        path.add(end);
+        final Consumer<Integer> init = endPoint -> {
+            isIncluded[endPoint] = true;
+            path.add(endPoint);
+        };
+        init.accept(begin);
+        init.accept(end);
 
-        while (true) {
-            final Optional<Integer> beginCandidate = graph.get(begin).stream()
-                .filter(i -> !isIncluded[i])
-                .findFirst();
-            if (beginCandidate.isPresent()) {
-                begin = beginCandidate.get();
-                isIncluded[begin] = true;
-                path.addFirst(begin);
-                continue;
-            }
-
-            final Optional<Integer> endCandidate = graph.get(end).stream()
-                .filter(i -> !isIncluded[i])
-                .findFirst();
-            if (endCandidate.isPresent()) {
-                end = endCandidate.get();
-                isIncluded[end] = true;
-                path.addLast(end);
-                continue;
-            }
-
-            break;
-        }
+        extendPath(begin, path::addFirst, graph, isIncluded);
+        extendPath(end, path::addLast, graph, isIncluded);
 
         System.out.println(path.size());
         final String answer = path.stream()
             .map(i -> Integer.toString(i))
             .collect(Collectors.joining(" "));
         System.out.println(answer);
+    }
+
+    private static void extendPath(final int endPoint, final Consumer<Integer> addPath, final Map<Integer, List<Integer>> graph, final boolean[] isIncluded) {
+        final Optional<Integer> beginCandidate = graph.get(endPoint).stream()
+            .filter(i -> !isIncluded[i])
+            .findFirst();
+        if (beginCandidate.isPresent()) {
+            final int next = beginCandidate.get();
+            isIncluded[next] = true;
+            addPath.accept(next);
+            extendPath(next, addPath, graph, isIncluded);
+        }
     }
 
     private static class FastScanner {
