@@ -170,4 +170,33 @@ public class Utility {
             return tokenizer.nextToken("\n");
         }
     }
+
+    /**
+     * IntStream.range(0, n)
+     * .map(i -> (a * i + b) / m)
+     * .sum()
+     * を O(long a + long m) で計算できる
+     *
+     * @see <a href="https://qiita.com/HNJ/items/564f15316719209df73c">Floor Sum (ACL Practice Contest C)</a>
+     */
+    private static long floorSum(final long n, final long m, long a, long b) {
+        long answer = 0;
+        if (a >= m) {
+            answer += (n - 1) * n * (a / m) / 2;
+            a %= m;
+        }
+        if (b >= m) {
+            answer += n * (b / m);
+            b %= m;
+        }
+
+        final long yMax = (a * n + b) / m;
+        final long xMax = yMax * m - b;
+        if (yMax == 0) {
+            return answer;
+        }
+        answer += (n - (xMax + a - 1) / a) * yMax;
+        answer += floorSum(yMax, a, m, (a - xMax % a) % a);
+        return answer;
+    }
 }
