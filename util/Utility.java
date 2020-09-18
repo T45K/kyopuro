@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -198,5 +199,42 @@ public class Utility {
         answer += (n - (xMax + a - 1) / a) * yMax;
         answer += floorSum(yMax, a, m, (a - xMax % a) % a);
         return answer;
+    }
+
+    /**
+     * Hunt–Szymanski algorithm
+     * O(n log n) で最長共通文字列の長さを計算する
+     *
+     * @param a 文字列
+     * @param b 文字列
+     * @return 最長共通部分文字列の長さ
+     */
+    private static int calcLCSLength(final String a, final String b) {
+        final int n = a.length();
+        final int m = b.length();
+
+        final Map<Character, List<Integer>> invertedIndices = new HashMap<>();
+        for (int i = 0; i < m; i++) {
+            invertedIndices.computeIfAbsent(b.charAt(i), v -> new ArrayList<>()).add(i);
+        }
+
+        final Integer[] indices = new Integer[n + 1];
+        Arrays.fill(indices, Integer.MAX_VALUE);
+        indices[0] = Integer.MIN_VALUE;
+
+        @SuppressWarnings("ComparatorMethodParameterNotUsed") final Comparator<Integer> lowerBoundComparator = (x, y) -> x >= y ? 1 : -1;
+        for (final char c : a.toCharArray()) {
+            if (!invertedIndices.containsKey(c)) {
+                continue;
+            }
+
+            final List<Integer> list = invertedIndices.get(c);
+            for (final int indexOfB : list) {
+                final int index = Arrays.binarySearch(indices, indexOfB, lowerBoundComparator);
+                indices[index > 0 ? index : ~index] = indexOfB;
+            }
+        }
+
+        return ~Arrays.binarySearch(indices, Integer.MAX_VALUE - 1) - 1;
     }
 }
