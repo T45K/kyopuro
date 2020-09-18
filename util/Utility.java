@@ -213,28 +213,27 @@ public class Utility {
         final int n = a.length();
         final int m = b.length();
 
-        final Map<Character, List<Integer>> invertedIndices = new HashMap<>();
+        final Map<Character, List<Integer>> invertedIndicesOfB = new HashMap<>();
         for (int i = 0; i < m; i++) {
-            invertedIndices.computeIfAbsent(b.charAt(i), v -> new ArrayList<>()).add(i);
+            invertedIndicesOfB.computeIfAbsent(b.charAt(i), v -> new ArrayList<>()).add(i);
         }
 
-        final Integer[] indices = new Integer[n + 1];
-        Arrays.fill(indices, Integer.MAX_VALUE);
-        indices[0] = Integer.MIN_VALUE;
+        final Integer[] lcs = new Integer[n + 1];
+        Arrays.fill(lcs, Integer.MAX_VALUE);
+        lcs[0] = -1;
 
         @SuppressWarnings("ComparatorMethodParameterNotUsed") final Comparator<Integer> lowerBoundComparator = (x, y) -> x >= y ? 1 : -1;
         for (final char c : a.toCharArray()) {
-            if (!invertedIndices.containsKey(c)) {
+            if (!invertedIndicesOfB.containsKey(c)) {
                 continue;
             }
 
-            final List<Integer> list = invertedIndices.get(c);
-            for (final int indexOfB : list) {
-                final int index = Arrays.binarySearch(indices, indexOfB, lowerBoundComparator);
-                indices[index > 0 ? index : ~index] = indexOfB;
+            for (final int indexOfB : invertedIndicesOfB.get(c)) {
+                final int index = Arrays.binarySearch(lcs, indexOfB, lowerBoundComparator);
+                lcs[index > 0 ? index : ~index] = indexOfB;
             }
         }
 
-        return ~Arrays.binarySearch(indices, Integer.MAX_VALUE - 1) - 1;
+        return ~Arrays.binarySearch(lcs, Integer.MAX_VALUE - 1) - 1;
     }
 }
