@@ -208,13 +208,14 @@ public class Utility {
      * @param a 文字列
      * @param b 文字列
      * @return 最長共通部分文字列の長さ
+     * @see <a href="http://www.prefield.com/algorithm/dp/lcs_hs.html">最長共通部分列（ O( (n+r) log n) ）</a>
      */
     private static int calcLCSLength(final String a, final String b) {
         final int n = a.length();
         final int m = b.length();
 
         final Map<Character, List<Integer>> invertedIndicesOfB = new HashMap<>();
-        for (int i = 0; i < m; i++) {
+        for (int i = m - 1; i >= 0; i--) {
             invertedIndicesOfB.computeIfAbsent(b.charAt(i), v -> new ArrayList<>()).add(i);
         }
 
@@ -229,8 +230,8 @@ public class Utility {
             }
 
             for (final int indexOfB : invertedIndicesOfB.get(c)) {
-                final int index = Arrays.binarySearch(lcs, indexOfB, lowerBoundComparator);
-                lcs[index > 0 ? index : ~index] = indexOfB;
+                final int index = ~Arrays.binarySearch(lcs, indexOfB, lowerBoundComparator);
+                lcs[index] = indexOfB;
             }
         }
 
