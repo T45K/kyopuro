@@ -176,7 +176,7 @@ public class Utility {
      * IntStream.range(0, n)
      * .map(i -> (a * i + b) / m)
      * .sum()
-     * を O(long a + long m) で計算できる
+     * を O(log a + log m) で計算できる
      *
      * @see <a href="https://qiita.com/HNJ/items/564f15316719209df73c">Floor Sum (ACL Practice Contest C)</a>
      */
