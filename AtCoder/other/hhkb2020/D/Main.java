@@ -26,15 +26,16 @@ public class Main {
             }
 
             final long tmp = n - a - b;
-            final long all = ((tmp + 1) * tmp % MOD + tmp + 1 + MOD - (tmp + 1) * tmp / 2 % MOD) % MOD
+            final long sum = (tmp + 1) * tmp / 2 % MOD;
+            final long all = ((tmp + 1) * tmp % MOD + tmp + 1 + MOD - sum) % MOD
                 * (n - b + 1) % MOD
                 * (n - a + 1) * 4 % MOD;
 
             final long sq = tmp * tmp % MOD;
             final long sq2 = (tmp + 1) * (tmp + 1) % MOD;
-            final long differentAxis = ((sq * sq2 % MOD + MOD - tmp * (tmp + 1) % MOD) % MOD + sq2) % MOD * 4 % MOD;
+            final long overlapping = (sq * sq2 % MOD + MOD - tmp * 2 * sum % MOD + sq2) % MOD * 4 % MOD;
 
-            System.out.println((MOD + all - differentAxis) % MOD);
+            System.out.println((MOD + all - overlapping) % MOD);
         }
 
     }
@@ -60,26 +61,6 @@ public class Main {
 
         int nextInt() {
             return Integer.parseInt(next());
-        }
-
-        long nextLong() {
-            return Long.parseLong(next());
-        }
-
-        double nextDouble() {
-            return Double.parseDouble(next());
-        }
-
-        String nextLine() {
-            if (tokenizer == null || !tokenizer.hasMoreTokens()) {
-                try {
-                    return reader.readLine();
-                } catch (final IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            return tokenizer.nextToken("\n");
         }
     }
 }
