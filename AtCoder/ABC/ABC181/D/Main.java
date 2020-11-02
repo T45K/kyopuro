@@ -5,44 +5,48 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
+import java.util.function.Supplier;
 
+/*
+ある整数が8で割り切れる条件は（整数が2で割り切れる）かつ（2で割った後の整数が4で割り切れる=下2桁が4の倍数）
+なので，下3桁が8で割り切れれば良い
+3桁以下の8の倍数を事前に求めて起き，与えられた整数を移動させてそれらを満たせるかを確認する
+ */
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
         final String s = scanner.next();
-        final int[] digits = new int[10];
+        final int[] givenDigits = new int[10];
         for (final char c : s.toCharArray()) {
-            digits[c - '0']++;
+            givenDigits[c - '0']++;
         }
 
-        for (int i = 8; i < 1000; i += 8) {
+        for (int i = 8; i < Math.min(1000, Math.pow(10, s.length())); i += 8) {
             final int[] targetDigits = new int[10];
-            final char[] target;
-            if (s.length() == 1) {
-                if (i >= 10) {
+            final String target;
+            switch (s.length()) {
+                case 1:
+                    target = Integer.toString(i);
                     break;
-                }
-                target = Integer.toString(i).toCharArray();
-            } else if (s.length() == 2) {
-                if (i >= 100) {
+                case 2:
+                    target = String.format("%02d", i);
                     break;
-                }
-                target = String.format("%02d", i).toCharArray();
-            } else {
-
-                target = String.format("%03d", i).toCharArray();
+                default:
+                    target = String.format("%03d", i);
             }
-            for (final char c : target) {
+            for (final char c : target.toCharArray()) {
                 targetDigits[c - '0']++;
             }
-            boolean flag = true;
-            for (int j = 0; j < targetDigits.length; j++) {
-                if (digits[j] < targetDigits[j]) {
-                    flag = false;
-                    break;
+            final Supplier<Boolean> check = () -> {
+                for (int j = 0; j < targetDigits.length; j++) {
+                    if (givenDigits[j] < targetDigits[j]) {
+                        return false;
+                    }
                 }
-            }
-            if (flag) {
+                return true;
+            };
+            final boolean isSuccess = check.get();
+            if (isSuccess) {
                 System.out.println("Yes");
                 return;
             }
@@ -67,30 +71,6 @@ public class Main {
                 }
             }
             return tokenizer.nextToken();
-        }
-
-        int nextInt() {
-            return Integer.parseInt(next());
-        }
-
-        long nextLong() {
-            return Long.parseLong(next());
-        }
-
-        double nextDouble() {
-            return Double.parseDouble(next());
-        }
-
-        String nextLine() {
-            if (tokenizer == null || !tokenizer.hasMoreTokens()) {
-                try {
-                    return reader.readLine();
-                } catch (final IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            return tokenizer.nextToken("\n");
         }
     }
 }

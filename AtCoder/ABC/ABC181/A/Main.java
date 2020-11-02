@@ -10,11 +10,7 @@ public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
         final int n = scanner.nextInt();
-        if (n % 2 == 0) {
-            System.out.println("White");
-        } else {
-            System.out.println("Black");
-        }
+        System.out.println(n % 2 == 0 ? "White" : "Black");
     }
 
     private static class FastScanner {
@@ -38,26 +34,6 @@ public class Main {
 
         int nextInt() {
             return Integer.parseInt(next());
-        }
-
-        long nextLong() {
-            return Long.parseLong(next());
-        }
-
-        double nextDouble() {
-            return Double.parseDouble(next());
-        }
-
-        String nextLine() {
-            if (tokenizer == null || !tokenizer.hasMoreTokens()) {
-                try {
-                    return reader.readLine();
-                } catch (final IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            return tokenizer.nextToken("\n");
         }
     }
 }

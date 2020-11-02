@@ -16,6 +16,7 @@ public class Main {
         final List<Point> list = IntStream.range(0, n)
             .mapToObj(i -> new Point(scanner.nextInt(), scanner.nextInt()))
             .collect(Collectors.toList());
+
         for (int i = 0; i < n; i++) {
             final Point a = list.get(i);
             for (int j = i + 1; j < n; j++) {
@@ -63,26 +64,6 @@ public class Main {
 
         int nextInt() {
             return Integer.parseInt(next());
-        }
-
-        long nextLong() {
-            return Long.parseLong(next());
-        }
-
-        double nextDouble() {
-            return Double.parseDouble(next());
-        }
-
-        String nextLine() {
-            if (tokenizer == null || !tokenizer.hasMoreTokens()) {
-                try {
-                    return reader.readLine();
-                } catch (final IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            return tokenizer.nextToken("\n");
         }
     }
 }

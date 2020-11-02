@@ -10,6 +10,9 @@ import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/*
+前後から累積和
+ */
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
@@ -32,26 +35,29 @@ public class Main {
         final long[] forward = new long[n / 2];
         for (int i = 0; i < n / 2; i++) {
             forward[i] = children.get(2 * i + 1) - children.get(2 * i);
-        }
-        for (int i = 0; i < n / 2 - 1; i++) {
-            forward[i + 1] += forward[i];
+            if (i > 0) {
+                forward[i] += forward[i - 1];
+            }
         }
         final long[] backward = new long[n / 2];
         for (int i = n / 2; i > 0; i--) {
             backward[i - 1] = children.get(2 * i) - children.get(2 * i - 1);
-        }
-        for (int i = n / 2 - 2; i >= 0; i--) {
-            backward[i] += backward[i + 1];
+            if (i < n / 2) {
+                backward[i - 1] += backward[i];
+            }
         }
 
-        long min = minBinarySearch(height, children.get(0)) + backward[0];
-        for (int i = 1; i < n; i++) {
-            long tmp = 0;
+        long min = Long.MAX_VALUE;
+        for (int i = 0; i < n; i++) {
+            long tmp = minBinarySearch(height, children.get(i));
             if (i % 2 == 0) {
+                if (i > 0) {
+                    tmp += forward[i / 2 - 1];
+                }
                 if (i < n - 1) {
                     tmp += backward[i / 2];
                 }
-                min = Math.min(min, tmp + forward[i / 2 - 1] + minBinarySearch(height, children.get(i)));
+                min = Math.min(min, tmp);
             } else {
                 if (i > 1) {
                     tmp += forward[i / 2 - 1];
@@ -59,7 +65,6 @@ public class Main {
                 if (i < n - 2) {
                     tmp += backward[i / 2 + 1];
                 }
-                tmp += minBinarySearch(height, children.get(i));
                 min = Math.min(min, tmp + children.get(i + 1) - children.get(i - 1));
             }
         }
@@ -107,22 +112,6 @@ public class Main {
 
         long nextLong() {
             return Long.parseLong(next());
-        }
-
-        double nextDouble() {
-            return Double.parseDouble(next());
-        }
-
-        String nextLine() {
-            if (tokenizer == null || !tokenizer.hasMoreTokens()) {
-                try {
-                    return reader.readLine();
-                } catch (final IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            return tokenizer.nextToken("\n");
         }
     }
 }
