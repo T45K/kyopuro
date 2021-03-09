@@ -14,7 +14,7 @@ public class Main {
         final FastScanner scanner = new FastScanner(System.in);
         final int n = scanner.nextInt();
         final List<Employee> list = IntStream.range(0, n)
-            .mapToObj(i -> new Employee(i, scanner.nextInt(), scanner.nextInt()))
+            .mapToObj(i -> new Employee(scanner.nextInt(), scanner.nextInt()))
             .collect(Collectors.toList());
         int min = Integer.MAX_VALUE;
         for (int i = 0; i < list.size(); i++) {
@@ -33,7 +33,7 @@ public class Main {
         final int a;
         final int b;
 
-        Employee(final int no, final int a, final int b) {
+        Employee(final int a, final int b) {
             this.a = a;
             this.b = b;
         }
@@ -60,26 +60,6 @@ public class Main {
 
         int nextInt() {
             return Integer.parseInt(next());
-        }
-
-        long nextLong() {
-            return Long.parseLong(next());
-        }
-
-        double nextDouble() {
-            return Double.parseDouble(next());
-        }
-
-        String nextLine() {
-            if (tokenizer == null || !tokenizer.hasMoreTokens()) {
-                try {
-                    return reader.readLine();
-                } catch (final IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            return tokenizer.nextToken("\n");
         }
     }
 }
