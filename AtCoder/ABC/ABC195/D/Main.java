@@ -11,6 +11,9 @@ import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/*
+貪欲にやる
+ */
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
