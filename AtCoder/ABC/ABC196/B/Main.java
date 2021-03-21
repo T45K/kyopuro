@@ -5,18 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
-        final char[] x = scanner.next().toCharArray();
-        final String answer = IntStream.range(0, x.length)
-            .mapToObj(i -> x[i])
-            .takeWhile(Character::isDigit)
-            .map(Object::toString)
-            .collect(Collectors.joining());
+        final String answer = scanner.next().split("\\.")[0];
         System.out.println(answer);
     }
 
