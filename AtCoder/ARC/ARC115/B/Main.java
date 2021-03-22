@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Main {
     private static final String YES = "Yes";
@@ -15,34 +17,22 @@ public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
         final int n = scanner.nextInt();
-        if (n == 1) {
-            System.out.println(YES);
-            System.out.println(0);
-            System.out.println(scanner.nextInt());
-            return;
-        }
-
         final int[][] table = new int[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 table[i][j] = scanner.nextInt();
             }
         }
-        int minRow = -1;
-        int minValue = Integer.MAX_VALUE;
-        for (int i = 0; i < n; i++) {
-            final int min = Arrays.stream(table[i]).min().orElseThrow();
-            if (min < minValue) {
-                minRow = i;
-                minValue = min;
-            }
-        }
+
+        final MinItem minItem = IntStream.range(0, n)
+            .mapToObj(i -> new MinItem(i, Arrays.stream(table[i]).min().orElseThrow()))
+            .min(Comparator.comparingInt(item -> item.value))
+            .orElseThrow();
 
         final int[] a = new int[n];
         final int[] b = new int[n];
-        a[minRow] = minValue;
         for (int i = 0; i < n; i++) {
-            b[i] = table[minRow][i] - minValue;
+            b[i] = table[minItem.row][i] - minItem.value;
         }
         for (int i = 0; i < n; i++) {
             a[i] = table[i][0] - b[0];
@@ -59,6 +49,16 @@ public class Main {
         System.out.println(YES);
         System.out.println(aAnswer);
         System.out.println(bAnswer);
+    }
+
+    private static class MinItem {
+        final int row;
+        final int value;
+
+        MinItem(final int row, final int value) {
+            this.row = row;
+            this.value = value;
+        }
     }
 
     private static class FastScanner {
