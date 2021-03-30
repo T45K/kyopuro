@@ -70,25 +70,21 @@ public class Utility {
      * @return 条件を満たす素数のリスト
      */
     private static List<Integer> sieveOfEratosthenes(final int number) {
-        List<Integer> numbers = IntStream.rangeClosed(2, number)
+        final boolean[] isPrimeNumber = new boolean[number + 1];
+        Arrays.fill(isPrimeNumber, true);
+        final int sqrt = (int) Math.sqrt(number);
+        for (int i = 2; i <= sqrt; i++) {
+            if (!isPrimeNumber[i]) {
+                continue;
+            }
+            for (int j = 2; i * j <= number; j++) {
+                isPrimeNumber[i * j] = false;
+            }
+        }
+        return IntStream.rangeClosed(2, number)
+            .filter(i -> isPrimeNumber[i])
             .boxed()
             .collect(Collectors.toList());
-
-        final int sqrt = (int) Math.sqrt(number);
-        final List<Integer> primeNumbers = new ArrayList<>();
-        int condition;
-
-        do {
-            final int prime = numbers.get(0);
-            primeNumbers.add(prime);
-            numbers = numbers.stream()
-                .filter(i -> i % prime != 0)
-                .collect(Collectors.toList());
-            condition = prime;
-        } while (condition < sqrt);
-
-        primeNumbers.addAll(numbers);
-        return primeNumbers;
     }
 
     /**
