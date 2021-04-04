@@ -11,6 +11,10 @@ import java.util.StringTokenizer;
 解説AC
 https://atcoder.jp/contests/abc186/editorial/401
 数学
+Ax ≡ B mod Nのとき、次のようにしてxを求められる。
+1. A,B,NをGCDで割る
+2. GCD(A,N) != 1 なら解なし
+3. GCD(A,N) = 1 なら x = B * modInv(A)
  */
 public class Main {
     public static void main(final String[] args) {
@@ -50,19 +54,6 @@ public class Main {
         return euclideanAlgorithm(b, a % b);
     }
 
-    private static long modInv(long a, final long mod) {
-        long res = 1;
-        long n = mod - 2;
-        while (n > 0) {
-            if ((n & 1) != 0) {
-                res = res * a % mod;
-            }
-            a = a * a % mod;
-            n >>= 1;
-        }
-        return res;
-    }
-
     private static class FastScanner {
         private final BufferedReader reader;
         private StringTokenizer tokenizer;
@@ -84,26 +75,6 @@ public class Main {
 
         int nextInt() {
             return Integer.parseInt(next());
-        }
-
-        long nextLong() {
-            return Long.parseLong(next());
-        }
-
-        double nextDouble() {
-            return Double.parseDouble(next());
-        }
-
-        String nextLine() {
-            if (tokenizer == null || !tokenizer.hasMoreTokens()) {
-                try {
-                    return reader.readLine();
-                } catch (final IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            return tokenizer.nextToken("\n");
         }
     }
 }
