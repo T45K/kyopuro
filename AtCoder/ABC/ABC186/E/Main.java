@@ -4,9 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 import java.util.StringTokenizer;
 
-// TODO solve
+/*
+解説AC
+https://atcoder.jp/contests/abc186/editorial/401
+数学
+ */
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
@@ -15,31 +20,22 @@ public class Main {
             final long n = scanner.nextInt();
             final long s = scanner.nextInt();
             final long k = scanner.nextInt();
-
-            if ((n - s) % k == 0) {
-                System.out.println((n - s) / k);
-                continue;
-            }
-
-            if (n % k == 0) {
+            final long m = (n - s) % n;
+            final long d = euclideanAlgorithm(n, k, m);
+            final long n2 = n / d;
+            final long k2 = k / d;
+            final long m2 = m / d;
+            if (euclideanAlgorithm(k2, n2) > 1) {
                 System.out.println(-1);
                 continue;
             }
-
-            if (euclideanAlgorithm(k, n) == 1) {
-                final long inv = modInv(k, n);
-                final long l = (n - s) * inv % n;
-                System.out.println(l);
-                continue;
-            }
-
-            for (int j = 1; ; j++) {
-                if ((n - s + j * n) % k == 0) {
-                    System.out.println((n - s + j * n) / k);
-                    break;
-                }
-            }
+            final long answer = BigInteger.valueOf(k2).modInverse(BigInteger.valueOf(n2)).longValue() * m2 % n2;
+            System.out.println(answer);
         }
+    }
+
+    private static long euclideanAlgorithm(final long a, final long b, final long c) {
+        return euclideanAlgorithm(euclideanAlgorithm(a, b), c);
     }
 
     private static long euclideanAlgorithm(final long a, final long b) {
