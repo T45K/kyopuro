@@ -88,7 +88,7 @@ public class Tree {
         private final BinaryOperator<T> comparator;
 
         SegmentTree(final List<T> list, final T initialValue, final BinaryOperator<T> comparator) {
-            this.exponent = calcExponent(list.size());
+            this.exponent = 1 << Integer.toBinaryString(list.size() - 1).length();
             this.comparator = comparator;
             this.initialValue = initialValue;
             internalTree = initTree(list, initialValue);
@@ -165,6 +165,7 @@ public class Tree {
             return (T[]) array;
         }
 
+        @Deprecated
         private int calcExponent(final int n) {
             int exp = 1;
             while (exp < n) {
