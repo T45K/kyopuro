@@ -82,7 +82,7 @@ public class Tree {
      * 更新，クエリの引数は 0-indexed で渡すことに注意
      */
     private static class SegmentTree<T> {
-        private final T[] internalTree;
+        private final T[] internalArray;
         private final int exponent;
         private final T initialValue;
         private final BinaryOperator<T> comparator;
@@ -91,7 +91,7 @@ public class Tree {
             this.exponent = 1 << Integer.toBinaryString(list.size() - 1).length();
             this.comparator = comparator;
             this.initialValue = initialValue;
-            internalTree = initTree(list, initialValue);
+            internalArray = initArray(list, initialValue);
         }
 
         /**
@@ -101,10 +101,10 @@ public class Tree {
          * @param value 更新後の値
          */
         void update(final int index, final T value) {
-            internalTree[index + exponent] = value;
+            internalArray[index + exponent] = value;
             int current = (index + exponent) / 2;
             while (current > 0) {
-                internalTree[current] = comparator.apply(internalTree[current * 2], internalTree[current * 2 + 1]);
+                internalArray[current] = comparator.apply(internalArray[current * 2], internalArray[current * 2 + 1]);
                 current /= 2;
             }
         }
@@ -116,10 +116,10 @@ public class Tree {
          * @param operator 更新式
          */
         void update(final int index, final UnaryOperator<T> operator) {
-            internalTree[index + exponent] = operator.apply(internalTree[index + exponent]);
+            internalArray[index + exponent] = operator.apply(internalArray[index + exponent]);
             int current = (index + exponent) / 2;
             while (current > 0) {
-                internalTree[current] = comparator.apply(internalTree[current * 2], internalTree[current * 2 + 1]);
+                internalArray[current] = comparator.apply(internalArray[current * 2], internalArray[current * 2 + 1]);
                 current /= 2;
             }
         }
@@ -143,7 +143,7 @@ public class Tree {
             }
 
             if (left <= begin && end <= right) {
-                return internalTree[k];
+                return internalArray[k];
             }
 
             final int mid = (begin + end) / 2;
@@ -151,7 +151,7 @@ public class Tree {
         }
 
         @SuppressWarnings("unchecked")
-        private T[] initTree(final List<T> list, final T initialValue) {
+        private T[] initArray(final List<T> list, final T initialValue) {
             final Object[] array = new Object[exponent * 2];
             Arrays.fill(array, initialValue);
             for (int i = 0; i < list.size(); i++) {
