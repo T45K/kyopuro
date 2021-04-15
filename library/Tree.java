@@ -308,4 +308,31 @@ public class Tree {
             }
         }
     }
+
+    /**
+     * Binary Indexed Tree
+     * <p>
+     * 区間和をセグ木より高速・省メモリ（定数倍）で求められる
+     * クエリ，更新共にO(log n)
+     */
+    private static class BinaryIndexedTree {
+        private final long[] internalArray;
+
+        BinaryIndexedTree(final int size) {
+            this.internalArray = new long[1 << Integer.toBinaryString(size).length()];
+        }
+
+        private long sum(final int index) {
+            if (index == 0) {
+                return 0;
+            }
+            return internalArray[index] + sum(index - (index & -index));
+        }
+
+        private void add(final int index, final long value) {
+            for (int i = index; i < internalArray.length; i += i & -i) {
+                internalArray[index] += value;
+            }
+        }
+    }
 }
