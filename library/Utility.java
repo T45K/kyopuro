@@ -240,6 +240,7 @@ public class Utility {
     /**
      * [0,N)の順列を求める
      * action で結果を処理する
+     * O(N!)
      */
     private static class Permutation {
         private final int[] array;
