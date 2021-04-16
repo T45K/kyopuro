@@ -4,13 +4,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -232,5 +235,40 @@ public class Utility {
         }
 
         return ~Arrays.binarySearch(lcs, Integer.MAX_VALUE - 1) - 1;
+    }
+
+    /**
+     * [0,N)の順列を求める
+     * action で結果を処理する
+     */
+    private static class Permutation {
+        private final int[] array;
+        private final Consumer<int[]> action;
+        private final Deque<Integer> queue;
+
+        Permutation(final int n, final Consumer<int[]> action) {
+            this.array = new int[n];
+            this.action = action;
+            this.queue = IntStream.range(0, array.length)
+                .boxed()
+                .collect(Collectors.toCollection(ArrayDeque::new));
+        }
+
+        void start() {
+            recursive(0);
+        }
+
+        private void recursive(final int index) {
+            if (index == array.length) {
+                action.accept(array);
+                return;
+            }
+            for (int i = 0; i < queue.size(); i++) {
+                final int tmp = queue.poll();
+                array[index] = tmp;
+                recursive(index + 1);
+                queue.add(tmp);
+            }
+        }
     }
 }
