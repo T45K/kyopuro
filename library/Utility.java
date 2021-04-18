@@ -131,42 +131,34 @@ public class Utility {
         private final BufferedReader reader;
         private StringTokenizer tokenizer;
 
-        FastScanner(final InputStream in) {
+        FastScanner(final InputStream in) throws IOException {
             reader = new BufferedReader(new InputStreamReader(in));
+            tokenizer = new StringTokenizer(reader.readLine());
         }
 
-        String next() {
-            if (tokenizer == null || !tokenizer.hasMoreTokens()) {
-                try {
-                    tokenizer = new StringTokenizer(reader.readLine());
-                } catch (final IOException e) {
-                    throw new RuntimeException(e);
-                }
+        String next() throws IOException {
+            if (!tokenizer.hasMoreTokens()) {
+                tokenizer = new StringTokenizer(reader.readLine());
             }
             return tokenizer.nextToken();
         }
 
-        int nextInt() {
+        int nextInt() throws IOException {
             return Integer.parseInt(next());
         }
 
-        long nextLong() {
+        long nextLong() throws IOException {
             return Long.parseLong(next());
         }
 
-        double nextDouble() {
+        double nextDouble() throws IOException {
             return Double.parseDouble(next());
         }
 
-        String nextLine() {
-            if (tokenizer == null || !tokenizer.hasMoreTokens()) {
-                try {
-                    return reader.readLine();
-                } catch (final IOException e) {
-                    throw new RuntimeException(e);
-                }
+        String nextLine() throws IOException {
+            if (!tokenizer.hasMoreTokens()) {
+                return reader.readLine();
             }
-
             return tokenizer.nextToken("\n");
         }
     }
