@@ -79,7 +79,7 @@ public class Main {
                     tmpSecondMax = counts[i][j];
                 }
             }
-            sum += length - tmpMax;
+            sum += queue.size() - tmpMax;
             if (isMidpoint(i, length)) { // 折り返し地点は書き換えの対象外
                 continue;
             }
@@ -108,7 +108,7 @@ public class Main {
             queue.add(subStringReversed(poll, poll.length() / 2 + 1, poll.length()));
         }
 
-        return counts.values().stream().max(Integer::compareTo).orElseThrow();
+        return pow - counts.values().stream().max(Integer::compareTo).orElseThrow();
     }
 
     private static void divideWithoutMidpoint(final Deque<String> queue, final int pow) {

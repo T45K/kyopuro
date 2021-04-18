@@ -9,7 +9,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Main {
@@ -17,11 +16,11 @@ public class Main {
         final FastScanner scanner = new FastScanner(System.in);
         final int n = scanner.nextInt();
         final int m = scanner.nextInt();
-        final List<Integer> list = IntStream.range(0, n)
-            .mapToObj(i -> scanner.nextInt())
+        final List<Integer> list = Stream.generate(scanner::nextInt)
+            .limit(n)
             .collect(Collectors.toList());
-        final Set<Integer> set = IntStream.range(0, m)
-            .mapToObj(i -> scanner.nextInt())
+        final Set<Integer> set = Stream.generate(scanner::nextInt)
+            .limit(n)
             .collect(Collectors.toSet());
         final List<Integer> filtered = list.stream()
             .filter(i -> {
