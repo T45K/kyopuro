@@ -97,17 +97,18 @@ public class Utility {
      * @param b べき数
      * @return 基数の冪乗
      */
-    private static long iterativePow(long a, long b) {
-        long tmp = 1;
-        while (b > 0) {
-            if ((b & 1) == 1) {
-                tmp *= a;
-            }
-            a *= a;
-            b >>= 1;
-        }
+    private static long iterativePow(final long a, final long b) {
+        return iterativePow(a, b, 1);
+    }
 
-        return tmp;
+    private static long iterativePow(final long a, final long b, final long result) {
+        if (b == 0) {
+            return result;
+        } else if ((b & 1) == 1) {
+            return iterativePow(a * a, b >> 1, result * a);
+        } else {
+            return iterativePow(a * a, b >> 1, result);
+        }
     }
 
     /**
