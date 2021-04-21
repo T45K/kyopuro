@@ -10,6 +10,9 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.stream.IntStream;
 
+/*
+座標圧縮
+ */
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
