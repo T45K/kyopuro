@@ -59,10 +59,7 @@ public class Main {
                 costs[x + 1][y] = costs[x][y] + bTable[x][y];
                 queue.add(new Dest(x + 1, y));
             }
-            for (int i = 1; x - i > 0; i++) {
-                if (costs[x][y] + i + 1 > costs[x - i][y]) {
-                    break;
-                }
+            for (int i = 1; x - i > 0 && costs[x][y] + i + 1 <= costs[x - i][y]; i++) {
                 costs[x - i][y] = costs[x][y] + i + 1;
                 queue.add(new Dest(x - i, y));
             }
