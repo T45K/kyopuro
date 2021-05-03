@@ -9,16 +9,15 @@ import java.util.StringTokenizer;
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
-        final double x = scanner.nextInt();
-        final double y = scanner.nextInt();
-        final double z = scanner.nextInt();
-        for (int i = 2_000_000; i > 0; i--) {
-            if (y / x > i / z) {
+        final int x = scanner.nextInt();
+        final int y = scanner.nextInt();
+        final int z = scanner.nextInt();
+        for (int i = 2_000_000; i >= 0; i--) {
+            if (y * z > i * x) {
                 System.out.println(i);
                 return;
             }
         }
-        System.out.println(0);
     }
 
     private static class FastScanner {
