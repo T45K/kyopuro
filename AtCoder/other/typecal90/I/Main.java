@@ -8,17 +8,16 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.StringTokenizer;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 // 想定解だが通らない
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
         final int n = scanner.nextInt();
-        final Point[] array = new Point[n];
-        for (int i = 0; i < n; i++) {
-            final Point point = new Point(scanner.nextInt(), scanner.nextInt());
-            array[i] = point;
-        }
+        final Point[] array = Stream.generate(() -> new Point(scanner.nextInt(), scanner.nextInt()))
+            .limit(n)
+            .toArray(Point[]::new);
         final double max = Arrays.stream(array)
             .mapToDouble(base -> {
                 final Point[] sorted = Arrays.stream(array)
@@ -27,9 +26,6 @@ public class Main {
                     .toArray(Point[]::new);
                 return Arrays.stream(sorted)
                     .mapToDouble(tmp -> {
-                        if (base.equals(tmp)) {
-                            return 0;
-                        }
                         final double deg = base.calcDeg(tmp);
                         final double opposite = (deg + 180) % 360;
                         if (opposite < base.calcDeg(sorted[0]) || opposite > base.calcDeg(sorted[sorted.length - 1])) {
