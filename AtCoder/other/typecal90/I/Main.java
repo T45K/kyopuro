@@ -7,55 +7,50 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.StringTokenizer;
+import java.util.function.Predicate;
 
-// TODO WIP
+// 想定解だが通らない
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
         final int n = scanner.nextInt();
         final Point[] array = new Point[n];
-        final Point[] sorted = new Point[n];
         for (int i = 0; i < n; i++) {
             final Point point = new Point(scanner.nextInt(), scanner.nextInt());
             array[i] = point;
-            sorted[i] = point;
         }
-        double max = 0;
-        for (final Point point : array) {
-            Arrays.sort(sorted, Comparator.comparingDouble(point::calcDeg));
-            final boolean[] visited = new boolean[n];
-            for (int i = 0; i < sorted.length; i++) {
-                final Point tmp = sorted[i];
-                if (point.equals(tmp) || visited[i]) {
-                    continue;
-                }
-                final double deg = point.calcDeg(tmp);
-                final double opposite = Math.abs(deg - 180);
-                if (opposite < point.calcDeg(sorted[0]) || opposite > point.calcDeg(sorted[sorted.length - 1])) {
-                    final double a = point.calcDeg(tmp, sorted[0]);
-                    final double b = point.calcDeg(tmp, sorted[sorted.length - 1]);
-                    if (a > b) {
-                        visited[0] = true;
-                        max = Math.max(max, a);
-                    } else {
-                        visited[sorted.length - 1] = true;
-                        max = Math.max(max, b);
-                    }
-                    continue;
-                }
-                final int index = binarySearch(sorted, opposite, point, 0, sorted.length - 1);
-                final double a = point.calcDeg(tmp, sorted[index]);
-                final double b = point.calcDeg(tmp, sorted[index - 1]);
-                if (a > b) {
-                    visited[index] = true;
-                    max = Math.max(max, a);
-                } else {
-                    visited[index - 1] = true;
-                    max = Math.max(max, b);
-                }
-            }
-        }
+        final double max = Arrays.stream(array)
+            .mapToDouble(base -> {
+                final Point[] sorted = Arrays.stream(array)
+                    .filter(Predicate.not(base::equals))
+                    .sorted(Comparator.comparingDouble(base::calcDeg))
+                    .toArray(Point[]::new);
+                return Arrays.stream(sorted)
+                    .mapToDouble(tmp -> {
+                        if (base.equals(tmp)) {
+                            return 0;
+                        }
+                        final double deg = base.calcDeg(tmp);
+                        final double opposite = (deg + 180) % 360;
+                        if (opposite < base.calcDeg(sorted[0]) || opposite > base.calcDeg(sorted[sorted.length - 1])) {
+                            return calcDeclination(deg, base.calcDeg(sorted[sorted.length - 1]));
+                        }
+                        final int index = binarySearch(sorted, opposite, base, 0, sorted.length - 1);
+                        final double a = calcDeclination(deg, base.calcDeg(sorted[index]));
+                        final double b = calcDeclination(deg, base.calcDeg(sorted[index - 1]));
+                        return Math.max(a, b);
+                    })
+                    .max()
+                    .orElse(0);
+            })
+            .max()
+            .orElse(0);
         System.out.println(max);
+    }
+
+    private static double calcDeclination(final double a, final double b) {
+        final double abs = Math.abs(a - b);
+        return Math.min(abs, 360 - abs);
     }
 
     private static int binarySearch(final Point[] sorted, final double target, final Point point, final int begin, final int end) {
@@ -85,25 +80,12 @@ public class Main {
         double calcDeg(final Point p) {
             final long x2 = p.x - this.x;
             final long y2 = p.y - this.y;
-            final double cos = Math.acos(x2 / Math.sqrt(x2 * x2 + y2 * y2));
-            return Math.toDegrees(cos);
-        }
-
-        double calcDeg(final Point a, final Point b) {
-            if (a.equals(b) || this.equals(a) || this.equals(b)) {
-                return 0;
-            }
-            final long x1 = a.x - this.x;
-            final long y1 = a.y - this.y;
-            final long x2 = b.x - this.x;
-            final long y2 = b.y - this.y;
-            final double cos = Math.acos((x1 * x2 + y1 * y2) / (Math.sqrt(x1 * x1 + y1 * y1) * Math.sqrt(x2 * x2 + y2 * y2)));
-            return Math.toDegrees(cos);
+            return Math.toDegrees(Math.atan2(y2, x2));
         }
 
         @Override
         public int hashCode() {
-            return x + y;
+            return x * 1_000_000_001 + y;
         }
 
         @Override
