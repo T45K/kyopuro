@@ -14,13 +14,9 @@ class FastScanner(inputStream: InputStream) {
     private val reader: BufferedReader = BufferedReader(InputStreamReader(inputStream))
     private var tokenizer: StringTokenizer = StringTokenizer(reader.readLine())
 
-    operator fun next(): String =
-        if (!tokenizer.hasMoreTokens()) {
-            tokenizer = StringTokenizer(reader.readLine())
-            tokenizer
-        } else {
-            tokenizer
-        }.nextToken()
+    fun next(): String =
+        (tokenizer.takeIf { it.hasMoreTokens() } ?: update())
+            .nextToken()
 
     fun nextInt(): Int = next().toInt()
 
@@ -32,4 +28,9 @@ class FastScanner(inputStream: InputStream) {
         if (!tokenizer.hasMoreTokens()) {
             reader.readLine()
         } else tokenizer.nextToken("\n")
+
+    private fun update(): StringTokenizer {
+        tokenizer = StringTokenizer(reader.readLine())
+        return tokenizer
+    }
 }
