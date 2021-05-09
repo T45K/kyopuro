@@ -24,11 +24,11 @@ public class Main {
         final List<Member> list = IntStream.range(0, n)
             .mapToObj(i -> new Member(i, scanner.nextInt(), scanner.nextInt(), scanner.nextInt(), scanner.nextInt(), scanner.nextInt()))
             .collect(Collectors.toList());
-        final List<Member> aList = makeTop3List(list, member -> -member.a);
-        final List<Member> bList = makeTop3List(list, member -> -member.b);
-        final List<Member> cList = makeTop3List(list, member -> -member.c);
-        final List<Member> dList = makeTop3List(list, member -> -member.d);
-        final List<Member> eList = makeTop3List(list, member -> -member.e);
+        final List<Member> aList = makeTop3List(list, member -> member.a);
+        final List<Member> bList = makeTop3List(list, member -> member.b);
+        final List<Member> cList = makeTop3List(list, member -> member.c);
+        final List<Member> dList = makeTop3List(list, member -> member.d);
+        final List<Member> eList = makeTop3List(list, member -> member.e);
 
         int max = 0;
         for (int i = 0; i < list.size(); i++) {
@@ -47,7 +47,7 @@ public class Main {
 
     private static List<Member> makeTop3List(final List<Member> members, final ToIntFunction<Member> selector) {
         return members.stream()
-            .sorted(Comparator.comparingInt(selector))
+            .sorted(Comparator.comparingInt(selector).reversed())
             .limit(3)
             .collect(Collectors.toList());
     }
