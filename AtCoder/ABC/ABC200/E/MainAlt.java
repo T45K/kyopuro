@@ -23,15 +23,16 @@ public class MainAlt {
                 .filter(j -> (i & (1 << (j - 1))) > 0)
                 .map(j -> array[j])
                 .reduce(0, (a, b) -> (a + b) % 200);
-            if (sums[sum] > 0) {
-                System.out.println("Yes");
-                final List<String> a = decode(n, sums[sum]);
-                System.out.println(a.size() + " " + String.join(" ", a));
-                final List<String> b = decode(n, i);
-                System.out.println(b.size() + " " + String.join(" ", b));
-                return;
+            if (sums[sum] == 0) {
+                sums[sum] = i;
+                continue;
             }
-            sums[sum] = i;
+            System.out.println("Yes");
+            final List<String> a = decode(n, sums[sum]);
+            System.out.println(a.size() + " " + String.join(" ", a));
+            final List<String> b = decode(n, i);
+            System.out.println(b.size() + " " + String.join(" ", b));
+            return;
         }
         System.out.println("No");
     }
