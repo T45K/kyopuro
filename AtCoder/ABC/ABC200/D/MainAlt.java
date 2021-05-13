@@ -1,4 +1,4 @@
-package AtCoder.ABC.ABC200.E;
+package AtCoder.ABC.ABC200.D;
 
 import java.io.BufferedReader;
 import java.io.IOException;
