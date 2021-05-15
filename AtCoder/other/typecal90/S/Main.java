@@ -7,6 +7,10 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 import java.util.stream.Stream;
 
+/*
+DP
+ワーシャルフロイドの感覚
+ */
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
