@@ -16,7 +16,7 @@ public class Main {
         final int n = scanner.nextInt();
         final List<Mountain> list = Stream.generate(() -> new Mountain(scanner.next(), scanner.nextInt()))
             .limit(n)
-            .sorted(Comparator.comparingInt(m -> -m.height))
+            .sorted(Comparator.comparingInt(Mountain::getHeight).reversed())
             .limit(2)
             .collect(Collectors.toList());
         System.out.println(list.get(1).name);
@@ -29,6 +29,10 @@ public class Main {
         Mountain(final String name, final int height) {
             this.name = name;
             this.height = height;
+        }
+
+        int getHeight() {
+            return this.height;
         }
     }
 
@@ -53,26 +57,6 @@ public class Main {
 
         int nextInt() {
             return Integer.parseInt(next());
-        }
-
-        long nextLong() {
-            return Long.parseLong(next());
-        }
-
-        double nextDouble() {
-            return Double.parseDouble(next());
-        }
-
-        String nextLine() {
-            if (tokenizer == null || !tokenizer.hasMoreTokens()) {
-                try {
-                    return reader.readLine();
-                } catch (final IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            return tokenizer.nextToken("\n");
         }
     }
 }

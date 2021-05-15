@@ -6,9 +6,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
+/*
+T-Aを全体のスコアとして，高橋君はスコアを最大に，青木君は最小にするように動く
+ */
 public class Main {
     private static final String TAKAHASHI = "Takahashi";
     private static final String AOKI = "Aoki";
+    private static final String DRAW = "Draw";
 
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
@@ -27,11 +31,10 @@ public class Main {
                 score[i][j] = (i + j) % 2 == 0 ? Integer.MIN_VALUE : Integer.MAX_VALUE;
             }
         }
-        score[h - 1][w - 1] = table[h - 1][w - 1];
+        score[h - 1][w - 1] = 0;
         dfs(table, score, h - 1, w - 1, h, w);
-        score[0][0] -= table[0][0];
         if (score[0][0] == 0) {
-            System.out.println("Draw");
+            System.out.println(DRAW);
         } else if (score[0][0] > 0) {
             System.out.println(TAKAHASHI);
         } else {
@@ -87,26 +90,6 @@ public class Main {
 
         int nextInt() {
             return Integer.parseInt(next());
-        }
-
-        long nextLong() {
-            return Long.parseLong(next());
-        }
-
-        double nextDouble() {
-            return Double.parseDouble(next());
-        }
-
-        String nextLine() {
-            if (tokenizer == null || !tokenizer.hasMoreTokens()) {
-                try {
-                    return reader.readLine();
-                } catch (final IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            return tokenizer.nextToken("\n");
         }
     }
 }

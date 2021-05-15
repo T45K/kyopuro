@@ -5,10 +5,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -19,13 +22,9 @@ public class Main {
         final Map<Character, List<Integer>> map = IntStream.range(0, s.length())
             .boxed()
             .collect(Collectors.groupingBy(s::charAt));
-        final List<Integer> correct = get(map, 'o');
-        final List<Integer> suspicious = get(map, '?');
-        final List<Integer> wrong = get(map, 'x');
-        if (correct.size() > 4 || wrong.size() == 10) {
-            System.out.println(0);
-            return;
-        }
+        final Set<Integer> correct = new HashSet<>(get(map, 'o'));
+        final Set<Integer> suspicious = new HashSet<>(get(map, '?'));
+        final Function<Integer, Boolean> contains = value -> correct.contains(value) || suspicious.contains(value);
 
         final long answer = IntStream.rangeClosed(0, 9999)
             .filter(i -> {
@@ -38,25 +37,16 @@ public class Main {
                 if (!allMatch) {
                     return false;
                 }
-                return contains(correct, suspicious, first) &&
-                    contains(correct, suspicious, second) &&
-                    contains(correct, suspicious, third) &&
-                    contains(correct, suspicious, fourth);
+                return contains.apply(first) &&
+                    contains.apply(second) &&
+                    contains.apply(third) &&
+                    contains.apply(fourth);
             }).count();
         System.out.println(answer);
     }
 
     private static List<Integer> get(final Map<Character, List<Integer>> map, final char c) {
         return Optional.ofNullable(map.get(c)).orElse(Collections.emptyList());
-    }
-
-    private static boolean contains(final List<Integer> correct, final List<Integer> suspicious, final int value) {
-        return correct.stream()
-            .filter(v -> v == value)
-            .count() +
-            suspicious.stream()
-                .filter(v -> v == value)
-                .count() > 0;
     }
 
     private static class FastScanner {
@@ -76,30 +66,6 @@ public class Main {
                 }
             }
             return tokenizer.nextToken();
-        }
-
-        int nextInt() {
-            return Integer.parseInt(next());
-        }
-
-        long nextLong() {
-            return Long.parseLong(next());
-        }
-
-        double nextDouble() {
-            return Double.parseDouble(next());
-        }
-
-        String nextLine() {
-            if (tokenizer == null || !tokenizer.hasMoreTokens()) {
-                try {
-                    return reader.readLine();
-                } catch (final IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            return tokenizer.nextToken("\n");
         }
     }
 }
