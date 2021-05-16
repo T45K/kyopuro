@@ -4,63 +4,50 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.StringTokenizer;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(final String[] args) throws IOException {
         final FastScanner scanner = new FastScanner(System.in);
         final String s = scanner.next();
         final LinkedList<Character> list = new LinkedList<>();
-        boolean flag = true;
-        for (final char c : s.toCharArray()) {
-            if (c == 'R') {
-                flag = !flag;
-                continue;
+        final String answer = operation(list, s, 0, true);
+        System.out.println(answer);
+    }
+
+    private static String operation(final LinkedList<Character> list, final String s, final int index, final boolean isNatural) {
+        if (index == s.length()) {
+            if (!isNatural) {
+                Collections.reverse(list);
             }
-            if (flag) {
-                if (!list.isEmpty() && c == list.peekLast()) {
-                    list.removeLast();
-                } else {
-                    list.addLast(c);
-                }
+            return list.stream()
+                .map(Objects::toString)
+                .collect(Collectors.joining());
+        }
+
+        final char c = s.charAt(index);
+        if (c == 'R') {
+            return operation(list, s, index + 1, !isNatural);
+        }
+
+        if (isNatural) {
+            if (!list.isEmpty() && list.peekLast() == c) {
+                list.removeLast();
             } else {
-                if (!list.isEmpty() && c == list.peekFirst()) {
-                    list.removeFirst();
-                } else {
-                    list.addFirst(c);
-                }
+                list.addLast(c);
             }
-        }
-        if (list.isEmpty()) {
-            System.out.println();
-            return;
-        }
-        if (flag) {
-            char pre = list.pollFirst();
-            final StringBuilder builder = new StringBuilder();
-            builder.append(pre);
-            while (!list.isEmpty()) {
-                final char tmp = list.pollFirst();
-                if (tmp != pre) {
-                    builder.append(tmp);
-                    pre = tmp;
-                }
-            }
-            System.out.println(builder);
         } else {
-            char post = list.pollLast();
-            final StringBuilder builder = new StringBuilder();
-            builder.append(post);
-            while (!list.isEmpty()) {
-                final char tmp = list.pollLast();
-                if (tmp != post) {
-                    builder.append(tmp);
-                    post = tmp;
-                }
+            if (!list.isEmpty() && list.peekFirst() == c) {
+                list.removeFirst();
+            } else {
+                list.addFirst(c);
             }
-            System.out.println(builder);
         }
+        return operation(list, s, index + 1, isNatural);
     }
 
     private static class FastScanner {
@@ -77,25 +64,6 @@ public class Main {
                 tokenizer = new StringTokenizer(reader.readLine());
             }
             return tokenizer.nextToken();
-        }
-
-        int nextInt() throws IOException {
-            return Integer.parseInt(next());
-        }
-
-        long nextLong() throws IOException {
-            return Long.parseLong(next());
-        }
-
-        double nextDouble() throws IOException {
-            return Double.parseDouble(next());
-        }
-
-        String nextLine() throws IOException {
-            if (!tokenizer.hasMoreTokens()) {
-                return reader.readLine();
-            }
-            return tokenizer.nextToken("\n");
         }
     }
 }
