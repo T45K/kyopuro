@@ -94,6 +94,13 @@ public class Tree {
             internalArray = initArray(list, initialValue);
         }
 
+        SegmentTree(final int size, final T initialValue, final BinaryOperator<T> comparator) {
+            this.exponent = 1 << Integer.toBinaryString(size - 1).length();
+            this.comparator = comparator;
+            this.initialValue = initialValue;
+            internalArray = initArray(Collections.emptyList(), initialValue);
+        }
+
         /**
          * 値の更新
          *
@@ -164,14 +171,153 @@ public class Tree {
 
             return (T[]) array;
         }
+    }
 
-        @Deprecated
-        private int calcExponent(final int n) {
-            int exp = 1;
-            while (exp < n) {
-                exp <<= 1;
+    /**
+     * Lazy Segment Tree
+     * <p>
+     * セグ木の基本操作に加えて，区間更新が O(logN) で行える
+     */
+    private static class LazySegmentTree<T> {
+        private final T[] internalArray;
+        private final T[] lazyArray;
+        private final int exponent;
+        private final T initialValue;
+        private final BinaryOperator<T> comparator;
+
+        LazySegmentTree(final List<T> list, final T initialValue, final BinaryOperator<T> comparator) {
+            this.exponent = 1 << Integer.toBinaryString(list.size() - 1).length();
+            this.comparator = comparator;
+            this.initialValue = initialValue;
+            internalArray = initArray(list, initialValue);
+            lazyArray = initLazyArray(initialValue);
+        }
+
+        LazySegmentTree(final int size, final T initialValue, final BinaryOperator<T> comparator) {
+            this.exponent = 1 << Integer.toBinaryString(size - 1).length();
+            this.comparator = comparator;
+            this.initialValue = initialValue;
+            internalArray = initArray(Collections.emptyList(), initialValue);
+            lazyArray = initLazyArray(initialValue);
+        }
+
+        /**
+         * 値の更新
+         *
+         * @param index "0-indexed"のインデックス
+         * @param value 更新後の値
+         */
+        void update(final int index, final T value) {
+            internalArray[index + exponent] = value;
+            int current = (index + exponent) / 2;
+            while (current > 0) {
+                internalArray[current] = comparator.apply(internalArray[current * 2], internalArray[current * 2 + 1]);
+                current /= 2;
             }
-            return exp;
+        }
+
+        /**
+         * 値の更新
+         *
+         * @param index    "0-indexed"のインデックス
+         * @param operator 更新式
+         */
+        void update(final int index, final UnaryOperator<T> operator) {
+            internalArray[index + exponent] = operator.apply(internalArray[index + exponent]);
+            int current = (index + exponent) / 2;
+            while (current > 0) {
+                internalArray[current] = comparator.apply(internalArray[current * 2], internalArray[current * 2 + 1]);
+                current /= 2;
+            }
+        }
+
+        /**
+         * 区間更新
+         * 区間を [left, right) の半開区間で渡すことに注意
+         *
+         * @param left  "0-indexed"のクエリの左端
+         * @param right "0-indexed"のクエリの右端 + 1
+         *              つまり"1-indexed"のクエリの右端
+         * @param value 更新する値
+         */
+        void updateRange(final int left, final int right, final T value) {
+            updateRange(left, right, value, 0, exponent, 1);
+        }
+
+        private void updateRange(final int left, final int right, final T value, final int begin, final int end, final int k) {
+            evaluate(k);
+            if (left <= begin && end <= right) {
+                lazyArray[k] = value;
+                evaluate(k);
+            } else if (left < end && begin < right) {
+                final int mid = (begin + end) / 2;
+                updateRange(left, right, value, begin, mid, k * 2);
+                updateRange(left, right, value, mid, end, k * 2 + 1);
+                internalArray[k] = comparator.apply(internalArray[k * 2], internalArray[k * 2 + 1]);
+            }
+        }
+
+        /**
+         * クエリ
+         * クエリの区間を [left, right) の半開区間で渡すことに注意
+         *
+         * @param left  "0-indexed"のクエリの左端
+         * @param right "0-indexed"のクエリの右端 + 1
+         *              つまり"1-indexed"のクエリの右端
+         * @return クエリ結果
+         */
+        T query(final int left, final int right) {
+            return query(left, right, 0, exponent, 1);
+        }
+
+        private T query(final int left, final int right, final int begin, final int end, final int k) {
+            evaluate(k);
+
+            if (left >= end || right <= begin) {
+                return initialValue;
+            }
+
+            if (left <= begin && end <= right) {
+                return internalArray[k];
+            }
+
+            final int mid = (begin + end) / 2;
+            return comparator.apply(query(left, right, begin, mid, k * 2), query(left, right, mid, end, k * 2 + 1));
+        }
+
+        private void evaluate(final int index) {
+            if (lazyArray[index] == initialValue) {
+                return;
+            }
+            final T value = lazyArray[index];
+            if (index * 2 + 1 < lazyArray.length) {
+                lazyArray[index * 2] = value;
+                lazyArray[index * 2 + 1] = value;
+            }
+            internalArray[index] = value;
+            lazyArray[index] = initialValue;
+        }
+
+        @SuppressWarnings("unchecked")
+        private T[] initArray(final List<T> list, final T initialValue) {
+            final Object[] array = new Object[exponent * 2];
+            Arrays.fill(array, initialValue);
+            for (int i = 0; i < list.size(); i++) {
+                array[i + exponent] = list.get(i);
+            }
+
+            for (int i = exponent - 1; i > 0; i--) {
+                array[i] = comparator.apply((T) array[i * 2], (T) array[i * 2 + 1]);
+            }
+
+            return (T[]) array;
+        }
+
+        @SuppressWarnings("unchecked")
+        private T[] initLazyArray(final T initialValue) {
+            final Object[] array = new Object[exponent * 2];
+            Arrays.fill(array, initialValue);
+            return (T[]) array;
         }
     }
 
