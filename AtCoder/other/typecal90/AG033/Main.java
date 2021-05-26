@@ -11,6 +11,14 @@ public class Main {
         final FastScanner scanner = new FastScanner(System.in);
         final int h = scanner.nextInt();
         final int w = scanner.nextInt();
+        if (h == 1) {
+            System.out.println(w);
+            return;
+        }
+        if (w == 1) {
+            System.out.println(h);
+            return;
+        }
         System.out.println((h + 1) / 2 * ((w + 1) / 2));
     }
 
