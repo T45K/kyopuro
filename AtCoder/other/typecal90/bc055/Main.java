@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Main {
@@ -17,25 +18,18 @@ public class Main {
             .limit(n)
             .mapToLong(Long::longValue)
             .toArray();
-        int counter = 0;
-        for (int a = 0; a < n - 4; a++) {
-            final long tmpA = array[a] % p;
-            for (int b = a + 1; b < n - 3; b++) {
-                final long tmpB = array[b] * tmpA % p;
-                for (int c = b + 1; c < n - 2; c++) {
-                    final long tmpC = array[c] * tmpB % p;
-                    for (int d = c + 1; d < n - 1; d++) {
-                        final long tmpD = array[d] * tmpC % p;
-                        for (int e = d + 1; e < n; e++) {
-                            if (array[e] * tmpD % p == q) {
-                                counter++;
-                            }
-                        }
-                    }
-                }
-            }
+        final int answer = recursive(0, 0, array, n, p, q, 1);
+        System.out.println(answer);
+    }
+
+    private static int recursive(final int current, final int index, final long[] array, final int n, final int p, final int q, final long tmp) {
+        if (current == 5) {
+            return tmp == q ? 1 : 0;
         }
-        System.out.println(counter);
+
+        return IntStream.range(index, n - (4 - current))
+            .map(i -> recursive(current + 1, i + 1, array, n, p, q, tmp * array[i] % p))
+            .sum();
     }
 
     private static class FastScanner {
