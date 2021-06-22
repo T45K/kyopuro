@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
+import java.util.function.BiFunction;
 
 public class Main {
     public static void main(final String[] args) {
@@ -17,7 +18,7 @@ public class Main {
         array[n] = 0;
         int current = n;
         for (int i = 1; ; i++) {
-            current = calc(current);
+            current = update(current);
             if (i == k) {
                 System.out.println(current);
                 return;
@@ -26,17 +27,27 @@ public class Main {
                 array[current] = i;
                 continue;
             }
-            final int loop = i - array[current];
-            final long rest = (k - i) % loop;
-            for (long j = 0; j < rest; j++) {
-                current = calc(current);
-            }
-            System.out.println(current);
+            System.out.println(calc(i, current, array, k));
             return;
         }
     }
 
-    private static int calc(final int value) {
+    private static int calc(final int i, final int current, final int[] array, final long k) {
+        final int loop = i - array[current];
+        final long rest = (k - i) % loop;
+        final BiFunction<Integer, Integer, Integer> recursive = new BiFunction<>() {
+            @Override
+            public Integer apply(final Integer value, final Integer index) {
+                if (index == rest) {
+                    return value;
+                }
+                return this.apply(update(value), index + 1);
+            }
+        };
+        return recursive.apply(current, 0);
+    }
+
+    private static int update(final int value) {
         return (value + value % 10 + value / 10 % 10 + value / 100 % 10 + value / 1000 % 10 + value / 10000 % 10) % 100_000;
     }
 
