@@ -45,13 +45,6 @@ public class Main {
             this.table = table;
         }
 
-        private static int countOne(final String value) {
-            return (int) IntStream.range(0, value.length())
-                .mapToObj(value::charAt)
-                .filter(c -> c == '1')
-                .count();
-        }
-
         public int solve(final int x, final int y) {
             final int start = flat(x, y);
             final int state = 1 << start;
@@ -69,7 +62,7 @@ public class Main {
 
                 final int next = flat(xNext, yNext);
                 if (initial == next) {
-                    max = Math.max(max, countOne(Integer.toBinaryString(state)));
+                    max = Math.max(max, countOne(state));
                     continue;
                 }
 
@@ -81,6 +74,14 @@ public class Main {
                 max = Math.max(max, recursive(xNext, yNext, state | bit, initial));
             }
             return max;
+        }
+
+        private int countOne(final int value) {
+            final String bit = Integer.toBinaryString(value);
+            return (int) IntStream.range(0, bit.length())
+                .mapToObj(bit::charAt)
+                .filter(c -> c == '1')
+                .count();
         }
 
         private boolean isMovable(final int x, final int y) {
