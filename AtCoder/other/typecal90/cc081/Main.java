@@ -1,4 +1,4 @@
-package AtCoder.other.typecal90.cc071;
+package AtCoder.other.typecal90.cc081;
 
 import java.io.BufferedReader;
 import java.io.IOException;
