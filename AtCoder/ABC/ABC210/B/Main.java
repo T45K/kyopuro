@@ -5,22 +5,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
+import java.util.stream.IntStream;
 
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
         final int n = scanner.nextInt();
         final String s = scanner.next();
-        for (int i = 0; i < n; i++) {
-            if (s.charAt(i) == '1') {
-                if (i % 2 == 0) {
-                    System.out.println("Takahashi");
-                } else {
-                    System.out.println("Aoki");
-                }
-                return;
-            }
-        }
+        IntStream.range(0, n)
+            .filter(i -> s.charAt(i) == '1')
+            .boxed()
+            .findFirst()
+            .map(i -> i % 2 == 0 ? "Takahashi" : "Aoki")
+            .ifPresent(System.out::println);
     }
 
     private static class FastScanner {
@@ -44,26 +41,6 @@ public class Main {
 
         int nextInt() {
             return Integer.parseInt(next());
-        }
-
-        long nextLong() {
-            return Long.parseLong(next());
-        }
-
-        double nextDouble() {
-            return Double.parseDouble(next());
-        }
-
-        String nextLine() {
-            if (tokenizer == null || !tokenizer.hasMoreTokens()) {
-                try {
-                    return reader.readLine();
-                } catch (final IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            return tokenizer.nextToken("\n");
         }
     }
 }
