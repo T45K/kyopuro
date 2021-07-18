@@ -6,11 +6,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/*
+尺取り
+ */
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
@@ -19,27 +22,41 @@ public class Main {
         final List<Integer> list = Stream.generate(scanner::nextInt)
             .limit(n)
             .collect(Collectors.toList());
-        final Map<Integer, Integer> counter = new HashMap<>();
+        final Counter counter = new Counter();
         for (int i = 0; i < k; i++) {
             final int value = list.get(i);
-            counter.compute(value, (key, v) -> v == null ? 1 : v + 1);
+            counter.increment(value);
         }
         int size = counter.size();
         int max = size;
         for (int i = k; i < n; i++) {
             final int in = list.get(i);
             final int out = list.get(i - k);
-            if (!counter.containsKey(in) || counter.get(in) == 0) {
+            if (counter.isZero(in)) {
                 size++;
             }
-            counter.compute(in, (key, value) -> value == null ? 1 : value + 1);
-            counter.compute(out, (key, value) -> value - 1);
-            if (counter.get(out) == 0) {
+            counter.increment(in);
+            counter.decrement(out);
+            if (counter.isZero(out)) {
                 size--;
             }
             max = Math.max(max, size);
         }
         System.out.println(max);
+    }
+
+    private static class Counter extends HashMap<Integer, Integer> {
+        boolean isZero(final int key) {
+            return this.get(key) == null || this.get(key) == 0;
+        }
+
+        void increment(final int key) {
+            this.compute(key, (k, v) -> v == null ? 1 : v + 1);
+        }
+
+        void decrement(final int key) {
+            this.compute(key, (k, v) -> Optional.ofNullable(v).orElseThrow() - 1);
+        }
     }
 
     private static class FastScanner {

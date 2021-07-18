@@ -6,13 +6,23 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
+/*
+左から右に行くことを考えると、
+dp[i]の値は
+- 左隣から直接線路を引く
+- 左隣で最小の費用を考慮して線路を引く
+の最小値になる
+後者に関しては、左隣での費用はどこかから左隣までの線路を引いた時の値になっているので、
+左隣の地価を引いて今見ている土地の地価とCを足せば良い
+左隣での値 - A[i-1] + A[i+1] + C
+ */
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
         final int h = scanner.nextInt();
         final int w = scanner.nextInt();
         final long c = scanner.nextLong();
-        final long[][] table = new long[h + 1][w + 1];
+        final long[][] table = new long[h + 1][w + 2];
         for (int i = 1; i <= h; i++) {
             for (int j = 1; j <= w; j++) {
                 table[i][j] = scanner.nextInt();
@@ -20,53 +30,47 @@ public class Main {
         }
 
         long max = Long.MAX_VALUE;
-        final long[][] calc1 = new long[h + 1][w + 1]; // 左上 -> 右下
+        final long[][] leftToRightDP = new long[h + 1][w + 1];
         for (int i = 1; i <= h; i++) {
             for (int j = 1; j <= w; j++) {
                 if (i == 1 && j == 1) {
-                    calc1[i][j] = 2 * table[i][j];
+                    leftToRightDP[i][j] = 2 * table[i][j];
                     continue;
                 }
 
+                final long fromLeft = Math.min(table[i][j - 1] + c, leftToRightDP[i][j - 1] - table[i][j - 1] + c);
+                final long fromAbove = Math.min(table[i - 1][j] + c, leftToRightDP[i - 1][j] - table[i - 1][j] + c);
                 if (i == 1) {
-                    calc1[i][j] = table[i][j] + Math.min(table[i][j - 1] + c, calc1[i][j - 1] - table[i][j - 1] + c);
-                    max = Math.min(max, calc1[i][j]);
-                    continue;
+                    leftToRightDP[i][j] = table[i][j] + fromLeft;
+                } else if (j == 1) {
+                    leftToRightDP[i][j] = table[i][j] + fromAbove;
+                } else {
+                    leftToRightDP[i][j] = table[i][j] + Math.min(fromLeft, fromAbove);
                 }
 
-                if (j == 1) {
-                    calc1[i][j] = table[i][j] + Math.min(table[i - 1][j] + c, calc1[i - 1][j] - table[i - 1][j] + c);
-                    max = Math.min(max, calc1[i][j]);
-                    continue;
-                }
-
-                calc1[i][j] = table[i][j] + Math.min(Math.min(table[i][j - 1] + c, calc1[i][j - 1] - table[i][j - 1] + c), Math.min(table[i - 1][j] + c, calc1[i - 1][j] - table[i - 1][j] + c));
-                max = Math.min(max, calc1[i][j]);
+                max = Math.min(max, leftToRightDP[i][j]);
             }
         }
 
-        final long[][] calc2 = new long[h + 1][w + 1]; // 右上 -> 左下
+        final long[][] rightToLeftDP = new long[h + 1][w + 2];
         for (int i = 1; i <= h; i++) {
             for (int j = w; j > 0; j--) {
                 if (i == 1 && j == w) {
-                    calc2[i][j] = 2 * table[i][j];
+                    rightToLeftDP[i][j] = 2 * table[i][j];
                     continue;
                 }
 
+                final long fromRight = Math.min(table[i][j + 1] + c, rightToLeftDP[i][j + 1] - table[i][j + 1] + c);
+                final long fromAbove = Math.min(table[i - 1][j] + c, rightToLeftDP[i - 1][j] - table[i - 1][j] + c);
                 if (i == 1) {
-                    calc2[i][j] = table[i][j] + Math.min(table[i][j + 1] + c, calc2[i][j + 1] - table[i][j + 1] + c);
-                    max = Math.min(max, calc2[i][j]);
-                    continue;
+                    rightToLeftDP[i][j] = table[i][j] + fromRight;
+                } else if (j == w) {
+                    rightToLeftDP[i][j] = table[i][j] + fromAbove;
+                } else {
+                    rightToLeftDP[i][j] = table[i][j] + Math.min(fromRight, fromAbove);
                 }
 
-                if (j == w) {
-                    calc2[i][j] = table[i][j] + Math.min(table[i - 1][j] + c, calc2[i - 1][j] - table[i - 1][j] + c);
-                    max = Math.min(max, calc2[i][j]);
-                    continue;
-                }
-
-                calc2[i][j] = table[i][j] + Math.min(Math.min(table[i][j + 1] + c, calc2[i][j + 1] - table[i][j + 1] + c), Math.min(table[i - 1][j] + c, calc2[i - 1][j] - table[i - 1][j] + c));
-                max = Math.min(max, calc2[i][j]);
+                max = Math.min(max, rightToLeftDP[i][j]);
             }
         }
         System.out.println(max);
