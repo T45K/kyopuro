@@ -11,6 +11,7 @@ import java.util.StringTokenizer;
 import java.util.function.Function;
 
 /*
+解説AC
 盤面の全ての状態を記録しておく
  */
 public class Main {
