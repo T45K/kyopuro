@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 import java.util.function.BinaryOperator;
 import java.util.function.UnaryOperator;
@@ -27,8 +26,6 @@ public class Main {
             new Pair(-1, Long.MAX_VALUE / 2),
             (a, b) -> a.value < b.value ? a : b);
         final List<Long> answers = new ArrayList<>();
-        final PriorityQueue<Integer> queue = new PriorityQueue<>();
-        int accum = 0;
         for (int i = 0; i < q; i++) {
             final int query = scanner.nextInt();
             switch (query) {
