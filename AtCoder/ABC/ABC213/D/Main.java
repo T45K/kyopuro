@@ -6,14 +6,18 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.StringTokenizer;
+import java.util.function.BiConsumer;
 
-// TODO
+/*
+Javaは再帰関数をスタックするので引数が多いと遅い？
+ */
 public class Main {
+
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
         final int n = scanner.nextInt();
@@ -25,28 +29,27 @@ public class Main {
             tree.putSingle(b, a);
         }
 
-        for (final List<Integer> list : tree.values()) {
-            Collections.sort(list);
-        }
-
         final StringJoiner joiner = new StringJoiner(" ");
         joiner.add("1");
-        dfs(1, 0, tree, joiner);
+        final BiConsumer<Integer, Integer> dfs = new BiConsumer<>() {
+            @Override
+            public void accept(final Integer current, final Integer parent) {
+                Collections.sort(tree.getList(current));
+                for (final int next : tree.getList(current)) {
+                    if (next == parent) {
+                        continue;
+                    }
+                    joiner.add(Integer.toString(next));
+                    this.accept(next, current);
+                    joiner.add(Integer.toString(current));
+                }
+            }
+        };
+        dfs.accept(1, 0);
         System.out.println(joiner);
     }
 
-    private static void dfs(final int current, final int parent, final ListMap<Integer, Integer> tree, final StringJoiner joiner) {
-        for (final int next : tree.getList(current)) {
-            if (next == parent) {
-                continue;
-            }
-            joiner.add(Integer.toString(next));
-            dfs(next, current, tree, joiner);
-            joiner.add(Integer.toString(current));
-        }
-    }
-
-    private static class ListMap<K, V> extends LinkedHashMap<K, List<V>> {
+    private static class ListMap<K, V> extends HashMap<K, List<V>> {
         public void putSingle(final K key, final V value) {
             super.computeIfAbsent(key, k -> new ArrayList<>()).add(value);
         }
