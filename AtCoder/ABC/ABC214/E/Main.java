@@ -5,31 +5,46 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Comparator;
-import java.util.List;
+import java.util.Optional;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-// TODO solve
+/*
+Lの小さい順に候補のボールを考えて，Rの小さい順に箱に突っ込んでいく
+ */
 public class Main {
   public static void main(final String[] args) {
     final FastScanner scanner = new FastScanner(System.in);
     final Supplier<String> solve = () -> {
       final int n = scanner.nextInt();
-      final List<Pair> list = Stream.generate(() -> new Pair(scanner.nextInt(), scanner.nextInt()))
+      final PriorityQueue<Pair> lSortedQueue = Stream.generate(() -> new Pair(scanner.nextInt(), scanner.nextInt()))
           .limit(n)
           .sorted(Comparator.comparingInt(Pair::getL).thenComparing(Pair::getR))
-          .collect(Collectors.toList());
-      int min = 0;
-      for (final Pair pair : list) {
-        if (pair.getR() <= min) {
+          .collect(Collectors.toCollection(() -> new PriorityQueue<>(Comparator.comparingInt(Pair::getL))));
+      int index = 0;
+      final PriorityQueue<Integer> rSortedQueue = new PriorityQueue<>();
+      for (int i = 0; i < n; i++) {
+        if (rSortedQueue.isEmpty()) {
+          final Pair poll = lSortedQueue.poll();
+          index = Optional.ofNullable(poll).orElseThrow().getL();
+          rSortedQueue.add(poll.getR());
+        }
+        while (!lSortedQueue.isEmpty() && lSortedQueue.peek().getL() == index) {
+          final Pair poll = lSortedQueue.poll();
+          rSortedQueue.add(poll.getR());
+        }
+        final int r = Optional.ofNullable(rSortedQueue.poll()).orElseThrow();
+        if (r < index) {
           return "No";
         }
-        min = Math.max(min + 1, pair.getL());
+        index++;
       }
       return "Yes";
     };
+
     final int t = scanner.nextInt();
     final String answer = Stream.generate(solve)
         .limit(t)
@@ -76,26 +91,6 @@ public class Main {
 
     int nextInt() {
       return Integer.parseInt(next());
-    }
-
-    long nextLong() {
-      return Long.parseLong(next());
-    }
-
-    double nextDouble() {
-      return Double.parseDouble(next());
-    }
-
-    String nextLine() {
-      if (tokenizer == null || !tokenizer.hasMoreTokens()) {
-        try {
-          return reader.readLine();
-        } catch (final IOException e) {
-          throw new RuntimeException(e);
-        }
-      }
-
-      return tokenizer.nextToken("\n");
     }
   }
 }

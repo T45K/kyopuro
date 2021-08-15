@@ -15,6 +15,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+/*
+コストの小さい辺の順に連結していく
+ */
 public class Main {
   public static void main(final String[] args) {
     final FastScanner scanner = new FastScanner(System.in);
