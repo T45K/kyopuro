@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /*
+解説AC
 Lの小さい順に候補のボールを考えて，Rの小さい順に箱に突っ込んでいく
  */
 public class Main {
