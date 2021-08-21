@@ -1,37 +1,23 @@
-package AtCoder.ABC.ABC214.F;
+package AtCoder.ABC.ABC215.B;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
-/*
-解説AC
-部分文字列の種類数を求める問題は典型を知ることが大事
- */
 public class Main {
-  private static final long MOD = 1_000_000_007;
-
   public static void main(final String[] args) {
     final FastScanner scanner = new FastScanner(System.in);
-    final String s = scanner.next();
-    final long[] dp = new long[s.length() + 2];
-    dp[0] = 1;
-    for (int i = 0; i < s.length(); i++) {
-      for (int j = i - 1; ; j--) {
-        dp[i + 2] += dp[j + 1];
-        dp[i + 2] %= MOD;
-        if (j == -1 || s.charAt(j) == s.charAt(i)) {
-          break;
-        }
+    final long n = scanner.nextLong();
+    long target = 1;
+    for (int i = 0; ; i++) {
+      if (target > n) {
+        System.out.println(i - 1);
+        return;
       }
+      target *= 2;
     }
-
-    final long answer = Arrays.stream(dp, 2, s.length() + 2)
-        .reduce(0, (a, b) -> (a + b) % MOD);
-    System.out.println(answer);
   }
 
   private static class FastScanner {
@@ -51,6 +37,10 @@ public class Main {
         }
       }
       return tokenizer.nextToken();
+    }
+
+    long nextLong() {
+      return Long.parseLong(next());
     }
   }
 }
