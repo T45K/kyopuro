@@ -37,7 +37,7 @@ public class Main {
         }
 
         final InitialDijkstraResult initialDijkstraResult = initialDijkstra(n, graph);
-        if (initialDijkstraResult == null) {
+        if (initialDijkstraResult.cost == -1) {
             final String answer = Stream.generate(() -> "-1")
                 .limit(m)
                 .collect(Collectors.joining("\n"));
@@ -78,7 +78,7 @@ public class Main {
         }
 
         if (distances[n] == 401) {
-            return null;
+            return new InitialDijkstraResult(-1, Collections.emptySet());
         }
 
         final Set<Edge> set = new HashSet<>();
