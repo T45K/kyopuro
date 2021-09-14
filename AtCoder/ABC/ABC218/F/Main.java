@@ -21,6 +21,7 @@ import java.util.stream.Stream;
 
 /*
 最初に最短経路を求め，それに含まれる経路に対して，それぞれ通れない際の最短経路を求める
+幅探で良い
  */
 public class Main {
     public static void main(final String[] args) {
