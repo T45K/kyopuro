@@ -80,22 +80,22 @@ public class Main {
         return count == bitCount;
     }
 
-    private static void dfs(final int x, final int y, final boolean[][] bitTable, final boolean[][] isVisited, final boolean bool) {
-        if (x > 0 && bitTable[x - 1][y] == bool && !isVisited[x - 1][y]) {
+    private static void dfs(final int x, final int y, final boolean[][] bitTable, final boolean[][] isVisited, final boolean isInside) {
+        if (x > 0 && bitTable[x - 1][y] == isInside && !isVisited[x - 1][y]) {
             isVisited[x - 1][y] = true;
-            dfs(x - 1, y, bitTable, isVisited, bool);
+            dfs(x - 1, y, bitTable, isVisited, isInside);
         }
-        if (x < 3 && bitTable[x + 1][y] == bool && !isVisited[x + 1][y]) {
+        if (x < 3 && bitTable[x + 1][y] == isInside && !isVisited[x + 1][y]) {
             isVisited[x + 1][y] = true;
-            dfs(x + 1, y, bitTable, isVisited, bool);
+            dfs(x + 1, y, bitTable, isVisited, isInside);
         }
-        if (y > 0 && bitTable[x][y - 1] == bool && !isVisited[x][y - 1]) {
+        if (y > 0 && bitTable[x][y - 1] == isInside && !isVisited[x][y - 1]) {
             isVisited[x][y - 1] = true;
-            dfs(x, y - 1, bitTable, isVisited, bool);
+            dfs(x, y - 1, bitTable, isVisited, isInside);
         }
-        if (y < 3 && bitTable[x][y + 1] == bool && !isVisited[x][y + 1]) {
+        if (y < 3 && bitTable[x][y + 1] == isInside && !isVisited[x][y + 1]) {
             isVisited[x][y + 1] = true;
-            dfs(x, y + 1, bitTable, isVisited, bool);
+            dfs(x, y + 1, bitTable, isVisited, isInside);
         }
     }
 

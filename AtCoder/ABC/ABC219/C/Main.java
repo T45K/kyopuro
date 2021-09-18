@@ -22,7 +22,7 @@ public class Main {
         final int n = scanner.nextInt();
         final String answer = Stream.generate(scanner::next)
             .limit(n)
-            .sorted(Comparator.comparing((String s) -> IntStream.range(0, s.length())
+            .sorted(Comparator.comparing(s -> IntStream.range(0, s.length())
                 .map(i -> base[s.charAt(i) - 'a'])
                 .mapToObj(v -> Character.toString(v + 'a'))
                 .collect(Collectors.joining())))
