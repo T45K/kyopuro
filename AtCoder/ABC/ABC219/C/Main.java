@@ -10,6 +10,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+/*
+文字列を与えられた辞書順で再構築してからソートする
+ */
 public class Main {
 
     public static void main(final String[] args) {

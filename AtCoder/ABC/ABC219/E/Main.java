@@ -7,6 +7,12 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 import java.util.stream.IntStream;
 
+/*
+以下の条件を含むマスの集合をbit全探索で求める
+1. 全ての家を含む
+2. 連結
+3. 内部に空白を含まない．つまり，全ての空白が一番外側と接続している
+ */
 public class Main {
     private static final int[] xArray = {1, 2};
     private static final int[] yArray = {0, 3};
