@@ -17,11 +17,10 @@ public class Main {
         final FastScanner scanner = new FastScanner(System.in);
         final int n = scanner.nextInt();
         final int m = scanner.nextInt();
-        final SegmentTree<Integer> tree = new SegmentTree<>(n + 1, -1, Math::max);
-        tree.update(0, 0);
+        final SegmentTree<Integer> tree = new SegmentTree<>(n + 1, 0, Math::max);
         Stream.generate(() -> new Pair(scanner.nextInt(), scanner.nextInt()))
             .limit(m)
-            .sorted(Comparator.comparingInt(Pair::getA).thenComparingInt(pair -> -pair.b))
+            .sorted(Comparator.comparingInt(Pair::getA).thenComparing(Pair::getB, Comparator.reverseOrder()))
             .map(Pair::getB)
             .forEach(value -> {
                 final int max = tree.query(value);
