@@ -3,6 +3,7 @@ package library;
 /**
  * 組み合わせ計算を集めたライブラリ
  */
+@SuppressWarnings("unused")
 class ModuloCalculation {
     /**
      * 組み合わせの計算をDPを用いて高速化する．

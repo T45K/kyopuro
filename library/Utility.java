@@ -22,6 +22,7 @@ import java.util.stream.IntStream;
 /**
  * 基本のライブラリ
  */
+@SuppressWarnings("unused")
 public class Utility {
     /**
      * ユークリッドの互除法
