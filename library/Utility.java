@@ -13,6 +13,7 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.StringTokenizer;
 import java.util.function.Consumer;
@@ -289,6 +290,33 @@ public class Utility {
 
         public List<V> getList(final K key) {
             return Optional.ofNullable(super.get(key)).orElse(Collections.emptyList());
+        }
+    }
+
+    private static class Pair<T1, T2> {
+        final T1 first;
+        final T2 second;
+
+        Pair(final T1 first, final T2 second) {
+            this.first = first;
+            this.second = second;
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            final Pair<?, ?> pair = (Pair<?, ?>) o;
+            return Objects.equals(first, pair.first) && Objects.equals(second, pair.second);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(first, second);
         }
     }
 }
