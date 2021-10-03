@@ -33,7 +33,7 @@ public class Main {
             .sorted()
             .distinct()
             .collect(Collectors.toList()));
-        final SegmentTree<Long> tree = new SegmentTree<>(invertedIndex.size(), 0L, Long::sum);
+        final SegmentTree<Long> tree = new SegmentTree<>(invertedIndex.size(), 0L, (a, b) -> (a + b) % MOD);
 
         long sum = 0;
         long base = 1;
@@ -45,7 +45,7 @@ public class Main {
             base *= 2;
             base %= MOD;
             final long inv = modInv(base);
-            tree.update(index, v -> v + inv);
+            tree.update(index, v -> (v + inv) % MOD);
         }
 
         System.out.println(sum);
