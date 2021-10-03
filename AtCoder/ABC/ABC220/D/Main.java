@@ -1,40 +1,50 @@
-package AtCoder.ABC.ABC222.C;
+package AtCoder.ABC.ABC220.D;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 import java.util.stream.Stream;
 
+/*
+DP
+ */
 public class Main {
+    private static final long MOD = 998_244_353;
+
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
         final int n = scanner.nextInt();
-        final long[] array = Stream.generate(scanner::nextLong)
+        final int[] array = Stream.generate(scanner::nextInt)
             .limit(n)
-            .mapToLong(Long::longValue)
+            .mapToInt(Integer::intValue)
             .toArray();
-        final long x = scanner.nextLong();
 
-        final long sum = Arrays.stream(array).sum();
-        final long loop = x / sum;
-        final long rest = x - sum * loop;
-        final int found = find(array, rest);
-
-        System.out.println(n * loop + found);
+        final long[][] table = new long[n][10];
+        table[1][f(array[0], array[1])]++;
+        table[1][g(array[0], array[1])]++;
+        for (int i = 2; i < n; i++) {
+            for (int j = 0; j < 10; j++) {
+                final int f = f(j, array[i]);
+                table[i][f] += table[i - 1][j];
+                table[i][f] %= MOD;
+                final int g = g(j, array[i]);
+                table[i][g] += table[i - 1][j];
+                table[i][g] %= MOD;
+            }
+        }
+        for (int i = 0; i < 10; i++) {
+            System.out.println(table[n - 1][i]);
+        }
     }
 
-    private static int find(final long[] array, final long value) {
-        long sum = 0;
-        for (int i = 0; i < array.length; i++) {
-            if (sum > value) {
-                return i;
-            }
-            sum += array[i];
-        }
-        return array.length;
+    private static int f(final int a, final int b) {
+        return (a + b) % 10;
+    }
+
+    private static int g(final int a, final int b) {
+        return a * b % 10;
     }
 
     private static class FastScanner {
@@ -58,10 +68,6 @@ public class Main {
 
         int nextInt() {
             return Integer.parseInt(next());
-        }
-
-        long nextLong() {
-            return Long.parseLong(next());
         }
     }
 }

@@ -1,24 +1,40 @@
-package AtCoder.ABC.ABC222.A;
+package AtCoder.ABC.ABC220.C;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
-import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
-        final int a = scanner.nextInt();
-        final int b = scanner.nextInt();
-        final int c = scanner.nextInt();
-        final int answer = IntStream.range(1, 1000)
-            .map(i -> c * i)
-            .filter(v -> v >= a && v <= b)
-            .findFirst()
-            .orElse(-1);
-        System.out.println(answer);
+        final int n = scanner.nextInt();
+        final long[] array = Stream.generate(scanner::nextLong)
+            .limit(n)
+            .mapToLong(Long::longValue)
+            .toArray();
+        final long x = scanner.nextLong();
+
+        final long sum = Arrays.stream(array).sum();
+        final long loop = x / sum;
+        final long rest = x - sum * loop;
+        final int found = find(array, rest);
+
+        System.out.println(n * loop + found);
+    }
+
+    private static int find(final long[] array, final long value) {
+        long sum = 0;
+        for (int i = 0; i < array.length; i++) {
+            if (sum > value) {
+                return i;
+            }
+            sum += array[i];
+        }
+        return array.length;
     }
 
     private static class FastScanner {
@@ -42,6 +58,10 @@ public class Main {
 
         int nextInt() {
             return Integer.parseInt(next());
+        }
+
+        long nextLong() {
+            return Long.parseLong(next());
         }
     }
 }

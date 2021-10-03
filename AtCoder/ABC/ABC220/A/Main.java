@@ -1,28 +1,24 @@
-package AtCoder.ABC.ABC222.B;
+package AtCoder.ABC.ABC220.A;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
+import java.util.stream.IntStream;
 
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
-        final int k = scanner.nextInt();
-        final String a = scanner.next();
-        final String b = scanner.next();
-        System.out.println(convert(a, k) * convert(b, k));
-    }
-
-    private static long convert(final String value, final int k) {
-        long base = 1;
-        long sum = 0;
-        for (int i = value.length() - 1; i >= 0; i--) {
-            sum += base * (value.charAt(i) - '0');
-            base *= k;
-        }
-        return sum;
+        final int a = scanner.nextInt();
+        final int b = scanner.nextInt();
+        final int c = scanner.nextInt();
+        final int answer = IntStream.range(1, 1000)
+            .map(i -> c * i)
+            .filter(v -> v >= a && v <= b)
+            .findFirst()
+            .orElse(-1);
+        System.out.println(answer);
     }
 
     private static class FastScanner {
