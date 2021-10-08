@@ -50,9 +50,9 @@ public class Utility {
      * @param n 素因数分解したい31bitまでの非負整数
      * @return 引数を構成している素数をキー，掛けられる回数をバリューとしたマップ
      */
-    private static Map<Integer, Long> primeFactorization(int n) {
+    private static Map<Integer, Integer> primeFactorization(int n) {
         final double sqrt = Math.sqrt(n);
-        final Map<Integer, Long> countMap = new HashMap<>();
+        final Map<Integer, Integer> countMap = new HashMap<>();
         for (int i = 2; i <= sqrt; i++) {
             if (n % i == 0) {
                 countMap.compute(i, (k, v) -> v = v == null ? 1 : v + 1);
@@ -66,6 +66,23 @@ public class Utility {
         }
 
         return countMap;
+    }
+
+    /**
+     * 10^9でやるとスタックオーバーフローする
+     */
+    private static Map<Integer, Integer> primeFactorizationRecursive(final int n, final int i) {
+        if (n == 1) {
+            return new HashMap<>();
+        }
+
+        if (n % i != 0) {
+            return primeFactorizationRecursive(n, i + 1);
+        }
+
+        final Map<Integer, Integer> map = primeFactorizationRecursive(n / i, i);
+        map.compute(i, (k, v) -> v == null ? 1 : v + 1);
+        return map;
     }
 
     /**
