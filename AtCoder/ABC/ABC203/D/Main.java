@@ -5,15 +5,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.StringTokenizer;
-import java.util.function.BinaryOperator;
-import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
-// TODO solve
+/*
+決め打ちにぶたん
+いもす法で対象が中央値になれるかを検証する
+ */
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
@@ -26,116 +23,66 @@ public class Main {
             }
         }
 
-        final List<Integer> list = IntStream.range(0, n)
-            .flatMap(i -> Arrays.stream(table[i], 0, n))
-            .distinct()
-            .sorted()
-            .boxed()
-            .collect(Collectors.toList());
-        int min = Integer.MAX_VALUE;
-        for (int x = 0; x < n - k + 1; x++) {
-            final SegmentTree<Integer> tree = new SegmentTree<>(list.size(), 0, Integer::sum);
-            for (int i = x; i < x + k; i++) {
-                for (int j = 0; j < k; j++) {
-                    final int index = Collections.binarySearch(list, table[i][j]);
-                    tree.update(index, a -> a + 1);
-                }
-            }
-            min = Math.min(list.get(binarySearch(0, list.size(), k, tree)), min);
-            for (int y = 0; y < n - k; y++) {
-                for (int i = x; i < x + k; i++) {
-                    final int addedIndex = Collections.binarySearch(list, table[i][y + k]);
-                    tree.update(addedIndex, a -> a + 1);
-                    final int removedIndex = Collections.binarySearch(list, table[i][y]);
-                    tree.update(removedIndex, a -> a - 1);
-                }
-                min = Math.min(list.get(binarySearch(0, list.size(), k, tree)), min);
-            }
-        }
-        System.out.println(min);
+        final int max = Arrays.stream(table)
+            .flatMapToInt(Arrays::stream)
+            .max()
+            .orElseThrow();
+
+        final int answer = binarySearch(0, max + 1, table, n, k);
+        System.out.println(answer);
     }
 
-    private static int binarySearch(final int begin, final int end, final int k, final SegmentTree<Integer> tree) {
+    private static int binarySearch(final int begin, final int end, final int[][] table, final int n, final int k) {
         if (end - begin <= 1) {
-            return end;
+            return begin;
         }
 
         final int mid = (begin + end) / 2;
-        final int sum = tree.query(mid + 1);
-        if (sum < (k * k + 1) / 2) {
-            return binarySearch(mid, end, k, tree);
+        final int[][] counts = creteCountTable(table, n, k, mid);
+        final int min = Arrays.stream(counts, k - 1, n)
+            .flatMapToInt(array -> Arrays.stream(array, k - 1, n))
+            .min()
+            .orElseThrow();
+        if (min < k * k / 2 + 1) {
+            return binarySearch(begin, mid, table, n, k);
         } else {
-            return binarySearch(0, mid, k, tree);
+            return binarySearch(mid, end, table, n, k);
         }
     }
 
-    private static class SegmentTree<T> {
-        private final T[] internalArray;
-        private final int exponent;
-        private final T initialValue;
-        private final BinaryOperator<T> comparator;
-
-        SegmentTree(final int size, final T initialValue, final BinaryOperator<T> comparator) {
-            this.exponent = 1 << Integer.toBinaryString(size - 1).length();
-            this.comparator = comparator;
-            this.initialValue = initialValue;
-            internalArray = initArray(Collections.emptyList(), initialValue);
-        }
-
-        /**
-         * 値の更新
-         *
-         * @param index    "0-indexed"のインデックス
-         * @param operator 更新式
-         */
-        void update(final int index, final UnaryOperator<T> operator) {
-            internalArray[index + exponent] = operator.apply(internalArray[index + exponent]);
-            int current = (index + exponent) / 2;
-            while (current > 0) {
-                internalArray[current] = comparator.apply(internalArray[current * 2], internalArray[current * 2 + 1]);
-                current /= 2;
+    private static int[][] creteCountTable(final int[][] table, final int n, final int k, final int border) {
+        final int[][] tmp = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (table[i][j] >= border) {
+                    tmp[i][j]++;
+                    final int a = i + k;
+                    if (a < n) {
+                        tmp[a][j]--;
+                    }
+                    final int b = j + k;
+                    if (b < n) {
+                        tmp[i][b]--;
+                    }
+                    if (a < n && b < n) {
+                        tmp[a][b]++;
+                    }
+                }
             }
         }
 
-        /**
-         * クエリ
-         * クエリの区間を [left, right) の半開区間で渡すことに注意
-         *
-         * @param right "0-indexed"のクエリの右端 + 1
-         *              つまり"1-indexed"のクエリの右端
-         * @return クエリ結果
-         */
-        T query(final int right) {
-            return query(0, right, 0, exponent, 1);
+        for (int i = 0; i < n; i++) {
+            for (int j = 1; j < n; j++) {
+                tmp[i][j] += tmp[i][j - 1];
+            }
         }
 
-        T query(final int left, final int right, final int begin, final int end, final int k) {
-            if (left >= end || right <= begin) {
-                return initialValue;
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                tmp[i][j] += tmp[i - 1][j];
             }
-
-            if (left <= begin && end <= right) {
-                return internalArray[k];
-            }
-
-            final int mid = (begin + end) / 2;
-            return comparator.apply(query(left, right, begin, mid, k * 2), query(left, right, mid, end, k * 2 + 1));
         }
-
-        @SuppressWarnings("unchecked")
-        private T[] initArray(final List<T> list, final T initialValue) {
-            final Object[] array = new Object[exponent * 2];
-            Arrays.fill(array, initialValue);
-            for (int i = 0; i < list.size(); i++) {
-                array[i + exponent] = list.get(i);
-            }
-
-            for (int i = exponent - 1; i > 0; i--) {
-                array[i] = comparator.apply((T) array[i * 2], (T) array[i * 2 + 1]);
-            }
-
-            return (T[]) array;
-        }
+        return tmp;
     }
 
     private static class FastScanner {
