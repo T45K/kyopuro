@@ -160,7 +160,7 @@ public class Tree {
 
         @SuppressWarnings("unchecked")
         private T[] initArray(final List<T> list, final T initialValue) {
-            final Object[] array = new Object[exponent * 2];
+            final Object[] array = new Object[(exponent + 1) * 2];
             Arrays.fill(array, initialValue);
             for (int i = 0; i < list.size(); i++) {
                 array[i + exponent] = list.get(i);
