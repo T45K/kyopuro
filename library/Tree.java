@@ -260,7 +260,7 @@ public class Tree {
 
         @SuppressWarnings("unchecked")
         private IndexedValue<T>[] initArray(final List<T> list, final T initialValue) {
-            final IndexedValue<T>[] array = new IndexedValue[exponent * 2];
+            final IndexedValue<T>[] array = new IndexedValue[(exponent + 1) * 2];
             Arrays.fill(array, new IndexedValue<>(-1, initialValue));
             for (int i = 0; i < list.size(); i++) {
                 array[i + exponent] = new IndexedValue<>(i, list.get(i));
@@ -419,7 +419,7 @@ public class Tree {
 
         @SuppressWarnings("unchecked")
         private T[] initArray(final List<T> list, final T initialValue) {
-            final Object[] array = new Object[exponent * 2];
+            final Object[] array = new Object[(exponent + 1) * 2];
             Arrays.fill(array, initialValue);
             for (int i = 0; i < list.size(); i++) {
                 array[i + exponent] = list.get(i);
@@ -434,7 +434,7 @@ public class Tree {
 
         @SuppressWarnings("unchecked")
         private T[] initLazyArray(final T initialValue) {
-            final Object[] array = new Object[exponent * 2];
+            final Object[] array = new Object[(exponent + 1) * 2];
             Arrays.fill(array, initialValue);
             return (T[]) array;
         }
