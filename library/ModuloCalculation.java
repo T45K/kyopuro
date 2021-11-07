@@ -1,7 +1,7 @@
 package library;
 
 /**
- * 組み合わせ計算を集めたライブラリ
+ * モジュロ演算のライブラリ
  */
 @SuppressWarnings("unused")
 class ModuloCalculation {
