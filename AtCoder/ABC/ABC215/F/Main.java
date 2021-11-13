@@ -24,7 +24,7 @@ public class Main {
         final Pair<Integer, Integer>[] array = Stream.generate(() -> new Pair<>(scanner.nextInt(), scanner.nextInt()))
             .limit(n)
             .sorted(Comparator.comparingInt((ToIntFunction<Pair<Integer, Integer>>) Pair::getFirst).thenComparing(Pair::getSecond, Comparator.reverseOrder()))
-            .filter(distinctByKey(Pair::getFirst))
+            .filter(distinctBy(Pair::getFirst))
             .toArray(Pair[]::new);
 
         int max = 0;
@@ -42,9 +42,9 @@ public class Main {
         System.out.println(max);
     }
 
-    private static <T> Predicate<T> distinctByKey(final Function<? super T, ?> keyExtractor) {
+    private static <T> Predicate<T> distinctBy(final Function<? super T, ?> elementExtractor) {
         final Map<Object, Boolean> seen = new HashMap<>();
-        return t -> seen.putIfAbsent(keyExtractor.apply(t), true) == null;
+        return t -> seen.putIfAbsent(elementExtractor.apply(t), true) == null;
     }
 
     private static class FastScanner {
