@@ -4,62 +4,79 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.StringTokenizer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.function.Consumer;
+import java.util.stream.IntStream;
 
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
-        final int t = scanner.nextInt();
-        final String answer = Stream.generate(() -> {
-                final String a = reverse(Long.toBinaryString(scanner.nextLong())); // and
-                final String s = reverse(Long.toBinaryString(scanner.nextLong())); // sum
-                return solver(a, s);
-            }).limit(t)
-            .collect(Collectors.joining("\n"));
-        System.out.println(answer);
+        final int n = scanner.nextInt();
+        final int q = scanner.nextInt();
+        final UnionFindTree unionFind = new UnionFindTree(n);
+        for (int i = 0; i < q; i++) {
+            final int l = scanner.nextInt();
+            final int r = scanner.nextInt();
+            unionFind.unit(l - 1, r);
+        }
+
+        if (unionFind.isSame(0, n)) {
+            System.out.println("Yes");
+        } else {
+            System.out.println("No");
+        }
     }
 
-    private static String solver(final String a, final String s) {
-        int sum = 0;
-        for (int i = 0; i < Math.max(a.length(), s.length()); i++) {
-            final int ai = charAt(a, i);
-            final int si = charAt(s, i);
-            if (ai == 0 && si == 0 && sum == 0) { // 0, 0
-                sum = 0;
-            } else if (ai == 0 && si == 0 && sum == 1) { // 1, 0
-                sum = 1;
-            } else if (ai == 0 && si == 1 && sum == 0) { // 1, 0
-                sum = 0;
-            } else if (ai == 0 && si == 1 && sum == 1) { // 0, 0
-                sum = 0;
-            } else if (ai == 1 && si == 0 && sum == 0) { // 1, 1
-                sum = 1;
-            } else if (ai == 1 && si == 0 && sum == 1) {
-                return "No";
-            } else if (ai == 1 && si == 1 && sum == 0) {
-                return "No";
-            } else { // 1, 1
-                sum = 1;
+    private static class UnionFindTree {
+        private final int[] nodes;
+        private final Deque<Integer> indices = new ArrayDeque<>();
+
+        UnionFindTree(final int numOfNodes) {
+            this.nodes = IntStream.rangeClosed(0, numOfNodes).toArray();
+        }
+
+        /**
+         * 引数のノードが属している木の根を返す．
+         *
+         * @param nodeNumber ノードの番号
+         * @return 根，つまり属している集合の中の一番小さい値
+         */
+        int getRoot(final int nodeNumber) {
+            final int rootNode = nodes[nodeNumber];
+            if (rootNode != nodeNumber) {
+                indices.add(nodeNumber);
+                return getRoot(rootNode);
             }
-        }
-        if (sum == 0) {
-            return "Yes";
-        } else {
-            return "No";
-        }
-    }
 
-    private static String reverse(final String str) {
-        return new StringBuilder(str).reverse().toString();
-    }
+            final Consumer<Integer> updateRoot = index -> nodes[index] = rootNode;
+            indices.forEach(updateRoot);
+            indices.clear();
+            return nodeNumber;
+        }
 
-    private static int charAt(final String str, final int i) {
-        if (i < str.length()) {
-            return str.charAt(i) - '0';
-        } else {
-            return 0;
+        /**
+         * 二つのノードが同じ集合に属しているかを判定する．
+         *
+         * @param nodeA ノード
+         * @param nodeB ノード
+         * @return 二つのノードが同じ集合に属しているかの判定結果
+         */
+        boolean isSame(final int nodeA, final int nodeB) {
+            return getRoot(nodeA) == getRoot(nodeB);
+        }
+
+        /**
+         * 引数のノードが属する集合を合体させる．
+         *
+         * @param nodeA ノード
+         * @param nodeB ノード
+         */
+        void unit(final int nodeA, final int nodeB) {
+            final int rootA = getRoot(nodeA);
+            final int rootB = getRoot(nodeB);
+            nodes[Math.max(rootA, rootB)] = Math.min(rootA, rootB);
         }
     }
 
@@ -84,10 +101,6 @@ public class Main {
 
         int nextInt() {
             return Integer.parseInt(next());
-        }
-
-        long nextLong() {
-            return Long.parseLong(next());
         }
     }
 }
