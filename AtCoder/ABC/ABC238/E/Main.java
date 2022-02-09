@@ -5,47 +5,28 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
-import java.util.Comparator;
 import java.util.Deque;
-import java.util.List;
 import java.util.StringTokenizer;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
         final int n = scanner.nextInt();
-        final int m = scanner.nextInt();
         final int q = scanner.nextInt();
-
-        final List<Node> list = Stream.concat(
-                Stream.generate(() -> new Node(scanner.nextInt(), scanner.nextInt(), scanner.nextInt()))
-                    .limit(m),
-                IntStream.range(0, q)
-                    .mapToObj(i -> new QueryNode(i, scanner.nextInt(), scanner.nextInt(), scanner.nextInt()))
-            ).sorted(Comparator.comparingInt(node -> node.w))
-            .collect(Collectors.toList());
-
         final UnionFindTree unionFind = new UnionFindTree(n);
-        final boolean[] answers = new boolean[q];
-
-        for (final Node node : list) {
-            if (node instanceof QueryNode) {
-                if (!unionFind.isSame(node.u, node.v)) {
-                    answers[((QueryNode) node).id] = true;
-                }
-                continue;
-            }
-            unionFind.unit(node.u, node.v);
+        for (int i = 0; i < q; i++) {
+            final int l = scanner.nextInt();
+            final int r = scanner.nextInt();
+            unionFind.unit(l - 1, r);
         }
 
-        final String answer = IntStream.range(0, q)
-            .mapToObj(i -> answers[i] ? "Yes" : "No")
-            .collect(Collectors.joining("\n"));
-        System.out.println(answer);
+        if (unionFind.isSame(0, n)) {
+            System.out.println("Yes");
+        } else {
+            System.out.println("No");
+        }
     }
 
     private static class UnionFindTree {
@@ -96,27 +77,6 @@ public class Main {
             final int rootA = getRoot(nodeA);
             final int rootB = getRoot(nodeB);
             nodes[Math.max(rootA, rootB)] = Math.min(rootA, rootB);
-        }
-    }
-
-    private static class Node {
-        final int u;
-        final int v;
-        final int w;
-
-        Node(final int u, final int v, final int w) {
-            this.u = u;
-            this.v = v;
-            this.w = w;
-        }
-    }
-
-    private static class QueryNode extends Node {
-        final int id;
-
-        QueryNode(final int id, final int u, final int v, final int w) {
-            super(u, v, w);
-            this.id = id;
         }
     }
 
