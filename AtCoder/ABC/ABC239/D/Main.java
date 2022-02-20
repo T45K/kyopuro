@@ -21,8 +21,7 @@ public class Main {
         final int d = scanner.nextInt();
         final Set<Integer> primes = new HashSet<>(sieveOfEratosthenes(200));
         final boolean canMakePrimeEverytime = IntStream.rangeClosed(a, b)
-            .allMatch(i -> IntStream.rangeClosed(c, d)
-                .anyMatch(primes::contains));
+            .allMatch(i -> IntStream.rangeClosed(c, d).anyMatch(primes::contains));
         if (canMakePrimeEverytime) {
             System.out.println("Aoki");
         } else {
