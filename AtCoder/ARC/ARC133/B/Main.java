@@ -1,4 +1,4 @@
-package AtCoder.ABC.ARC133.B;
+package AtCoder.ARC.ARC133.B;
 
 import java.io.BufferedReader;
 import java.io.IOException;
