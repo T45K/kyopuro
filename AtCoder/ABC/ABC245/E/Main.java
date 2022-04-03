@@ -4,16 +4,22 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-// TODO: solve
+/*
+解説AC
+最初に箱を列挙するのではなく、イテレーティブにやる
+ */
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
@@ -32,39 +38,55 @@ public class Main {
             .limit(m)
             .collect(Collectors.toList());
 
-        final List<Pair<Integer, Integer>> chocolates = IntStream.range(0, n)
+        final Map<Integer, List<Integer>> chocolates = IntStream.range(0, n)
             .mapToObj(i -> new Pair<>(a.get(i), b.get(i)))
-            .sorted(Comparator.comparingInt((Pair<Integer, Integer> pair) -> pair.first).thenComparing(Pair::getSecond, Comparator.reverseOrder()))
+            .collect(Collectors.groupingBy(
+                Pair::getFirst,
+                Collectors.collectingAndThen(
+                    Collectors.toList(),
+                    list -> list.stream()
+                        .map(Pair::getSecond)
+                        .collect(Collectors.toList())
+                )
+            ));
+        final Map<Integer, List<Integer>> boxes = IntStream.range(0, m)
+            .mapToObj(i -> new Pair<>(c.get(i), d.get(i)))
+            .collect(Collectors.groupingBy(
+                Pair::getFirst,
+                Collectors.collectingAndThen(
+                    Collectors.toList(),
+                    list -> list.stream()
+                        .map(Pair::getSecond)
+                        .collect(Collectors.toList())
+                )
+            ));
+
+        final List<Integer> indexes = Stream.concat(chocolates.keySet().stream(), boxes.keySet().stream())
+            .sorted(Comparator.reverseOrder())
+            .distinct()
             .collect(Collectors.toList());
-        final TreeMap<Integer, TreeMap<Integer, Integer>> boxes = new TreeMap<>();
-        for (int i = 0; i < m; i++) {
-            boxes.computeIfAbsent(c.get(i), k -> new TreeMap<>()).compute(d.get(i), (k, v) -> v == null ? 1 : v + 1);
-        }
 
-        for (final Pair<Integer, Integer> choco : chocolates) {
-            final Integer firstCeiling = boxes.ceilingKey(choco.first);
-            if (firstCeiling == null) {
-                System.out.println("No");
-                return;
-            }
-            final Integer secondCeiling = boxes.get(firstCeiling).ceilingKey(choco.second);
-            if (secondCeiling == null) {
-                System.out.println("No");
-                return;
-            }
-            final Integer count = boxes.get(firstCeiling).get(secondCeiling);
-            if (count == null || count == 0) {
-                System.out.println("No");
-                return;
+        final TreeMap<Integer, Integer> storedBoxes = new TreeMap<>();
+        for (final int index : indexes) {
+            for (final int size : boxes.getOrDefault(index, Collections.emptyList())) {
+                storedBoxes.compute(size, (k, v) -> v == null ? 1 : (v + 1));
             }
 
-            if (count == 1) {
-                boxes.get(firstCeiling).remove(secondCeiling);
-                if (boxes.get(firstCeiling) == null || boxes.get(firstCeiling).isEmpty()) {
-                    boxes.remove(firstCeiling);
+            for (final int size : chocolates.getOrDefault(index, Collections.emptyList())) {
+                final Integer ceilingSize = storedBoxes.ceilingKey(size);
+                final Optional<Integer> count = Optional.ofNullable(ceilingSize)
+                    .map(it -> storedBoxes.get(ceilingSize))
+                    .filter(it -> it > 0);
+                if (count.isEmpty()) {
+                    System.out.println("No");
+                    return;
                 }
-            } else {
-                boxes.get(firstCeiling).put(secondCeiling, count - 1);
+
+                if (count.get() == 1) {
+                    storedBoxes.remove(ceilingSize);
+                } else {
+                    storedBoxes.put(ceilingSize, count.get() - 1);
+                }
             }
         }
         System.out.println("Yes");
@@ -91,26 +113,6 @@ public class Main {
 
         int nextInt() {
             return Integer.parseInt(next());
-        }
-
-        long nextLong() {
-            return Long.parseLong(next());
-        }
-
-        double nextDouble() {
-            return Double.parseDouble(next());
-        }
-
-        String nextLine() {
-            if (tokenizer == null || !tokenizer.hasMoreTokens()) {
-                try {
-                    return reader.readLine();
-                } catch (final IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            return tokenizer.nextToken("\n");
         }
     }
 
