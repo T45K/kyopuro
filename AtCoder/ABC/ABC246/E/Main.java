@@ -41,20 +41,20 @@ public class Main {
             final int x = poll.x;
             final int y = poll.y;
             final int direction = poll.direction;
-            final int count = table[direction][x][y];
-            if (direction == 0) { // 左上か右下から来た -> 次は右上か左下に行く
+            final int count = table[1 - direction][x][y];
+            if (direction == 0) { // 左上か右下へ移動していく -> 次は右上か左下に行く
                 for (int i = 1; ; i++) {
                     if (x - i < 0 || y - i < 0 || table[0][x - i][y - i] >= 0) {
                         break;
                     }
-                    table[1][x - i][y - i] = count + 1;
+                    table[0][x - i][y - i] = count + 1;
                     queue.add(new BfsElement(x - i, y - i, 1));
                 }
                 for (int i = 1; ; i++) {
                     if (x + i >= n || y + i >= n || table[0][x + i][y + i] >= 0) {
                         break;
                     }
-                    table[1][x + i][y + i] = count + 1;
+                    table[0][x + i][y + i] = count + 1;
                     queue.add(new BfsElement(x + i, y + i, 1));
                 }
             } else {
@@ -62,14 +62,14 @@ public class Main {
                     if (x - i < 0 || y + i >= n || table[1][x - i][y + i] >= 0) {
                         break;
                     }
-                    table[0][x - i][y + i] = count + 1;
+                    table[1][x - i][y + i] = count + 1;
                     queue.add(new BfsElement(x - i, y + i, 0));
                 }
                 for (int i = 1; ; i++) {
                     if (x + i >= n || y - i < 0 || table[1][x + i][y - i] >= 0) {
                         break;
                     }
-                    table[0][x + i][y - i] = count + 1;
+                    table[1][x + i][y - i] = count + 1;
                     queue.add(new BfsElement(x + i, y - i, 0));
                 }
             }
