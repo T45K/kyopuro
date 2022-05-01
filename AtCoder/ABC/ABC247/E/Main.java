@@ -10,6 +10,10 @@ import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/*
+解説AC
+バラして尺取
+ */
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
