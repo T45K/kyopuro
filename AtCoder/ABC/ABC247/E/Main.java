@@ -20,60 +20,50 @@ public class Main {
             .limit(n)
             .collect(Collectors.toList());
 
-        final List<List<Integer>> lists = cutByOutOfRangeValues(list, x, y);
-
         long sum = 0;
-        for (final List<Integer> values : lists) {
-            final int size = values.size();
-            int minCount = 0;
-            int maxCount = 0;
-
-            int rightIndex = 0;
-            for (int leftIndex = 0; leftIndex < size; leftIndex++) {
-                if (values.get(leftIndex) == x) {
-                    maxCount++;
-                }
-                if (values.get(leftIndex) == y) {
-                    minCount++;
-                }
-                for (; rightIndex <= leftIndex; rightIndex++) {
-                    if (maxCount == 0 || minCount == 0) {
-                        break;
-                    }
-                    sum += size - leftIndex;
-                    if (values.get(rightIndex) == x) {
-                        maxCount--;
-                    }
-                    if (values.get(rightIndex) == y) {
-                        minCount--;
-                    }
-                }
-            }
-        }
-
-        System.out.println(sum);
-    }
-
-    private static List<List<Integer>> cutByOutOfRangeValues(final List<Integer> list, final int x, final int y) {
-        final List<List<Integer>> lists = new ArrayList<>();
         final List<Integer> tmp = new ArrayList<>();
-
         for (final int value : list) {
             if (y <= value && value <= x) {
                 tmp.add(value);
                 continue;
             }
-            if (!tmp.isEmpty()) {
-                lists.add(tmp);
-            }
+
+            sum += calc(tmp, x, y);
             tmp.clear();
         }
-        if (!tmp.isEmpty()) {
-            lists.add(tmp);
-        }
-        return lists;
+        sum += calc(tmp, x, y);
+        System.out.println(sum);
     }
 
+    private static long calc(final List<Integer> values, final int max, final int min) {
+        final int size = values.size();
+        int minCount = 0;
+        int maxCount = 0;
+
+        long sum = 0;
+        int latterIndex = 0;
+        for (int formerIndex = 0; formerIndex < size; formerIndex++) {
+            if (values.get(formerIndex) == max) {
+                maxCount++;
+            }
+            if (values.get(formerIndex) == min) {
+                minCount++;
+            }
+            for (; latterIndex <= formerIndex; latterIndex++) {
+                if (maxCount == 0 || minCount == 0) {
+                    break;
+                }
+                sum += size - formerIndex;
+                if (values.get(latterIndex) == max) {
+                    maxCount--;
+                }
+                if (values.get(latterIndex) == min) {
+                    minCount--;
+                }
+            }
+        }
+        return sum;
+    }
 
     private static class FastScanner {
         private final BufferedReader reader;
