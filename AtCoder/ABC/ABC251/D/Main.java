@@ -6,8 +6,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.StringTokenizer;
-import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /*
 10進数で考えれば良い
@@ -16,20 +18,39 @@ public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
         final int w = scanner.nextInt();
-        final List<String> values = new ArrayList<>();
-        final Consumer<Integer> appendIfInRange = v -> {
-            if (v <= w) {
-                values.add(v.toString());
-            }
-        };
+        final List<Integer> values = new RestrictedList<>(v -> v <= w);
         for (int i = 1; i <= 99; i++) {
-            appendIfInRange.accept(i);
-            appendIfInRange.accept(i * 100);
-            appendIfInRange.accept(i * 100 * 100);
+            values.add(i);
+            values.add(i * 100);
+            values.add(i * 100 * 100);
         }
-        appendIfInRange.accept(1_000_000);
+        values.add(1_000_000);
         System.out.println(values.size());
-        System.out.println(String.join(" ", values));
+        System.out.println(values);
+    }
+
+    private static class RestrictedList<E> extends ArrayList<E> {
+        private final Predicate<E> predicate;
+
+        RestrictedList(final Predicate<E> predicate) {
+            super();
+            this.predicate = predicate;
+        }
+
+        @Override
+        public boolean add(final E e) {
+            if (predicate.test(e)) {
+                return super.add(e);
+            }
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            return this.stream()
+                .map(Objects::toString)
+                .collect(Collectors.joining(" "));
+        }
     }
 
     private static class FastScanner {
