@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Main {
@@ -24,17 +25,13 @@ public class Main {
             .collect(Collectors.toSet());
 
         final int max = a.stream().max(Comparator.naturalOrder()).orElseThrow();
-        for (int i = 0; i < n; i++) {
-            final int value = a.get(i);
-            if (value < max) {
-                continue;
-            }
-            if (b.contains(i + 1)) {
-                System.out.println("Yes");
-                return;
-            }
-        }
-        System.out.println("No");
+        final String answer = IntStream.range(0, n)
+            .filter(i -> a.get(i) == max && b.contains(i + 1))
+            .boxed()
+            .findAny()
+            .map(i -> "Yes")
+            .orElse("No");
+        System.out.println(answer);
     }
 
     private static class FastScanner {
