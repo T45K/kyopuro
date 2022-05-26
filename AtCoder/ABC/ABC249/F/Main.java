@@ -83,11 +83,8 @@ public class Main {
         }
 
         void sizeDown() {
-            if (queue.isEmpty()) {
-                return;
-            }
             size--;
-            while (queue.size() > size) {
+            while (!queue.isEmpty() && queue.size() > size) {
                 final int poll = queue.poll();
                 sum -= poll;
             }
