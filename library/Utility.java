@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.StringTokenizer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -299,14 +298,15 @@ public class Utility {
         }
     }
 
-    private static class ListMap<K, V> extends HashMap<K, List<V>> {
+    private static class MultiValueMapMap<K, V> extends HashMap<K, List<V>> {
 
-        public void putSingle(final K key, final V value) {
+        public void add(final K key, final V value) {
             super.computeIfAbsent(key, k -> new ArrayList<>()).add(value);
         }
 
-        public List<V> getList(final K key) {
-            return Optional.ofNullable(super.get(key)).orElse(Collections.emptyList());
+        @Override
+        public List<V> get(final Object key) {
+            return super.getOrDefault(key, Collections.emptyList());
         }
     }
 
