@@ -298,7 +298,7 @@ public class Utility {
         }
     }
 
-    private static class MultiValueMapMap<K, V> extends HashMap<K, List<V>> {
+    private static class MultiValueMap<K, V> extends HashMap<K, List<V>> {
 
         public void add(final K key, final V value) {
             super.computeIfAbsent(key, k -> new ArrayList<>()).add(value);
