@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.AbstractSet;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,13 +12,18 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableSet;
 import java.util.Objects;
+import java.util.SortedSet;
 import java.util.StringTokenizer;
+import java.util.TreeMap;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * 基本のライブラリ
@@ -334,6 +340,143 @@ public class Utility {
         @Override
         public int hashCode() {
             return Objects.hash(first, second);
+        }
+    }
+
+    private static class MultiTreeSet<E extends Comparable<E>> extends AbstractSet<E> implements NavigableSet<E> {
+        private final TreeMap<E, Integer> internal = new TreeMap<>();
+
+        @Override
+        public E lower(final E e) {
+            return this.internal.lowerKey(e);
+        }
+
+        @Override
+        public E floor(final E e) {
+            return this.internal.floorKey(e);
+        }
+
+        @Override
+        public E ceiling(final E e) {
+            return this.internal.ceilingKey(e);
+        }
+
+        @Override
+        public E higher(final E e) {
+            return this.internal.higherKey(e);
+        }
+
+        @Override
+        public E pollFirst() {
+            if (this.internal.isEmpty()) {
+                return null;
+            }
+
+            final E first = first();
+            remove(first);
+            return first;
+        }
+
+        @Override
+        public E pollLast() {
+            if (this.internal.isEmpty()) {
+                return null;
+            }
+
+            final E last = last();
+            remove(last);
+            return last;
+        }
+
+        @Override
+        public Iterator<E> iterator() {
+            return this.internal.entrySet().stream()
+                .flatMap(entry -> Stream.generate(entry::getKey).limit(entry.getValue()))
+                .iterator();
+        }
+
+        @Override
+        public NavigableSet<E> descendingSet() {
+            throw new RuntimeException("Omitted implementation");
+        }
+
+        @Override
+        public Iterator<E> descendingIterator() {
+            throw new RuntimeException("Omitted implementation");
+        }
+
+        @Override
+        public NavigableSet<E> subSet(final E fromElement, final boolean fromInclusive, final E toElement, final boolean toInclusive) {
+            throw new RuntimeException("Omitted implementation");
+        }
+
+        @Override
+        public NavigableSet<E> headSet(final E toElement, final boolean inclusive) {
+            throw new RuntimeException("Omitted implementation");
+        }
+
+        @Override
+        public NavigableSet<E> tailSet(final E fromElement, final boolean inclusive) {
+            throw new RuntimeException("Omitted implementation");
+        }
+
+        @Override
+        public Comparator<? super E> comparator() {
+            return Comparable::compareTo;
+        }
+
+        @Override
+        public SortedSet<E> subSet(final E fromElement, final E toElement) {
+            throw new RuntimeException("Omitted implementation");
+        }
+
+        @Override
+        public SortedSet<E> headSet(final E toElement) {
+            throw new RuntimeException("Omitted implementation");
+        }
+
+        @Override
+        public SortedSet<E> tailSet(final E fromElement) {
+            throw new RuntimeException("Omitted implementation");
+        }
+
+        @Override
+        public E first() {
+            return this.internal.firstKey();
+        }
+
+        @Override
+        public E last() {
+            return this.internal.lastKey();
+        }
+
+        @Override
+        public int size() {
+            return this.internal.size();
+        }
+
+        @Override
+        public boolean add(final E e) {
+            this.internal.compute(e, (k, v) -> v == null ? 1 : v + 1);
+            return true;
+        }
+
+        public int getCount(final E e) {
+            return this.internal.getOrDefault(e, 0);
+        }
+
+        public boolean remove(final E e) {
+            final Integer nullableCount = this.internal.get(e);
+            if (nullableCount == null) {
+                return false;
+            }
+
+            if (nullableCount <= 1) {
+                this.internal.remove(e);
+            } else {
+                this.internal.put(e, nullableCount - 1);
+            }
+            return true;
         }
     }
 }
