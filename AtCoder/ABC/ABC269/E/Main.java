@@ -16,7 +16,7 @@ public class Main {
         int c = 1;
         int d = n;
 
-        while (a != b) {
+        while (a < b) {
             final int mid = (a + b) / 2;
             System.out.printf("? %d %d %d %d", a, mid, 1, n);
             System.out.println();
@@ -29,7 +29,7 @@ public class Main {
             }
         }
 
-        while (c != d) {
+        while (c < d) {
             final int mid = (c + d) / 2;
             System.out.printf("? %d %d %d %d", 1, n, c, mid);
             System.out.println();
