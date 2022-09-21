@@ -4,11 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
+import java.util.function.BinaryOperator;
 import java.util.stream.Stream;
 
-// TODO: solve
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
@@ -19,18 +18,21 @@ public class Main {
             .mapToInt(Integer::intValue)
             .toArray();
 
-        final long[][] dp = new long[n][m + 1];
-        for (long[] a : dp) {
-            Arrays.fill(a, 1, m + 1, Integer.MIN_VALUE / 2);
-        }
-        dp[0][1] = array[0];
+        final Long[][] dp = new Long[n][m + 1];
+        dp[0][1] = (long) array[0];
         for (int i = 1; i < n; i++) {
             for (int j = 1; j <= Math.min(m, i + 1); j++) {
-                dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - 1] + (long) j * array[i]);
+                dp[i][j] = operateNullable(dp[i - 1][j], operateNullable(dp[i - 1][j - 1], (long) j * array[i], Math::addExact), Math::max);
             }
         }
 
         System.out.println(dp[n - 1][m]);
+    }
+
+    private static <T> T operateNullable(final T lhs, final T rhs, final BinaryOperator<T> operator) {
+        if (lhs != null && rhs != null) return operator.apply(lhs, rhs);
+        if (lhs != null) return lhs;
+        return rhs;
     }
 
     private static class FastScanner {
