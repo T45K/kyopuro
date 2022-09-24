@@ -190,14 +190,14 @@ public class Tree {
 
         IndexedSegmentTree(final List<T> list, final T initialValue, final BinaryOperator<T> comparator) {
             this.exponent = 1 << Integer.toBinaryString(list.size() - 1).length();
-            this.comparator = (a, b) -> comparator.apply(a.getValue(), b.getValue()) == a.getValue() ? a : b;
+            this.comparator = (a, b) -> comparator.apply(a.getValue(), b.getValue()).equals(a.getValue()) ? a : b;
             this.initialValue = new IndexedValue<>(-1, initialValue);
             internalArray = initArray(list, initialValue);
         }
 
         IndexedSegmentTree(final int size, final T initialValue, final BinaryOperator<T> comparator) {
             this.exponent = 1 << Integer.toBinaryString(size - 1).length();
-            this.comparator = (a, b) -> comparator.apply(a.getValue(), b.getValue()) == a.getValue() ? a : b;
+            this.comparator = (a, b) -> comparator.apply(a.getValue(), b.getValue()).equals(a.getValue()) ? a : b;
             this.initialValue = new IndexedValue<>(-1, initialValue);
             internalArray = initArray(Collections.emptyList(), initialValue);
         }
