@@ -22,11 +22,19 @@ public class Main {
         dp[0][1] = (long) array[0];
         for (int i = 1; i < n; i++) {
             for (int j = 1; j <= Math.min(m, i + 1); j++) {
-                dp[i][j] = operateNullable(dp[i - 1][j], operateNullable(dp[i - 1][j - 1], (long) j * array[i], Math::addExact), Math::max);
+                dp[i][j] = maxNullable(dp[i - 1][j], addNullable(dp[i - 1][j - 1], (long) j * array[i]));
             }
         }
 
         System.out.println(dp[n - 1][m]);
+    }
+
+    private static Long addNullable(final Long lhs, final Long rhs) {
+        return operateNullable(lhs, rhs, Math::addExact);
+    }
+
+    private static Long maxNullable(final Long lhs, final Long rhs) {
+        return operateNullable(lhs, rhs, Math::max);
     }
 
     private static <T> T operateNullable(final T lhs, final T rhs, final BinaryOperator<T> operator) {
