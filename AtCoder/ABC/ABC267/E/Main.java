@@ -35,7 +35,9 @@ public class Main {
             graph.computeIfAbsent(v, value -> new LinkedHashSet<>()).add(u);
         }
         final List<Long> initialCost = IntStream.range(0, n)
-            .mapToLong(i -> graph.getOrDefault(i, Collections.emptySet()).stream().mapToLong(j -> a[j]).sum())
+            .mapToLong(i -> graph.getOrDefault(i, Collections.emptySet()).stream()
+                .mapToLong(j -> a[j])
+                .sum())
             .boxed()
             .collect(Collectors.toList());
         final IndexedSegmentTree<Long> segmentTree = new IndexedSegmentTree<>(initialCost, Long.MAX_VALUE, Math::min);
