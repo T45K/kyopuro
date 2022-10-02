@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.util.Objects;
 import java.util.StringTokenizer;
 
-// TODO: Solve
+// TODO: Solve 右上から左下への対角線上で分けて半分全列挙
 public class Main {
     public static void main(final String[] args) {
         final FastScanner scanner = new FastScanner(System.in);
