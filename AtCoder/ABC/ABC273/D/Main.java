@@ -9,9 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
 import java.util.StringTokenizer;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Main {
@@ -22,7 +20,7 @@ public class Main {
         final int r = scanner.nextInt();
         final int c = scanner.nextInt();
         final int n = scanner.nextInt();
-        final List<Point> givenWalls = Stream.generate(() -> new Point(scanner.nextInt(), scanner.nextInt()))
+        final List<Point> walls = Stream.generate(() -> new Point(scanner.nextInt(), scanner.nextInt()))
             .limit(n)
             .collect(Collectors.toList());
         final int q = scanner.nextInt();
@@ -30,17 +28,7 @@ public class Main {
             .limit(q)
             .collect(Collectors.toList());
 
-        final List<Point> allWalls = Stream.of(
-                givenWalls.stream(),
-                IntStream.rangeClosed(0, w).mapToObj(i -> new Point(0, i)),
-                IntStream.rangeClosed(0, w).mapToObj(i -> new Point(h + 1, i)),
-                IntStream.rangeClosed(1, h - 1).mapToObj(i -> new Point(i, 0)),
-                IntStream.rangeClosed(1, h - 1).mapToObj(i -> new Point(i, w + 1))
-            )
-            .flatMap(Function.identity())
-            .collect(Collectors.toList());
-
-        final Map<Integer, List<Integer>> horizontal = allWalls.stream()
+        final Map<Integer, List<Integer>> horizontal = walls.stream()
             .collect(Collectors.groupingBy(
                 point -> point.x,
                 Collectors.collectingAndThen(
@@ -51,7 +39,7 @@ public class Main {
                         .collect(Collectors.toList()))
             ));
 
-        final Map<Integer, List<Integer>> vertical = allWalls.stream()
+        final Map<Integer, List<Integer>> vertical = walls.stream()
             .collect(Collectors.groupingBy(
                 point -> point.y,
                 Collectors.collectingAndThen(
@@ -69,29 +57,53 @@ public class Main {
         for (final Question question : questions) {
             switch (question.d) {
                 case 'L': {
-                    final int index = ~Collections.binarySearch(horizontal.get(currentR), currentC);
-                    final int wallPosition = horizontal.get(currentR).get(index - 1);
+                    final List<Integer> col = horizontal.getOrDefault(currentR, Collections.emptyList());
+                    final int index = ~Collections.binarySearch(col, currentC);
+                    final int wallPosition;
+                    if (index == 0) {
+                        wallPosition = 0;
+                    } else {
+                        wallPosition = col.get(index - 1);
+                    }
                     final int space = currentC - wallPosition - 1;
                     currentC -= Math.min(question.l, space);
                     break;
                 }
                 case 'R': {
-                    final int index = ~Collections.binarySearch(horizontal.get(currentR), currentC);
-                    final int wallPosition = horizontal.get(currentR).get(index);
+                    final List<Integer> col = horizontal.getOrDefault(currentR, Collections.emptyList());
+                    final int index = ~Collections.binarySearch(col, currentC);
+                    final int wallPosition;
+                    if (index < col.size()) {
+                        wallPosition = col.get(index);
+                    } else {
+                        wallPosition = w + 1;
+                    }
                     final int space = wallPosition - currentC - 1;
                     currentC += Math.min(question.l, space);
                     break;
                 }
                 case 'U': {
-                    final int index = ~Collections.binarySearch(vertical.get(currentC), currentR);
-                    final int wallPosition = vertical.get(currentC).get(index - 1);
+                    final List<Integer> row = vertical.getOrDefault(currentC, Collections.emptyList());
+                    final int index = ~Collections.binarySearch(row, currentR);
+                    final int wallPosition;
+                    if (index == 0) {
+                        wallPosition = 0;
+                    } else {
+                        wallPosition = row.get(index - 1);
+                    }
                     final int space = currentR - wallPosition - 1;
                     currentR -= Math.min(question.l, space);
                     break;
                 }
                 case 'D': {
-                    final int index = ~Collections.binarySearch(vertical.get(currentC), currentR);
-                    final int wallPosition = vertical.get(currentC).get(index);
+                    final List<Integer> row = vertical.getOrDefault(currentC, Collections.emptyList());
+                    final int index = ~Collections.binarySearch(row, currentR);
+                    final int wallPosition;
+                    if (index < row.size()) {
+                        wallPosition = row.get(index);
+                    } else {
+                        wallPosition = h + 1;
+                    }
                     final int space = wallPosition - currentR - 1;
                     currentR += Math.min(question.l, space);
                     break;
