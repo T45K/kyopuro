@@ -1,4 +1,4 @@
-package AtCoder.ABC.ABC277.D.Main;
+package AtCoder.ABC.ABC277.D;
 
 import java.io.BufferedReader;
 import java.io.IOException;
