@@ -4,13 +4,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Deque;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
@@ -40,49 +40,43 @@ public class Main {
         final int[][] costs = new int[2][n + 1];
         Arrays.fill(costs[0], Integer.MAX_VALUE);
         Arrays.fill(costs[1], Integer.MAX_VALUE);
-        @SuppressWarnings("unchecked") final Deque<Route>[] queues = new ArrayDeque[2];
-        queues[0] = new ArrayDeque<>();
-        queues[1] = new ArrayDeque<>();
-        queues[1].add(new Route(1, 0));
-        int currentStatus = 1;
-        while (!(queues[0].isEmpty() && queues[1].isEmpty())) {
-            final Deque<Route> queue = queues[currentStatus];
-            final int[] cost = costs[currentStatus];
-            final int nextStatus = 1 - currentStatus;
-            while (!queue.isEmpty()) {
-                final Route poll = queue.poll();
-                final int currentPosition = poll.dest;
-                final int currentCost = poll.cost;
-                if (cost[currentPosition] <= currentCost) {
-                    continue;
-                }
-                cost[currentPosition] = currentCost;
-                if (switches.contains(currentPosition) && costs[nextStatus][currentPosition] > currentCost) {
-                    queues[nextStatus].add(new Route(currentPosition, currentCost));
-                }
-                for (final int next : routes[currentStatus].getOrDefault(currentPosition, Collections.emptySet())) {
-                    if (cost[next] > currentCost + 1) {
-                        queue.add(new Route(next, currentCost + 1));
-                    }
+        final PriorityQueue<Route> queue = new PriorityQueue<>(Comparator.comparingInt(route -> route.cost));
+        queue.add(new Route(1, 0, 1));
+        while (!queue.isEmpty()) {
+            final Route poll = queue.poll();
+            final int currentPosition = poll.dest;
+            final int currentCost = poll.cost;
+            final int currentStatus = poll.status;
+            if (currentPosition == n) {
+                System.out.println(currentCost);
+                return;
+            }
+            if (costs[currentStatus][currentPosition] <= currentCost) {
+                continue;
+            }
+            costs[currentStatus][currentPosition] = currentCost;
+            if (switches.contains(currentPosition) && costs[1 - currentStatus][currentPosition] > currentCost) {
+                queue.add(new Route(currentPosition, currentCost, 1 - currentStatus));
+            }
+            for (final int next : routes[currentStatus].getOrDefault(currentPosition, Collections.emptySet())) {
+                if (costs[currentStatus][next] > currentCost + 1) {
+                    queue.add(new Route(next, currentCost + 1, currentStatus));
                 }
             }
-            currentStatus = nextStatus;
         }
 
-        if (Math.min(costs[0][n], costs[1][n]) == Integer.MAX_VALUE) {
-            System.out.println(-1);
-        } else {
-            System.out.println(Math.min(costs[0][n], costs[1][n]));
-        }
+        System.out.println(-1);
     }
 
     private static class Route {
         final int dest;
         final int cost;
+        final int status;
 
-        Route(final int dest, final int cost) {
+        Route(final int dest, final int cost, final int status) {
             this.dest = dest;
             this.cost = cost;
+            this.status = status;
         }
     }
 
