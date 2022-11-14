@@ -10,8 +10,8 @@ class ModuloCalculation {
      * <p>
      * {@link CombinationCalculator} の方が計算量，メモリ容量的に使いやすい．
      *
-     * @param size 　二次元配列のサイズ
-     *             　配列の大きさから size C x はできないことに注意
+     * @param size 二次元配列のサイズ
+     *             配列の大きさから size C x はできないことに注意
      * @return 二次元配列
      */
     private static long[][] createCombinationTable(final int size) {
