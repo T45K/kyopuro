@@ -15,7 +15,7 @@ class ModuloCalculation {
      * @return 二次元配列
      */
     private static long[][] createCombinationTable(final int size) {
-        final int mod = 1000000007;
+        final int mod = 1_000_000_007;
         final long[][] table = new long[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j <= i; j++) {
