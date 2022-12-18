@@ -30,28 +30,29 @@ public class Main {
             .collect(Collectors.toList());
 
         final MultiValueMap<Integer, Integer> graph = makeGraph(edges);
-        final Collection<List<Integer>> connectedNodes = groupingToConnectedNodes(n, edges);
+        final Collection<List<Integer>> connectedGraphNodes = groupingToConnectedNodes(n, edges);
 
         try {
-            long count = 0;
-            for (final List<Integer> nodes : connectedNodes) {
-                final Map<Integer, Color> nodeColorMap = classify(graph, nodes);
-                final Map<Color, Long> colorCounts = nodeColorMap.entrySet().stream().collect(Collectors.groupingBy(Map.Entry::getValue, Collectors.counting()));
-                count += nodes.stream()
-                    .mapToLong(node -> {
-                        final Color color = nodeColorMap.get(node);
-                        final long contraryColorCount = colorCounts.getOrDefault(color.contrary(), 0L);
-                        return contraryColorCount - graph.get(node).size();
-                    }).sum();
-                count += (long) nodes.size() * (n - nodes.size());
-            }
-            System.out.println(count / 2);
+            final long answer = connectedGraphNodes.stream()
+                .mapToLong(nodes -> {
+                    final Map<Integer, Color> nodeColorMap = classify(graph, nodes);
+                    final Map<Color, Long> colorCounts = nodeColorMap.entrySet().stream().collect(Collectors.groupingBy(Map.Entry::getValue, Collectors.counting()));
+                    final long countInConnectedGraphNodes = nodes.stream()
+                        .mapToLong(node -> {
+                            final Color color = nodeColorMap.get(node);
+                            final long contraryColorCount = colorCounts.getOrDefault(color.contrary(), 0L);
+                            return contraryColorCount - graph.get(node).size();
+                        }).sum();
+                    final long countInUnconnectedGraphNodes = (long) nodes.size() * (n - nodes.size());
+                    return countInConnectedGraphNodes + countInUnconnectedGraphNodes;
+                }).sum();
+            System.out.println(answer / 2);
         } catch (NotBipartiteGraphException e) {
             System.out.println(0);
         }
     }
 
-    private static Map<Integer, Color> classify(final MultiValueMap<Integer, Integer> graph, final List<Integer> nodes) throws NotBipartiteGraphException {
+    private static Map<Integer, Color> classify(final MultiValueMap<Integer, Integer> graph, final List<Integer> nodes) {
         final int head = nodes.get(0);
         final Deque<Integer> nodeQueue = new ArrayDeque<>();
         final Map<Integer, Color> colorDecidedNodes = new LinkedHashMap<>();
@@ -106,7 +107,7 @@ public class Main {
         }
     }
 
-    private static class NotBipartiteGraphException extends Exception {
+    private static class NotBipartiteGraphException extends RuntimeException {
     }
 
     private static class UnionFindTree {
