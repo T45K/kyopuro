@@ -11,7 +11,6 @@ import java.util.Deque;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -28,11 +27,11 @@ public class Main {
             .limit(m)
             .collect(Collectors.toList());
 
-        final Map<Integer, Set<Integer>> smallerDirectedGraph = new LinkedHashMap<>();
-        final Map<Integer, Set<Integer>> biggerDirectedGraph = new LinkedHashMap<>();
+        final MultiValueMap<Integer, Integer> smallerDirectedGraph = new MultiValueMap<>();
+        final MultiValueMap<Integer, Integer> biggerDirectedGraph = new MultiValueMap<>();
         for (final Pair<Integer, Integer> pair : list) {
-            smallerDirectedGraph.computeIfAbsent(pair.second, ignored -> new LinkedHashSet<>()).add(pair.first);
-            biggerDirectedGraph.computeIfAbsent(pair.first, ignored -> new LinkedHashSet<>()).add(pair.second);
+            smallerDirectedGraph.add(pair.second, pair.first);
+            biggerDirectedGraph.add(pair.first, pair.second);
         }
 
         final List<Integer> smallestNumbers = IntStream.rangeClosed(1, n)
@@ -52,8 +51,8 @@ public class Main {
             final int small = queue.pollFirst();
             answers[small] = counter;
             counter++;
-            for (final int bigger : biggerDirectedGraph.getOrDefault(small, Collections.emptySet())) {
-                final Set<Integer> upstream = smallerDirectedGraph.getOrDefault(bigger, Collections.emptySet());
+            for (final int bigger : biggerDirectedGraph.get(small)) {
+                final Set<Integer> upstream = smallerDirectedGraph.get(bigger);
                 upstream.remove(small);
                 if (upstream.size() == 0) {
                     queue.addLast(bigger);
@@ -70,6 +69,18 @@ public class Main {
             .collect(Collectors.joining(" "));
         System.out.println("Yes");
         System.out.println(answer);
+    }
+
+    private static class MultiValueMap<K, V> extends LinkedHashMap<K, Set<V>> {
+
+        public void add(final K key, final V value) {
+            super.computeIfAbsent(key, k -> new LinkedHashSet<>()).add(value);
+        }
+
+        @Override
+        public Set<V> get(final Object key) {
+            return super.getOrDefault(key, Collections.emptySet());
+        }
     }
 
     private static class FastScanner {
