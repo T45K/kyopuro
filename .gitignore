@@ -8,3 +8,5 @@ out
 local_only
 .junie
 .kotlin
+.gradle
+build
