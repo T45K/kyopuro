@@ -6,3 +6,5 @@
 out
 .DS_Store
 local_only
+.junie
+.kotlin
